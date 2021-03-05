@@ -1,8 +1,23 @@
 package gameLoop;
 
-public class Main {
+import display.DisplayManager;
+
+import javax.swing.*;
+
+public class Main extends JPanel {
+
+    private DisplayManager display;
 
     public static void main(String[] args) {
-        // write your code here
+        new Main();
+    }
+
+    public Main() {
+        setup();
+    }
+
+    private void setup() {
+        display = new DisplayManager();
+        display.createDisplay();
     }
 }

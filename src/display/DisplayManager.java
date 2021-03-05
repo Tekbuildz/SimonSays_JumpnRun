@@ -1,0 +1,75 @@
+package display;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DisplayManager extends JPanel implements Runnable{
+
+    private final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private final int WIDTH = graphicsDevice.getDisplayMode().getWidth();
+    private final int HEIGHT = graphicsDevice.getDisplayMode().getHeight();
+    private JFrame frame;
+    private Thread thread;
+
+    private boolean running = true;
+    private int currentFPS = 0;
+    private Font FPSFont = new Font("Calibri", Font.PLAIN, 20);
+
+    public void createDisplay() {
+        frame = new JFrame("Jump 'n' Run");
+        frame.setBounds(0, 0, WIDTH, HEIGHT);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.add(this);
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    private void update() {
+        // updating all the game logic
+    }
+
+    public void paint(Graphics g) {
+        // temporary, replaced by background image
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+
+        // drawing the FPS on the screen
+        g.setColor(Color.BLACK);
+        g.setFont(FPSFont);
+        g.drawString("FPS: " + currentFPS, 10, 20);
+    }
+
+    @Override
+    // main game loop
+    // changed version of the second loop found here: https://gamedev.stackexchange.com/questions/160329/java-game-loop-efficiency
+    public void run() {
+        long lastTime = System.nanoTime();
+        double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
+        double delta = 0;
+        long timer = System.currentTimeMillis();
+        int frames = 0 ;
+        while (running) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while (delta >= 1) {
+                update();
+                delta--;
+            }
+            if(running)
+                repaint();
+            frames++;
+
+            // updating the frames on the screen every 0.5 seconds
+            if(System.currentTimeMillis() - timer > 500) {
+                currentFPS = frames;
+                timer += 500;
+                frames = 0;
+            }
+        }
+    }
+}
