@@ -1,7 +1,12 @@
 package display;
 
+import gameLoop.Main;
+import levelHandling.Cube;
+
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.util.List;
 
 public class DisplayManager extends JPanel implements Runnable{
 
@@ -17,10 +22,14 @@ public class DisplayManager extends JPanel implements Runnable{
 
     public void createDisplay() {
         frame = new JFrame("Jump 'n' Run");
+        // removing the title-bar of the application-window
+        frame.setUndecorated(true);
         frame.setBounds(0, 0, WIDTH, HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        // making the application full screen
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // adding the JPanel and therefore any painting to the frame
         frame.add(this);
 
         thread = new Thread(this);
@@ -40,6 +49,15 @@ public class DisplayManager extends JPanel implements Runnable{
         g.setColor(Color.BLACK);
         g.setFont(FPSFont);
         g.drawString("FPS: " + currentFPS, 10, 20);
+
+        for (List<Cube> list: Main.temp) {
+            for (Cube cube:list) {
+                if (cube.getCubeID() == 1) {
+                    g.setColor(new Color(129, 91, 55));
+                    g.fillRect(cube.getX() * cube.getSIZE(), cube.getY() * cube.getSIZE(), cube.getSIZE(), cube.getSIZE());
+                }
+            }
+        }
     }
 
     @Override
