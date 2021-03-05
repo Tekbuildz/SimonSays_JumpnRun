@@ -4,11 +4,10 @@ import gameLoop.Main;
 import levelHandling.Cube;
 
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.util.List;
 
-public class DisplayManager extends JPanel implements Runnable{
+public class DisplayManager extends JPanel implements Runnable {
 
     private final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private final int WIDTH = graphicsDevice.getDisplayMode().getWidth();
@@ -16,13 +15,14 @@ public class DisplayManager extends JPanel implements Runnable{
     private JFrame frame;
     private Thread thread;
 
-    private boolean running = true;
+    private final boolean running = true;
     private int currentFPS = 0;
-    private Font FPSFont = new Font("Calibri", Font.PLAIN, 20);
+    private final Font FPSFont = new Font("Calibri", Font.PLAIN, 20);
 
     public void createDisplay() {
         frame = new JFrame("Jump 'n' Run");
         // removing the title-bar of the application-window
+        // https://stackoverflow.com/questions/52148325/java-show-fullscreen-swing-application-with-taskbar-without-titlebar
         frame.setUndecorated(true);
         frame.setBounds(0, 0, WIDTH, HEIGHT);
         frame.setVisible(true);
@@ -50,11 +50,15 @@ public class DisplayManager extends JPanel implements Runnable{
         g.setFont(FPSFont);
         g.drawString("FPS: " + currentFPS, 10, 20);
 
-        for (List<Cube> list: Main.temp) {
-            for (Cube cube:list) {
+        g.translate(0, HEIGHT);
+
+        for (int i = Main.temp.size() - 1; i >= 0; i--) {
+            List<Cube> list = Main.temp.get(i);
+            for (int j = list.size() - 1; j >= 0; j--) {
+                Cube cube = list.get(j);
                 if (cube.getCubeID() == 1) {
                     g.setColor(new Color(129, 91, 55));
-                    g.fillRect(cube.getX() * cube.getSIZE(), cube.getY() * cube.getSIZE(), cube.getSIZE(), cube.getSIZE());
+                    g.fillRect(cube.getX() * cube.getSIZE(), -(Main.temp.size() - cube.getY()) * cube.getSIZE(), cube.getSIZE(), cube.getSIZE());
                 }
             }
         }
@@ -69,7 +73,7 @@ public class DisplayManager extends JPanel implements Runnable{
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
-        int frames = 0 ;
+        int frames = 0;
         while (running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -78,12 +82,12 @@ public class DisplayManager extends JPanel implements Runnable{
                 update();
                 delta--;
             }
-            if(running)
+            if (running)
                 repaint();
             frames++;
 
             // updating the frames on the screen every 0.5 seconds
-            if(System.currentTimeMillis() - timer > 500) {
+            if (System.currentTimeMillis() - timer > 500) {
                 currentFPS = frames;
                 timer += 500;
                 frames = 0;

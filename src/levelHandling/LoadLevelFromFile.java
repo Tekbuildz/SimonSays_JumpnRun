@@ -21,16 +21,20 @@ public abstract class LoadLevelFromFile {
             int currentColumn;
             // looping through every character in the level file and creating a new Cube object for it
             while ((line = bufferedReader.readLine()) != null) {
-                levelCubes.add(new ArrayList<>());
                 char[] levelRow = line.toCharArray();
-                currentColumn = 0;
 
-                for (char cube:levelRow) {
-                    levelCubes.get(currentLine).add(new Cube(Character.getNumericValue(cube), currentColumn, currentLine));
-                    currentColumn++;
+                // prevents comments in the text file from being loaded
+                if (Character.isDigit(levelRow[0])) {
+                    levelCubes.add(new ArrayList<>());
+                    currentColumn = 0;
+                    for (char cube:levelRow) {
+                        // creating a new cube object for every digit in the text file
+                        levelCubes.get(currentLine).add(new Cube(Character.getNumericValue(cube), currentColumn, currentLine));
+                        currentColumn++;
+                    }
+
+                    currentLine++;
                 }
-
-                currentLine++;
             }
 
         } catch (IOException e) {
