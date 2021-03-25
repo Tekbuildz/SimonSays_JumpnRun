@@ -23,11 +23,11 @@ public class Main extends JPanel {
     }
 
     private void setup() {
-        temp = LoadLevelFromFile.getLevelCubes();
+        level = new Level();
+        temp = Level.getLevelCubes();
 
         display = new DisplayManager();
         display.createDisplay();
 
-        level = new Level();
     }
 }

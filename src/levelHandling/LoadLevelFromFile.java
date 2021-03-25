@@ -4,11 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class LoadLevelFromFile {
+public class LoadLevelFromFile {
 
-    private static List<List<Cube>> levelCubes = new ArrayList<>();
 
-    public static void loadLevelData(String fileName) {
+    public static List<List<Cube>> loadLevelData(String fileName) {
+        List<List<Cube>> levelCubes = new ArrayList<>();
+
         FileReader fileReader;
         try {
 
@@ -40,9 +41,7 @@ public abstract class LoadLevelFromFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    public static List<List<Cube>> getLevelCubes() {
         return levelCubes;
     }
 }
