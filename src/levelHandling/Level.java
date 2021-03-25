@@ -3,12 +3,14 @@ package levelHandling;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level extends LoadLevelFromFile{
+import static levelHandling.LoadLevelFromFile.loadLevelData;
+
+public class Level {
 
     private static List<List<Cube>> levelCubes = new ArrayList<>();
 
     public Level() {
-        levelCubes = LoadLevelFromFile.loadLevelData("levels/Level_1.txt");
+        levelCubes = loadLevelData("levels/Level_1.txt");
     }
 
     /**

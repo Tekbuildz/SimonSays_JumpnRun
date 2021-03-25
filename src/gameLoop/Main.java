@@ -3,7 +3,6 @@ package gameLoop;
 import display.DisplayManager;
 import levelHandling.Cube;
 import levelHandling.Level;
-import levelHandling.LoadLevelFromFile;
 
 import javax.swing.*;
 import java.util.List;

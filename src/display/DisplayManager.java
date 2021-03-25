@@ -1,14 +1,7 @@
 package display;
 
-import gameLoop.Main;
-import levelHandling.Cube;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class DisplayManager extends JPanel implements Runnable {
 

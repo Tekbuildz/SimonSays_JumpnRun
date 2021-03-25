@@ -37,8 +37,20 @@ public class Renderer extends JPanel {
                 Cube cube = list.get(j);
                 if (cube.getCubeID() == 1) {
                     g.setColor(new Color(129, 91, 55));
-                    g.fillRect(cube.getX() * cube.getSIZE(), -(Main.temp.size() - cube.getY()) * cube.getSIZE(), cube.getSIZE(), cube.getSIZE());
+                    g.drawRect(cube.getX() * cube.getSIZE(), -(Main.temp.size() - cube.getY()) * cube.getSIZE(), cube.getSIZE(), cube.getSIZE());
+
                 }
+
+                // printing the amount of airSides each cube sees on the cube
+                g.setColor(Color.BLACK);
+                boolean[] airSides = cube.getAirAtSides();
+                int trueCount = 0;
+                for (int k = 0; k < cube.getAirAtSides().length; k++) {
+                    if (airSides[k]) {
+                        trueCount++;
+                    }
+                }
+                g.drawString(String.valueOf(trueCount), cube.getX() * cube.getSIZE() + cube.getSIZE()/2, -(Main.temp.size() - cube.getY()) * cube.getSIZE() + cube.getSIZE()/2);
             }
         }
 
