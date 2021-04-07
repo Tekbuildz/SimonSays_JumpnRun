@@ -1,14 +1,42 @@
-package levelHandling;
+package Loader;
 
-import java.io.*;
+import levelHandling.Cube;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadLevelFromFile {
+public class Loader {
 
+    /**
+     *
+     * @param fileName - the name of the image file to be loaded
+     * @return the loaded image
+     */
+    public static BufferedImage loadImage(String fileName) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("res/" + fileName + ".png"));
+        } catch (IOException e) {
+            System.err.println("The image with the name: " + fileName + "could not be loaded with error message: " + e);
+        }
 
-    public static List<List<Cube>> loadLevelData(String fileName) {
-        List<List<Cube>> levelCubes = new ArrayList<>();
+        return image;
+    }
+
+    /**
+     *
+     * @param fileName - the name of the file to be read from
+     * @return an 2D list of cube objects where each of them represents a 40x40 pixel area on the screen
+     */
+    public static java.util.List<java.util.List<Cube>> loadLevelData(String fileName) {
+        java.util.List<java.util.List<Cube>> levelCubes = new ArrayList<>();
 
         // reading all the information from the text file into a 2D list
         FileReader fileReader;
@@ -89,15 +117,12 @@ public class LoadLevelFromFile {
                     cube.setAirAtSides(checkAdjacentCubes(levelCubes, rows, cols, true, true, true, true));
                 }
 
-                // check if rows = 0
-                    // check if cols = 0
-                    // check if cols = levelCubes.get(rows).size()
-                // check else if cols = 0
-
-                // check if rows = levelCubes.size()
-                    // check if cols = 0
-                    // check if cols = levelCubes.get(rows).size()
-                // check else if cols = levelCubes.get(rows).size()
+                if (cube.getAirAtSides()[0] || cube.getAirAtSides()[1] || cube.getAirAtSides()[2] || cube.getAirAtSides()[3]) {
+                    cube.setImageID(getDirtImageID(cube.getAirAtSides()));
+                } else {
+                    // cube.setImageID(the number in the txt file +14 (due to the multiple dirt images));
+                    cube.setImageID(cube.getImageID() + 14);
+                }
             }
         }
 
@@ -135,5 +160,83 @@ public class LoadLevelFromFile {
         }
 
         return adjacentAirSides;
+    }
+
+    /**
+     *
+     * @param airSides - an array of booleans which indicate whether the cube's adjacent cubes are air cubes ro not
+     * @return the ID of the image
+     */
+    private static int getDirtImageID(boolean[] airSides) {
+        // possible combinations and their image index (O = true, X = false)
+        // O,O,O,O = 0
+        //
+        // X,O,O,O = 1
+        // O,X,O,O = 2
+        // O,O,X,O = 3
+        // O,O,O,X = 4
+        //
+        // X,X,O,O = 5
+        // O,X,X,O = 6
+        // O,O,X,X = 7
+        // X,O,O,X = 8
+        //
+        // X,O,X,O = 9
+        // O,X,O,X = 10
+        //
+        // O,X,X,X = 11
+        // X,O,X,X = 12
+        // X,X,O,X = 13
+        // X,X,X,O = 14
+        //
+        // X,X,X,X = 15
+
+        if (airSides[0]) {
+            if (airSides[1]) {
+                if (airSides[2]) {
+                    if (airSides[3]) {
+                        return 0;
+                    } else {
+                        return 4;
+                    }
+                } else if (airSides[3]) {
+                    return 3;
+                } else {
+                    return 7;
+                }
+            } else if (airSides[2]) {
+                if (airSides[3]) {
+                    return 2;
+                } else {
+                    return 10;
+                }
+            } else if (airSides[3]) {
+                return 6;
+            } else {
+                return 11;
+            }
+        } else if (airSides[1]) {
+            if (airSides[2]) {
+                if (airSides[3]) {
+                    return 1;
+                } else {
+                    return 8;
+                }
+            } else if (airSides[3]) {
+                return 9;
+            } else {
+                return 12;
+            }
+        } else if (airSides[2]) {
+            if (airSides[3]) {
+                return 5;
+            } else {
+                return 13;
+            }
+        } else if (airSides[3]) {
+            return 14;
+        } else {
+            return 15;
+        }
     }
 }

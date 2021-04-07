@@ -5,9 +5,8 @@ import java.awt.*;
 
 public class DisplayManager extends JPanel implements Runnable {
 
-    private final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    private final int WIDTH = graphicsDevice.getDisplayMode().getWidth();
-    private final int HEIGHT = graphicsDevice.getDisplayMode().getHeight();
+    private final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
     private JFrame frame;
     private Renderer renderer;
     private Thread thread;

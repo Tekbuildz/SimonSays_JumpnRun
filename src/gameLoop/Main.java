@@ -27,6 +27,5 @@ public class Main extends JPanel {
 
         display = new DisplayManager();
         display.createDisplay();
-
     }
 }

@@ -1,16 +1,16 @@
 package levelHandling;
 
+import Loader.Loader;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static levelHandling.LoadLevelFromFile.loadLevelData;
 
 public class Level {
 
     private static List<List<Cube>> levelCubes = new ArrayList<>();
 
     public Level() {
-        levelCubes = loadLevelData("levels/Level_1.txt");
+        levelCubes = Loader.loadLevelData("levels/Level_1.txt");
     }
 
     /**
