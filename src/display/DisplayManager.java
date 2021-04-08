@@ -1,5 +1,7 @@
 package display;
 
+import player.PlayerInputs;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,6 +15,10 @@ public class DisplayManager extends JPanel implements Runnable {
 
     private final boolean running = true;
 
+    /**
+     *
+     * creating a display, adding listeners to it and starting a new thread
+     */
     public void createDisplay() {
         frame = new JFrame("Jump 'n' Run");
         // removing the title-bar of the application-window
@@ -27,6 +33,7 @@ public class DisplayManager extends JPanel implements Runnable {
         // adding the JPanel and therefore any painting to the frame
         renderer = new Renderer(WIDTH, HEIGHT);
         frame.add(renderer);
+        frame.addKeyListener(new PlayerInputs());
 
         thread = new Thread(this);
         thread.start();
@@ -38,6 +45,10 @@ public class DisplayManager extends JPanel implements Runnable {
      */
     private void update() {
         // updating all the game logic
+        PlayerInputs.updateMousePos();
+        if (PlayerInputs.getKeyPressed() != 0) {
+            System.out.println(Character.toChars(PlayerInputs.getKeyPressed()));
+        }
     }
 
     @Override

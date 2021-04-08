@@ -35,8 +35,8 @@ public class Loader {
      * @param fileName - the name of the file to be read from
      * @return an 2D list of cube objects where each of them represents a 40x40 pixel area on the screen
      */
-    public static java.util.List<java.util.List<Cube>> loadLevelData(String fileName) {
-        java.util.List<java.util.List<Cube>> levelCubes = new ArrayList<>();
+    public static List<List<Cube>> loadLevelData(String fileName) {
+        List<List<Cube>> levelCubes = new ArrayList<>();
 
         // reading all the information from the text file into a 2D list
         FileReader fileReader;

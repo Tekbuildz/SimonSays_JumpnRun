@@ -3,6 +3,7 @@ package display;
 import gameLoop.Main;
 import levelHandling.Cube;
 import Loader.Loader;
+import player.PlayerInputs;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
