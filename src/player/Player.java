@@ -1,11 +1,18 @@
 package player;
 
+import levelHandling.Cube;
+
+import java.awt.*;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+
 public class Player {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private Rectangle2D.Double rectangle = new Rectangle2D.Double();
+    private float gravityAccel = 0.01f;
+    private float velocity;
+    private static final int cubeSize = 40;
 
     /**
      *
@@ -24,18 +31,40 @@ public class Player {
 
     /**
      *
-     * @param x - the x coordinate of the player
-     * @param y - the y coordinate of the player
+     * @param p - the starting point of the player in the level
      */
-    public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
 
-        width = 1;
-        height = 2;
+    public Player(Point p) {
+        rectangle.setRect(p.x, p.y, getCubeSize(), getCubeSize());
         health = 0;
         lives = 0;
         jumpHeight = 2;
+    }
+
+    public void applyGravity() {
+        velocity += gravityAccel;
+        rectangle.setRect(rectangle.getX(), rectangle.getY() + velocity, rectangle.getWidth(), rectangle.getHeight());
+        //System.out.println(velocity + ", " + gravityAccel);
+    }
+
+    public void checkCollisions(ArrayList<ArrayList<Cube>> levelCubes) {
+        for (int i = 0; i < levelCubes.size(); i++) {
+            for (int j = 0; j < levelCubes.size(); j++) {
+                if (!rectangle.intersects(levelCubes.get(i).get(j).getRectangle()) && levelCubes.get(i).get(j).getCubeID() == 1) {
+                    //System.out.println(levelCubes.get(i).get(j).getRectangle());
+                    rectangle.setRect(rectangle.getX(), levelCubes.get(i).get(j).getRectangle().getY() - getCubeSize(), rectangle.getWidth(), rectangle.getHeight());
+                    velocity = 0;
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @return the side length of a cube
+     */
+    public int getCubeSize() {
+        return cubeSize;
     }
 
     /**
@@ -46,38 +75,37 @@ public class Player {
         lives++;
     }
 
-
     /**
      *
-     * @return the x coordinate of the player
+     * @return the x position of the player
      */
-    public int getX() {
-        return x;
+    public float getX() {
+        return (float) rectangle.getX();
     }
-
+//
+//    /**
+//     *
+//     * @param x - the new x position of the player
+//     */
+//    public void setX(float x) {
+//        this.x = x;
+//    }
+//
     /**
      *
-     * @param x - sets the x coordinate of the player
+     * @return the y position of the player
      */
-    public void setX(int x) {
-        this.x = x;
+    public float getY() {
+        return (float) rectangle.getY();
     }
-
-    /**
-     *
-     * @return the y coordinate of the player
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     *
-     * @param y - sets the y coordinate of the player
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
+//
+//    /**
+//     *
+//     * @param y - the new y position of the player
+//     */
+//    public void setY(float y) {
+//        this.y = y;
+//    }
 
     /**
      *

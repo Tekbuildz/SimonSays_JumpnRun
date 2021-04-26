@@ -1,5 +1,6 @@
 package display;
 
+import gameLoop.Main;
 import player.PlayerInputs;
 
 import javax.swing.*;
@@ -49,6 +50,8 @@ public class DisplayManager extends JPanel implements Runnable {
         if (PlayerInputs.getKeyPressed() != 0) {
             System.out.println(Character.toChars(PlayerInputs.getKeyPressed()));
         }
+        Main.player.applyGravity();
+        Main.player.checkCollisions(Main.temp);
     }
 
     @Override

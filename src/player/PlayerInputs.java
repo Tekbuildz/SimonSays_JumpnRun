@@ -14,7 +14,7 @@ public class PlayerInputs implements KeyListener, MouseListener {
 
     /**
      *
-     * @return
+     * @return the key which is currently pressed
      */
     public static int getKeyPressed() {
         return keyPressed;

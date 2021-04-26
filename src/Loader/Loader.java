@@ -3,7 +3,6 @@ package Loader;
 import levelHandling.Cube;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,8 +34,8 @@ public class Loader {
      * @param fileName - the name of the file to be read from
      * @return an 2D list of cube objects where each of them represents a 40x40 pixel area on the screen
      */
-    public static List<List<Cube>> loadLevelData(String fileName) {
-        List<List<Cube>> levelCubes = new ArrayList<>();
+    public static ArrayList<ArrayList<Cube>> loadLevelData(String fileName) {
+        ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
 
         // reading all the information from the text file into a 2D list
         FileReader fileReader;
@@ -143,7 +142,7 @@ public class Loader {
      * @param bottom        - if the cube to the bottom should be checked for an air cube
      * @return an array containing the information to which sides air cubes are located
      */
-    private static boolean[] checkAdjacentCubes(List<List<Cube>> levelCubes, int row, int col, boolean right, boolean top, boolean left, boolean bottom) {
+    private static boolean[] checkAdjacentCubes(ArrayList<ArrayList<Cube>> levelCubes, int row, int col, boolean right, boolean top, boolean left, boolean bottom) {
         boolean[] adjacentAirSides = new boolean[4];
 
         if (right) {

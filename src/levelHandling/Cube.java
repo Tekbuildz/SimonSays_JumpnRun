@@ -1,6 +1,7 @@
 package levelHandling;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class Cube {
 
@@ -16,7 +17,7 @@ public class Cube {
      * the imageID represents the image which this cube will show on the screen (air, dirt, dirt with grass on whatever side, etc.)
      */
     private int imageID;
-    private Rectangle rectangle;
+    private Rectangle2D rectangle;
     // private static final int SIZE = DisplayManager.HEIGHT / 27;
 
     /**
@@ -87,8 +88,8 @@ public class Cube {
      *
      * @return the x coordinate of the cube measured in cubes from the left screen side
      */
-    public int getX() {
-        return rectangle.x;
+    public double getX() {
+        return rectangle.getX();
     }
 
     /**
@@ -96,15 +97,15 @@ public class Cube {
      * @param x - the x coordinate of the cube
      */
     public void setX(int x) {
-        this.rectangle.x = x;
+        this.rectangle.setRect(x, rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
     }
 
     /**
      *
      * @return the y coordinate of the cube measured in cubes from the bottom screen side
      */
-    public int getY() {
-        return rectangle.y;
+    public double getY() {
+        return rectangle.getY();
     }
 
     /**
@@ -112,7 +113,7 @@ public class Cube {
      * @param y - the y coordinate of the cube
      */
     public void setY(int y) {
-        this.rectangle.y = y;
+        this.rectangle.setRect(rectangle.getX(), y, rectangle.getWidth(), rectangle.getHeight());
     }
 
     /**
@@ -121,5 +122,13 @@ public class Cube {
      */
     public int getSIZE() {
         return SIZE;
+    }
+
+    /**
+     *
+     * @return the rectangle of the cube
+     */
+    public Rectangle2D getRectangle() {
+        return rectangle;
     }
 }
