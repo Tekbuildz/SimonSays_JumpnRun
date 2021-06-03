@@ -10,7 +10,8 @@ public class Cube {
      * the cubeID represents the type of this cube (air, dirt, etc.)
      */
     private final int cubeID;
-    private final int SIZE = 40;
+    private final int pixelSIZE = 40;
+    private final int SIZE = 1;
 
     /**
      *
@@ -120,8 +121,8 @@ public class Cube {
      *
      * @return the length of a side of the cube
      */
-    public int getSIZE() {
-        return SIZE;
+    public int getPixelSIZE() {
+        return pixelSIZE;
     }
 
     /**

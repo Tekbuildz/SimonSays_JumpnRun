@@ -9,8 +9,8 @@ import java.util.Vector;
 
 public class PlayerInputs implements KeyListener, MouseListener {
 
-    static int keyPressed;
-    static Point mousePos = new Point();
+    private static int keyPressed;
+    private static Point mousePos = new Point();
 
     /**
      *
