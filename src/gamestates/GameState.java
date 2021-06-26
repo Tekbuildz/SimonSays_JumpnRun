@@ -35,6 +35,7 @@ public class GameState extends State {
         // height of the screen needs to be subtracted
         g.translate(0, -HEIGHT);
 
+        g.drawString(PlayerInputs.getKeyPressed().toString(), 100, 100);
     }
 
     /**
@@ -73,15 +74,17 @@ public class GameState extends State {
      * calls the functions in the player class corresponding to the input from the player
      */
     private void handleMovement() {
-        if (PlayerInputs.getKeyPressed() == KeyEvent.VK_A) {
+        // clearing any previous movement
+        Main.player.move('n');
+        // moving upon key press accordingly
+        if (PlayerInputs.getKeyPressed().contains(KeyEvent.VK_A)) {
             Main.player.move('l');
-        } else if (PlayerInputs.getKeyPressed() == KeyEvent.VK_D) {
+        }
+        if (PlayerInputs.getKeyPressed().contains(KeyEvent.VK_D)) {
             Main.player.move('r');
-        } else if (PlayerInputs.getKeyPressed() == KeyEvent.VK_SPACE) {
+        }
+        if (PlayerInputs.getKeyPressed().contains(KeyEvent.VK_SPACE)) {
             Main.player.jump();
-            Main.player.move('n');
-        } else {
-            Main.player.move('n');
         }
     }
 }

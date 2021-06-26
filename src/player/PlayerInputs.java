@@ -5,23 +5,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class PlayerInputs implements KeyListener, MouseListener {
 
-    private static int keyPressed;
+    private static ArrayList<Integer> keyPressed = new ArrayList<>();
     private static Point mousePos = new Point();
 
     /**
      *
      * @return the key which is currently pressed
      */
-    public static int getKeyPressed() {
+    public static ArrayList<Integer> getKeyPressed() {
         return keyPressed;
-    }
-
-    private static void setKeyPressed(int keyCode) {
-        keyPressed = keyCode;
     }
 
     @Override
@@ -31,17 +28,16 @@ public class PlayerInputs implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getKeyChar() == 'a' || keyEvent.getKeyChar() == 'd' || keyEvent.getKeyChar() == ' ') {
-            setKeyPressed(keyEvent.getKeyCode());
+        // prevention of adding the same key multiple times
+        if (!keyPressed.contains(keyEvent.getKeyCode())) {
+            keyPressed.add(keyEvent.getKeyCode());
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        if (getKeyPressed() == KeyEvent.VK_A || getKeyPressed() == KeyEvent.VK_D || getKeyPressed() == KeyEvent.VK_SPACE) {
-            // the ASCII code '0' is equal to 'null'
-            setKeyPressed(0);
-        }
+        // Integer.valueOf needed, since otherwise the code would try to remove the object at index i, instead of the object with value i
+        keyPressed.remove(Integer.valueOf(keyEvent.getKeyCode()));
     }
 
     @Override
