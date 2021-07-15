@@ -34,8 +34,6 @@ public class GameState extends State {
         // in order to change the coordinate system back from the bottom left to the top left of the screen, the
         // height of the screen needs to be subtracted
         g.translate(0, -HEIGHT);
-
-        g.drawString(PlayerInputs.getKeyPressed().toString(), 100, 100);
     }
 
     /**

@@ -1,17 +1,24 @@
 package levelHandling;
 
-import Loader.Loader;
+import Loader.LevelLoader;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Level {
 
     private static ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
+    private static ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
+    private static Point2D spawnPoint;
 
     public Level(String levelName) {
-        levelCubes = Loader.loadLevelData("levels/" + levelName + ".txt");
+        //levelCubes = LevelLoader.loadLevelData("levels/" + levelName + ".txt");
+        LevelLoader.loadLevelData("levels/test_hb_1_2_3.litidata");
+        levelCubes = LevelLoader.getLevelCubes();
+        collisionBoxes = LevelLoader.getCollisionBoxes();
+        spawnPoint = LevelLoader.getSpawnPoint();
     }
 
     /**
@@ -23,16 +30,6 @@ public class Level {
     }
 
     public static Point getSpawnLocation() {
-        Point spawn = new Point();
-        for (int i = 0; i < levelCubes.size(); i++) {
-            for (int j = 0; j < levelCubes.get(i).size(); j++) {
-                if (levelCubes.get(i).get(j).getCubeID() == 2) {
-                    spawn.setLocation(j, i);
-                    return spawn;
-                }
-            }
-        }
-        System.err.println("Could not load spawn location of the player!");
-        return null;
+        return new Point((int) spawnPoint.getX(), (int) spawnPoint.getY());
     }
 }

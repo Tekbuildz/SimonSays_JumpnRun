@@ -12,19 +12,13 @@ public class Renderer extends JPanel {
     private final int HEIGHT;
     private final Font FPSFont = new Font("Calibri", Font.PLAIN, 20);
 
-    private Image titleScreenBackground;
-
     public Renderer(int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
-
-        //this.titleScreenBackground = Loader.loadImage("titleBackground");
     }
 
     public void paint(Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics.create();
-
-        //drawTitleScreen(graphics2D);
 
         graphics2D.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -33,8 +27,6 @@ public class Renderer extends JPanel {
         }
 
         drawFPS(graphics2D);
-//        graphics2D.setColor(Color.WHITE);
-//        graphics2D.fillRect(0, 0, WIDTH, HEIGHT);
     }
 
     /**
