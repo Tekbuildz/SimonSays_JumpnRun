@@ -40,7 +40,7 @@ public class SpriteSheetLoader {
         int totalImgCount = 0;
         for (int i = 0; i < size[0]; i++) {
             for (int j = 0; j < size[1]; j++) {
-                sprites[totalImgCount] = spriteSheet.getSubimage(i * CUBE_PIXEL_SIZE, j * CUBE_PIXEL_SIZE, CUBE_PIXEL_SIZE, CUBE_PIXEL_SIZE);
+                sprites[totalImgCount] = spriteSheet.getSubimage(j * CUBE_PIXEL_SIZE, i * CUBE_PIXEL_SIZE, CUBE_PIXEL_SIZE, CUBE_PIXEL_SIZE);
                 totalImgCount++;
             }
         }

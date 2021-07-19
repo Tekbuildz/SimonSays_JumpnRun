@@ -1,23 +1,27 @@
 package gamestates;
 
+import SpriteSheet.SpriteSheetMaster;
 import display.DisplayManager;
 import gameLoop.Main;
 import levelHandling.Cube;
 import levelHandling.Level;
+import player.Player;
 import player.PlayerInputs;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 public class GameState extends State {
 
     private final int HEIGHT = DisplayManager.getHEIGHT();
+    private int yOffset = DisplayManager.getHEIGHT() - (Level.getLevelCubes().size() * Level.getLevelCubes().get(0).get(0).getPixelSIZE());
 
     @Override
     public void update() {
-        Main.player.checkCollisions(Level.getLevelCubes());
+        Main.player.checkCollisions(Level.getCollisionBoxes());
         Main.player.applyGravity();
         Main.player.updatePlayerRectCoords();
 
@@ -41,15 +45,12 @@ public class GameState extends State {
      * drawing all the level-rectangles
      */
     private void drawLevel(Graphics2D g) {
+        Image[] dirtGrassSky = SpriteSheetMaster.getSpriteSheetFromMap("dirtGrassSky").getSpriteImages();
         for (int i = Level.getLevelCubes().size() - 1; i >= 0; i--) {
             List<Cube> list = Level.getLevelCubes().get(i);
             for (int j = list.size() - 1; j >= 0; j--) {
                 Cube cube = list.get(j);
-                if (cube.getCubeID() == 1) {
-                    g.setColor(new Color(129, 91, 55));
-                    Rectangle2D.Double currentRect = new Rectangle2D.Double(cube.getX() * cube.getPixelSIZE(), -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), cube.getPixelSIZE(), cube.getPixelSIZE());
-                    g.fill(currentRect);
-                }
+                g.drawImage(dirtGrassSky[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
             }
         }
     }
@@ -59,11 +60,7 @@ public class GameState extends State {
      */
     private void drawPlayer(Graphics2D g) {
         g.setColor(Color.BLUE);
-        float playerX = Main.player.getX();
-        float playerY = Main.player.getY();
-        //Rectangle2D.Double playerRect = new Rectangle2D.Double((playerX * Main.player.getCubeSize()), (playerY - 10) * Main.player.getCubeSize(), Main.player.getCubeSize(), 2 * Main.player.getCubeSize());
-        Rectangle2D.Double playerRect = new Rectangle2D.Double((playerX * Main.player.getCubeSize()), -(Level.getLevelCubes().size() - playerY) * Main.player.getCubeSize(), Main.player.getCubeSize(), 2 * Main.player.getCubeSize());
-        //graphics2D.draw(playerRect);
+        Rectangle2D.Double playerRect = new Rectangle2D.Double(Main.player.getX(), -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), Player.getPlayerWidth(), Player.getPlayerHeight());
         g.fill(playerRect);
     }
 

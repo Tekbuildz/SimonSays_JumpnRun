@@ -27,7 +27,7 @@ public class SpriteSheet {
      *
      * @return an array containing the individual sprites of the sprite sheet
      */
-    public static Image[] getSpriteImages() {
+    public Image[] getSpriteImages() {
         return spriteImages;
     }
 }

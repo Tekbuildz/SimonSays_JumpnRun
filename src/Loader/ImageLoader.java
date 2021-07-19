@@ -9,15 +9,15 @@ public class ImageLoader {
 
     /**
      *
-     * @param fileName - the name of the image file to be loaded
+     * @param pathName - the name of the image file to be loaded
      * @return the loaded image
      */
-    public static BufferedImage loadImage(String fileName) {
+    public static BufferedImage loadImage(String pathName) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("res/" + fileName + ".png"));
+            image = ImageIO.read(new File(pathName));
         } catch (IOException e) {
-            System.err.println("The image with the name: " + fileName + "could not be loaded with error message: " + e);
+            System.err.println("The image with the name: " + pathName + "could not be loaded with error message: " + e);
         }
 
         return image;

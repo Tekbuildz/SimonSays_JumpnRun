@@ -13,11 +13,6 @@ public class Cube {
     private final int pixelSIZE = 40;
     private final int SIZE = 1;
 
-    /**
-     *
-     * the imageID represents the image which this cube will show on the screen (air, dirt, dirt with grass on whatever side, etc.)
-     */
-    private int imageID;
     private Rectangle2D rectangle;
     // private static final int SIZE = DisplayManager.HEIGHT / 27;
 
@@ -41,23 +36,6 @@ public class Cube {
         this.rectangle = new Rectangle(x, y, SIZE, SIZE);
 
         airAtSides = new boolean[4];
-    }
-
-    /**
-     *
-     * @return the ID of the image which is rendered at this cubes position
-     */
-    public int getImageID() {
-        return imageID;
-    }
-
-    /**
-     *
-     * @param imageID - the ID of the image which is rendered at this cubes position
-     *                (only called once when loading the level from the LoadLevelFromFile.java class)
-     */
-    public void setImageID(int imageID) {
-        this.imageID = imageID;
     }
 
     /**

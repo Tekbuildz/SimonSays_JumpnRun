@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class Player {
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
-    private final float gravityAccel = 0.005f;
+    private final float gravityAccel = 0.1f;
     private float yVelocity;
     private double xChange = 0;
     private double yChange = 0;
     private static final int cubeSizePixels = 40;
-    private static final int playerWidth = 1;
-    private static final int playerHeight = 2;
+    private static final int playerWidth = 40;
+    private static final int playerHeight = 80;
 
     /**
      *
@@ -32,7 +32,7 @@ public class Player {
      * @param p - the starting point of the player in the level
      */
     public Player(Point p) {
-        playerRect.setRect(p.x, p.y - 1, playerWidth, playerHeight);
+        playerRect.setRect(p.x, p.y - 800, playerWidth, playerHeight);
         health = 100;
         lives = 1;
     }
@@ -43,8 +43,8 @@ public class Player {
      */
     public void applyGravity() {
         yVelocity += gravityAccel;
-        if (yVelocity >= 0.2f) {
-            yVelocity = 0.2f;
+        if (yVelocity >= 6) {
+            yVelocity = 6;
         }
         yChange = yVelocity;
     }
@@ -53,15 +53,13 @@ public class Player {
      *
      * checks for any collision of the player with a dirt-tile
      *
-     * @param levelCubes - all the cubes from the level
+     * @param collisionBoxes - all the cubes from the level
      */
-    public void checkCollisions(ArrayList<ArrayList<Cube>> levelCubes) {
-        for (int i = 0; i < levelCubes.size(); i++) {
-            for (int j = 0; j < levelCubes.size(); j++) {
-                if (playerRect.intersects(levelCubes.get(i).get(j).getRectangle()) && levelCubes.get(i).get(j).getCubeID() == 1 && yVelocity >= 0) {
-                    playerRect.setRect(playerRect.getX(), levelCubes.get(i).get(j).getRectangle().getY() - playerHeight, playerWidth, playerHeight);
-                    yVelocity = 0;
-                }
+    public void checkCollisions(ArrayList<Rectangle2D> collisionBoxes) {
+        for (Rectangle2D collisionBox : collisionBoxes) {
+            if (playerRect.intersects(collisionBox) && yVelocity >= 0) {
+                playerRect.setRect(playerRect.getX(), collisionBox.getY() - playerHeight, playerWidth, playerHeight);
+                yVelocity = 0;
             }
         }
     }
@@ -71,7 +69,7 @@ public class Player {
      * allows the player to jump upwards
      */
     public void jump() {
-        yVelocity = -0.15f;
+        yVelocity = -3;
     }
 
     /**
@@ -81,9 +79,9 @@ public class Player {
      */
     public void move(Character direction) {
         if (direction == 'r') {
-            xChange = 0.05;
+            xChange = 2;
         } else if (direction == 'l') {
-            xChange = -0.05;
+            xChange = -2;
         } else if (direction == 'n') {
             xChange = 0;
         }
@@ -161,5 +159,13 @@ public class Player {
      */
     public void increaseNumOfLives() {
         lives++;
+    }
+
+    public static int getPlayerWidth() {
+        return playerWidth;
+    }
+
+    public static int getPlayerHeight() {
+        return playerHeight;
     }
 }
