@@ -17,6 +17,8 @@ public class Player {
     private static final int playerWidth = 40;
     private static final int playerHeight = 80;
 
+    private boolean isPlayerInAir;
+
     /**
      *
      * the amount of health the player has left of the current life
@@ -56,10 +58,12 @@ public class Player {
      * @param collisionBoxes - all the cubes from the level
      */
     public void checkCollisions(ArrayList<Rectangle2D> collisionBoxes) {
+        isPlayerInAir = true;
         for (Rectangle2D collisionBox : collisionBoxes) {
             if (playerRect.intersects(collisionBox) && yVelocity >= 0) {
                 playerRect.setRect(playerRect.getX(), collisionBox.getY() - playerHeight, playerWidth, playerHeight);
                 yVelocity = 0;
+                isPlayerInAir = false;
             }
         }
     }
@@ -69,7 +73,9 @@ public class Player {
      * allows the player to jump upwards
      */
     public void jump() {
-        yVelocity = -3;
+        if (!isPlayerInAir) {
+            yVelocity = -3.5f;
+        }
     }
 
     /**
