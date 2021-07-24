@@ -1,6 +1,6 @@
 package player;
 
-import levelHandling.Cube;
+import levelHandling.Level;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -10,14 +10,11 @@ public class Player {
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
-    private float yVelocity;
     private double xChange = 0;
     private double yChange = 0;
     private static final int cubeSizePixels = 40;
     private static final int playerWidth = 40;
-    private static final int playerHeight = 80;
-
-    private boolean isPlayerInAir;
+    private static final int playerHeight = 79;
 
     /**
      *
@@ -44,28 +41,11 @@ public class Player {
      * applies gravity to the player
      */
     public void applyGravity() {
-        yVelocity += gravityAccel;
-        if (yVelocity >= 6) {
-            yVelocity = 6;
+        yChange += gravityAccel;
+        if (yChange >= 6) {
+            yChange = 6;
         }
-        yChange = yVelocity;
-    }
-
-    /**
-     *
-     * checks for any collision of the player with a dirt-tile
-     *
-     * @param collisionBoxes - all the cubes from the level
-     */
-    public void checkCollisions(ArrayList<Rectangle2D> collisionBoxes) {
-        isPlayerInAir = true;
-        for (Rectangle2D collisionBox : collisionBoxes) {
-            if (playerRect.intersects(collisionBox) && yVelocity >= 0) {
-                playerRect.setRect(playerRect.getX(), collisionBox.getY() - playerHeight, playerWidth, playerHeight);
-                yVelocity = 0;
-                isPlayerInAir = false;
-            }
-        }
+        if (hasVerticalCollision(Level.getCollisionBoxes(), yChange)) yChange = 0;
     }
 
     /**
@@ -73,9 +53,37 @@ public class Player {
      * allows the player to jump upwards
      */
     public void jump() {
-        if (!isPlayerInAir) {
-            yVelocity = -3.5f;
+        // if statement checks if the velocity is 0 which is the case if the player is either colliding with the ceiling or the floor
+        // checking the vertical collision with a positive velocity to eliminate the possibility for the player to jump when colliding with the ceiling
+        if (yChange == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
+            yChange = -3.5f;
         }
+    }
+
+    private boolean hasHorizontalCollision(ArrayList<Rectangle2D> collisionBoxes, Character direction) {
+        boolean doesIntersect = false;
+        Rectangle2D movedRect = playerRect.getBounds2D();
+        if (direction == 'r') {
+            movedRect.setRect(movedRect.getX() + 2, movedRect.getY(), movedRect.getWidth(), movedRect.getHeight());
+        }
+        else if (direction == 'l') {
+            movedRect.setRect(movedRect.getX() - 2, movedRect.getY(), movedRect.getWidth(), movedRect.getHeight());
+        }
+        for (Rectangle2D collisionBox:collisionBoxes) {
+            if (movedRect.intersects(collisionBox)) doesIntersect = true;
+        }
+
+        return doesIntersect;
+    }
+
+    private boolean hasVerticalCollision(ArrayList<Rectangle2D> collisionBoxes, double yVelocity) {
+        boolean doesIntersect = false;
+        Rectangle2D movedRect = playerRect.getBounds2D();
+        movedRect.setRect(movedRect.getX(), movedRect.getY() + yVelocity, movedRect.getWidth(), movedRect.getHeight());
+        for (Rectangle2D collisionBox:collisionBoxes) {
+            if (movedRect.intersects(collisionBox)) doesIntersect = true;
+        }
+        return doesIntersect;
     }
 
     /**
@@ -85,9 +93,13 @@ public class Player {
      */
     public void move(Character direction) {
         if (direction == 'r') {
-            xChange = 2;
+            if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
+                xChange = 2;
+            }
         } else if (direction == 'l') {
-            xChange = -2;
+            if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
+                xChange = -2;
+            }
         } else if (direction == 'n') {
             xChange = 0;
         }

@@ -21,7 +21,6 @@ public class GameState extends State {
 
     @Override
     public void update() {
-        Main.player.checkCollisions(Level.getCollisionBoxes());
         Main.player.applyGravity();
         Main.player.updatePlayerRectCoords();
 
