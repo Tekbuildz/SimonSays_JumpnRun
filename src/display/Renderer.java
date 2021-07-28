@@ -9,7 +9,6 @@ public class Renderer extends JPanel{
 
     private final int WIDTH;
     private final int HEIGHT;
-    private final Font FPSFont = new Font("Calibri", Font.PLAIN, 20);
 
     public Renderer(int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;

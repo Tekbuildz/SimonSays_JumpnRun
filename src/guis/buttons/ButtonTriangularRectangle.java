@@ -4,9 +4,8 @@ import player.PlayerInputs;
 import toolbox.BasicColors;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 
-public class ButtonCircle extends Button {
+public class ButtonTriangularRectangle extends Button {
 
     private final String text;
 
@@ -19,10 +18,19 @@ public class ButtonCircle extends Button {
     private boolean mouseOverButton;
     private boolean buttonWasReleased;
 
-    private final Ellipse2D.Double ellipse;
+    private Polygon triangularRectangle;
 
-    // button has shape of a circle
-    public ButtonCircle (int x, int y, int diameter, String text) {
+    private int x, y;
+    private int width, height;
+    private int triangularCutoffSize;
+
+    // button has shape of a rectangle with its edges cut off in a triangular shape
+    public ButtonTriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, String text) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.triangularCutoffSize = triangularCutoffSize;
         this.text = text;
 
         fillColor = BasicColors.BUTTON_FILL_COLOR;
@@ -30,7 +38,14 @@ public class ButtonCircle extends Button {
         pressedColor = BasicColors.BUTTON_PRESSED_COLOR;
         textColor = BasicColors.BUTTON_TEXT_COLOR;
 
-        ellipse = new Ellipse2D.Double(x, y, diameter, diameter);
+        triangularRectangle = new Polygon(
+                new int[] {
+                        x + triangularCutoffSize, x + width - triangularCutoffSize, x + width, x + width, x + width -triangularCutoffSize, x + triangularCutoffSize, x, x
+                },
+                new int[] {
+                        y, y, y + triangularCutoffSize, y + height - triangularCutoffSize, y + height, y + height, y + height - triangularCutoffSize, y + triangularCutoffSize
+                },
+                8);
     }
 
     @Override
@@ -66,7 +81,7 @@ public class ButtonCircle extends Button {
     @Override
     public void update() {
         buttonWasReleased = false;
-        mouseOverButton = ellipse.contains(PlayerInputs.getMousePos());
+        mouseOverButton = triangularRectangle.contains(PlayerInputs.getMousePos());
 
         if (mouseOverButton && PlayerInputs.getMouseButtonsReleasedInFrame().contains(1)) {
             buttonWasReleased = true;
@@ -83,13 +98,13 @@ public class ButtonCircle extends Button {
                 g.setColor(pressedColor);
             }
         }
-        g.fill(ellipse);
+        g.fill(triangularRectangle);
 
         if (font != null) g.setFont(font);
         g.setColor(textColor);
 
         FontMetrics fm = g.getFontMetrics();
-        // using font metrics to get information about the string and its width and height, where maxAscent is the height of the highest char in the string
-        g.drawString(text, (int) ellipse.getCenterX() - fm.stringWidth(text) / 2, (int) ellipse.getCenterY() + fm.getMaxAscent() / 2);
+        // using font metrics to get information about the string and its width and height, where maxAscent is the height of the heighest char in the string
+        g.drawString(text, x + width / 2 - fm.stringWidth(text) / 2, y + height / 2 + fm.getMaxAscent() / 2);
     }
 }

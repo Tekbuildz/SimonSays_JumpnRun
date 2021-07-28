@@ -5,10 +5,12 @@ import display.DisplayManager;
 import gameLoop.Main;
 import guis.buttons.Button;
 import guis.buttons.ButtonCircle;
+import guis.buttons.ButtonTriangularRectangle;
 import levelHandling.Cube;
 import levelHandling.Level;
 import player.Player;
 import player.PlayerInputs;
+import toolbox.BasicColors;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -19,29 +21,67 @@ import java.util.Objects;
 
 public class GameState extends State {
 
-    public HashMap<String, Button> buttons = new HashMap<>();
+    public HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
 
     private boolean drawPauseMenuOverlay = false;
 
+    // not having to stretch WIDTH and HEIGHT since they contain the size of the current display and are not hard-coded
     private final int WIDTH = DisplayManager.getWIDTH();
     private final int HEIGHT = DisplayManager.getHEIGHT();
 
-    private final double rsf = (double) WIDTH / 1920; // rsf = resolutionStretchFactor (converting the points from 1920x1080 screen to the resolution of the current main screen
-    private final ButtonCircle pauseButton = new ButtonCircle( (int) (20 * rsf), (int) (10 * rsf), (int) (60 * rsf), "II");
+    // rsf = resolutionStretchFactor (converting the points from 1920x1080 screen to the resolution of the current main screen
+    private final double rsf = (double) WIDTH / 1920;
 
-    private final Polygon bottomOverlay = new Polygon(new int[]{0, (int) (280 * rsf), (int) (400 * rsf), WIDTH - (int) (400 * rsf), WIDTH - (int) (280 * rsf), WIDTH, WIDTH, 0},
-            new int[]{HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT, HEIGHT},
+
+    // ----------------- PAUSE MENU OVERLAY -----------------
+    private final int pauseMenuOverlayPolyCutoffSize = (int) (20 * rsf);
+
+    private final int pauseMenuOverlayButtonsWidth = (int) (180 * rsf);
+    private final int pauseMenuOverlayButtonsHeight = (int) (50 * rsf);
+
+    private final Polygon pauseMenuOverlayPolygon = new Polygon(
+            new int[]{
+                    WIDTH / 2 - pauseMenuOverlayButtonsWidth + pauseMenuOverlayPolyCutoffSize,
+                    WIDTH / 2 + pauseMenuOverlayButtonsWidth - pauseMenuOverlayPolyCutoffSize,
+                    WIDTH / 2 + pauseMenuOverlayButtonsWidth,
+                    WIDTH / 2 + pauseMenuOverlayButtonsWidth,
+                    WIDTH / 2 + pauseMenuOverlayButtonsWidth - pauseMenuOverlayPolyCutoffSize,
+                    WIDTH / 2 - pauseMenuOverlayButtonsWidth + pauseMenuOverlayPolyCutoffSize,
+                    WIDTH / 2 - pauseMenuOverlayButtonsWidth,
+                    WIDTH / 2 - pauseMenuOverlayButtonsWidth
+            },
+            new int[]{
+                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3,
+                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3,
+                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3 + pauseMenuOverlayPolyCutoffSize,
+                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3 - pauseMenuOverlayPolyCutoffSize,
+                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3,
+                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3,
+                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3 - pauseMenuOverlayPolyCutoffSize,
+                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3 + pauseMenuOverlayPolyCutoffSize
+            },
             8);
+    private final ButtonTriangularRectangle continueButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Continue");
+    private final ButtonTriangularRectangle optionsButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight / 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Options");
+    private final ButtonTriangularRectangle exitGameButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 + pauseMenuOverlayButtonsHeight, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Exit Game");
+
+
+    // ----------------- GENERAL OVERLAY -----------------
+    private final ButtonCircle pauseButton = new ButtonCircle((int) (20 * rsf), (int) (10 * rsf), (int) (60 * rsf), "II");
+    private final Polygon bottomOverlay = new Polygon(new int[]{0, (int) (280 * rsf), (int) (400 * rsf), WIDTH - (int) (400 * rsf), WIDTH - (int) (280 * rsf), WIDTH, WIDTH, 0}, new int[]{HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT, HEIGHT}, 8);
     private final Polygon topLeftOverlay = new Polygon(new int[]{0, (int) (140 * rsf), (int) (80 * rsf), 0}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
     private final Polygon topRightOverlay = new Polygon(new int[]{WIDTH, WIDTH - (int) (240 * rsf), WIDTH - (int) (180 * rsf), WIDTH}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
 
+
     public GameState() {
-        buttons.put("pauseButton", pauseButton);
-        buttons.get("pauseButton").setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
-        buttons.get("pauseButton").setTextColor(new Color(12, 244, 243));
-        buttons.get("pauseButton").setHoverColor(new Color(32, 41, 64));
-        buttons.get("pauseButton").setPressedColor(new Color(27, 35, 53));
-        buttons.get("pauseButton").setFillColor(new Color(17, 23, 36));
+        pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
+
+        pauseMenuOverlayButtons.put("continueButton", continueButton);
+        pauseMenuOverlayButtons.put("optionsButton", optionsButton);
+        pauseMenuOverlayButtons.put("exitGameButton", exitGameButton);
+        for (Button button: pauseMenuOverlayButtons.values()) {
+            button.setTextFont(new Font("Calibri", Font.PLAIN, (int) (30 * rsf)));
+        }
     }
 
     @Override
@@ -51,11 +91,27 @@ public class GameState extends State {
 
         handleMovement();
 
-        for (Button button: buttons.values()) {
+        pauseButton.update();
+        if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
+            drawPauseMenuOverlay = true;
+        }
+
+        for (Button button: pauseMenuOverlayButtons.values()) {
             button.update();
             if (button.isButtonWasReleased()) {
-                if (Objects.equals(toolbox.HashMap.getKey(buttons, button), "pauseButton")) {
-                    drawPauseMenuOverlay = true;
+                switch (Objects.requireNonNull(toolbox.HashMap.getKey(pauseMenuOverlayButtons, button))) {
+                    case "continueButton":
+                        drawPauseMenuOverlay = false;
+                        break;
+
+                    case "optionsButton":
+                        // do sth else
+                        break;
+
+                    case "exitGameButton":
+                        // replace this later by going back to main menu screen
+                        System.exit(0);
+                        break;
                 }
             }
         }
@@ -72,11 +128,13 @@ public class GameState extends State {
         // height of the screen needs to be subtracted
         g.translate(0, -HEIGHT);
 
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawGUIOverlay(g);
 
         if (drawPauseMenuOverlay) {
             drawPauseMenuOverlay(g);
         }
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
 
     /**
@@ -136,22 +194,24 @@ public class GameState extends State {
     }
 
     private void drawGUIOverlay(Graphics2D g) {
-        g.setColor(new Color(34, 52, 92));
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(BasicColors.GUI_OVERLAY_DEFAULT_COLOR);
         g.fill(bottomOverlay);
         g.fill(topLeftOverlay);
         g.fill(topRightOverlay);
 
-        for (Button button:buttons.values()) {
-            button.draw(g);
-        }
-
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        pauseButton.draw(g);
     }
 
-    private void drawPauseMenuOverlay(Graphics g) {
+    private void drawPauseMenuOverlay(Graphics2D g) {
         // creating a semi-transparent overlay over the entire screen to remove focus on the game and switch it to buttons
         g.setColor(new Color(0, 0, 0, 140));
         g.fillRect(0, 0, (int) (WIDTH * rsf), (int) (HEIGHT * rsf));
+
+        g.setColor(BasicColors.GUI_OVERLAY_DEFAULT_COLOR);
+        g.fill(pauseMenuOverlayPolygon);
+
+        for (Button button: pauseMenuOverlayButtons.values()) {
+            button.draw(g);
+        }
     }
 }
