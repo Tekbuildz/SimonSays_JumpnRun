@@ -13,17 +13,7 @@ public class Cube {
     private final int pixelSIZE = 40;
     private final int SIZE = 1;
 
-    private Rectangle2D rectangle;
-    // private static final int SIZE = DisplayManager.HEIGHT / 27;
-
-    /**
-     * contains information about whether the adjacent cubes are air cubes or not
-     * index 0 = right
-     * index 1 = top
-     * index 2 = left
-     * index 3 = bottom
-     */
-    private boolean[] airAtSides;
+    private final Rectangle2D rectangle;
 
     /**
      *
@@ -33,9 +23,9 @@ public class Cube {
      */
     public Cube(int cubeID, int x, int y) {
         this.cubeID = cubeID;
-        this.rectangle = new Rectangle(x, y, SIZE, SIZE);
 
-        airAtSides = new boolean[4];
+        // the rectangle describing the cube, where x, y, SIZE are measured in cubes/tiles
+        this.rectangle = new Rectangle(x, y, SIZE, SIZE);
     }
 
     /**
@@ -44,23 +34,6 @@ public class Cube {
      */
     public int getCubeID() {
         return cubeID;
-    }
-
-    /**
-     *
-     * @param airAtSides - sets the information about whether the adjacent cubes are air cubes or not (for indices see
-     *                   the information above)
-     */
-    public void setAirAtSides(boolean[] airAtSides) {
-        this.airAtSides = airAtSides;
-    }
-
-    /**
-     *
-     * @return whether the adjacent cubes are air cubes
-     */
-    public boolean[] getAirAtSides() {
-        return airAtSides;
     }
 
     /**

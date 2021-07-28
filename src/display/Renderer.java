@@ -1,12 +1,11 @@
 package display;
 
-import gameLoop.Main;
 import gamestates.StateMaster;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Renderer extends JPanel {
+public class Renderer extends JPanel{
 
     private final int WIDTH;
     private final int HEIGHT;
@@ -25,17 +24,5 @@ public class Renderer extends JPanel {
         if (StateMaster.getState() != null) {
             StateMaster.getState().render(graphics2D);
         }
-
-        drawFPS(graphics2D);
-    }
-
-    /**
-     *
-     * drawing the fps to the screen
-     */
-    private void drawFPS(Graphics2D g) {
-        g.setColor(Color.BLACK);
-        g.setFont(FPSFont);
-        g.drawString("FPS: " + Main.getCurrentFPS(), 10, 20);
     }
 }

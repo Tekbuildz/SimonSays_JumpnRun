@@ -1,11 +1,8 @@
 package Loader;
 
-import display.DisplayManager;
 import gameLoop.Main;
 import levelHandling.Cube;
-import levelHandling.Level;
 
-import javax.imageio.ImageIO;
 import javax.xml.namespace.QName;
 import javax.xml.stream.*;
 import javax.xml.stream.events.Attribute;
@@ -13,7 +10,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -73,16 +69,14 @@ public class LevelLoader {
                                 level = level.concat(event.asCharacters().toString());
                                 event = xmlEventReader.nextEvent();
                             }
-                            level = level.replace(",", "");
-                            level = level.replaceFirst("\\n", "");
                             // replacing the first newline found in the string since after <data> there is a newline, otherwise, the array would contain an empty array
+                            level = level.replaceFirst("\\n", "");
                             String[] horizontalLevelSections = level.split("\\n");
                             for (int i = 0; i < horizontalLevelSections.length; i++) {
                                 levelCubes.add(new ArrayList<>());
-                                char[] hlsChars = horizontalLevelSections[i].toCharArray();
-                                for (int j = 0; j < hlsChars.length; j++) {
-                                    // subtracting 1 from the cubeID because Utiliti starts enumerating at 1 and the array starts at 0
-                                    levelCubes.get(i).add(new Cube(Character.getNumericValue(hlsChars[j]) - 1, j, i));
+                                String[] cubeIDs = horizontalLevelSections[i].split("[,]");
+                                for (int j = 0; j < cubeIDs.length; j++) {
+                                    levelCubes.get(i).add(new Cube(Integer.parseInt(cubeIDs[j]) - 1, j, i));
                                 }
                             }
                             break;

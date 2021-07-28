@@ -6,19 +6,22 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.Iterator;
 
 public class PlayerInputs implements KeyListener, MouseListener {
 
-    private static ArrayList<Integer> keyPressed = new ArrayList<>();
-    private static Point mousePos = new Point();
+    private static final ArrayList<Integer> keysPressedInFrame = new ArrayList<>();
+    private static final ArrayList<Integer> mouseButtonsReleasedInFrame = new ArrayList<>();
+    private static final Point mousePos = new Point();
+    private static boolean mousePressed = false;
+
 
     /**
      *
      * @return the key which is currently pressed
      */
-    public static ArrayList<Integer> getKeyPressed() {
-        return keyPressed;
+    public static ArrayList<Integer> getKeysPressedInFrame() {
+        return keysPressedInFrame;
     }
 
     @Override
@@ -29,39 +32,47 @@ public class PlayerInputs implements KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         // prevention of adding the same key multiple times
-        if (!keyPressed.contains(keyEvent.getKeyCode())) {
-            keyPressed.add(keyEvent.getKeyCode());
+        if (!keysPressedInFrame.contains(keyEvent.getKeyCode())) {
+            keysPressedInFrame.add(keyEvent.getKeyCode());
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         // Integer.valueOf needed, since otherwise the code would try to remove the object at index i, instead of the object with value i
-        keyPressed.remove(Integer.valueOf(keyEvent.getKeyCode()));
+        keysPressedInFrame.remove(Integer.valueOf(keyEvent.getKeyCode()));
     }
 
     @Override
-    public void mouseClicked(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent mouseEvent) {
+    public void mouseClicked(MouseEvent e) {
 
     }
 
     @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
+    public void mousePressed(MouseEvent e) {
+        // checking if it was a left-click
+        if (e.getButton() == 1) {
+            mousePressed = true;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // checking if it was a left-click
+        if (e.getButton() == 1) {
+            mousePressed = false;
+        }
+
+        mouseButtonsReleasedInFrame.add(e.getButton());
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
 
     }
 
     @Override
-    public void mouseEntered(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent) {
+    public void mouseExited(MouseEvent e) {
 
     }
 
@@ -71,6 +82,19 @@ public class PlayerInputs implements KeyListener, MouseListener {
      */
     public static void updateMousePos() {
         setMousePos(MouseInfo.getPointerInfo().getLocation());
+    }
+
+    public static void updateKeysReleased() {
+//        for (int button:mouseButtonsReleasedInFrame) {
+//            // using Integer.valueOf
+//            if (mouseButtonsReleasedInFrame.contains(button)) mouseButtonsReleasedInFrame.remove(Integer.valueOf(button));
+//        }
+        ArrayList<Integer> mouseButtonsToRemove = new ArrayList<>(mouseButtonsReleasedInFrame);
+        mouseButtonsReleasedInFrame.removeAll(mouseButtonsToRemove);
+    }
+
+    public static ArrayList<Integer> getMouseButtonsReleasedInFrame() {
+        return mouseButtonsReleasedInFrame;
     }
 
     /**
@@ -87,5 +111,13 @@ public class PlayerInputs implements KeyListener, MouseListener {
      */
     public static Point getMousePos() {
         return mousePos;
+    }
+
+    /**
+     *
+     * @return the state of the mouse whether it's pressed or not
+     */
+    public static boolean isMousePressed() {
+        return mousePressed;
     }
 }

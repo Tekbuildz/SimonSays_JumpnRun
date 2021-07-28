@@ -17,7 +17,7 @@ public class Level {
 
     public Level(String levelName) {
         // loading the level and its details
-        LevelLoader.loadLevelData("levels/test_hb_1_2_3.litidata"); // replace this line with LevelLoader.loadLevelData("levels/" + levelName + ".litidata");
+        LevelLoader.loadLevelData("levels/flioLevel.litidata"); // replace this line with LevelLoader.loadLevelData("levels/" + levelName + ".litidata");
         levelCubes = LevelLoader.getLevelCubes();
         collisionBoxes = LevelLoader.getCollisionBoxes();
         spawnPoint = LevelLoader.getSpawnPoint();

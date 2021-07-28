@@ -3,14 +3,10 @@ package gameLoop;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.GameState;
-import gamestates.State;
 import gamestates.StateMaster;
-import levelHandling.Cube;
 import levelHandling.Level;
 import player.Player;
 import player.PlayerInputs;
-
-import java.util.ArrayList;
 
 public class Main implements Runnable{
 
@@ -24,8 +20,6 @@ public class Main implements Runnable{
     private static final boolean running = true;
 
     public static Player player;
-    public static ArrayList<ArrayList<Cube>> temp;
-
 
 
     public Main() {
@@ -62,6 +56,9 @@ public class Main implements Runnable{
         if (StateMaster.getState() != null) {
             StateMaster.getState().update();
         }
+
+        // last to update is to clear all the keys from the arraylist containing all the keys removed in this frame/tick
+        PlayerInputs.updateKeysReleased();
     }
 
     @Override

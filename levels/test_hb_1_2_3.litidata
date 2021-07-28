@@ -55,6 +55,13 @@
       <property name="collisionType" value="STATIC"/>
      </properties>
     </object>
+    <!-- testing purpose -->
+    <object id="10" type="COLLISIONBOX" x="640" y="360" width="2000" height="40">
+     <properties>
+      <property name="collisionType" value="STATIC"/>
+     </properties>
+    </object>
+    <!-- _______________ -->
    </objectgroup>
    <objectgroup id="0" name="spawn" visible="1">
     <object id="10" name="spawn" type="SPAWNPOINT" x="40" y="280" width="40" height="80">

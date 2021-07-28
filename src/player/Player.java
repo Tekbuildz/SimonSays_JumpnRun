@@ -31,7 +31,7 @@ public class Player {
      * @param p - the starting point of the player in the level
      */
     public Player(Point p) {
-        playerRect.setRect(p.x, p.y - 800, playerWidth, playerHeight);
+        playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
         health = 100;
         lives = 1;
     }
