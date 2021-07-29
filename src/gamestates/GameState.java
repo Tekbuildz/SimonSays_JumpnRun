@@ -6,6 +6,7 @@ import gameLoop.Main;
 import guis.buttons.Button;
 import guis.buttons.ButtonCircle;
 import guis.buttons.ButtonTriangularRectangle;
+import guis.outlines.TriangularRectangle;
 import levelHandling.Cube;
 import levelHandling.Level;
 import player.Player;
@@ -34,33 +35,11 @@ public class GameState extends State {
 
 
     // ----------------- PAUSE MENU OVERLAY -----------------
-    private final int pauseMenuOverlayPolyCutoffSize = (int) (20 * rsf);
-
     private final int pauseMenuOverlayButtonsWidth = (int) (180 * rsf);
     private final int pauseMenuOverlayButtonsHeight = (int) (50 * rsf);
 
-    private final Polygon pauseMenuOverlayPolygon = new Polygon(
-            new int[]{
-                    WIDTH / 2 - pauseMenuOverlayButtonsWidth + pauseMenuOverlayPolyCutoffSize,
-                    WIDTH / 2 + pauseMenuOverlayButtonsWidth - pauseMenuOverlayPolyCutoffSize,
-                    WIDTH / 2 + pauseMenuOverlayButtonsWidth,
-                    WIDTH / 2 + pauseMenuOverlayButtonsWidth,
-                    WIDTH / 2 + pauseMenuOverlayButtonsWidth - pauseMenuOverlayPolyCutoffSize,
-                    WIDTH / 2 - pauseMenuOverlayButtonsWidth + pauseMenuOverlayPolyCutoffSize,
-                    WIDTH / 2 - pauseMenuOverlayButtonsWidth,
-                    WIDTH / 2 - pauseMenuOverlayButtonsWidth
-            },
-            new int[]{
-                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3,
-                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3,
-                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3 + pauseMenuOverlayPolyCutoffSize,
-                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3 - pauseMenuOverlayPolyCutoffSize,
-                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3,
-                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3,
-                    HEIGHT / 2 + pauseMenuOverlayButtonsHeight * 3 - pauseMenuOverlayPolyCutoffSize,
-                    HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3 + pauseMenuOverlayPolyCutoffSize
-            },
-            8);
+    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3, pauseMenuOverlayButtonsWidth * 2, pauseMenuOverlayButtonsHeight * 6, (int) (20 * rsf), Color.BLACK, 2f);
+
     private final ButtonTriangularRectangle continueButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Continue");
     private final ButtonTriangularRectangle optionsButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight / 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Options");
     private final ButtonTriangularRectangle exitGameButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 + pauseMenuOverlayButtonsHeight, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Exit Game");
@@ -204,11 +183,12 @@ public class GameState extends State {
 
     private void drawPauseMenuOverlay(Graphics2D g) {
         // creating a semi-transparent overlay over the entire screen to remove focus on the game and switch it to buttons
-        g.setColor(new Color(0, 0, 0, 140));
+        g.setColor(new Color(0, 0, 0, 120));
         g.fillRect(0, 0, (int) (WIDTH * rsf), (int) (HEIGHT * rsf));
 
         g.setColor(BasicColors.GUI_OVERLAY_DEFAULT_COLOR);
-        g.fill(pauseMenuOverlayPolygon);
+//        g.fill(pauseMenuOverlayPolygon);
+        pauseMenuOverlayPolygon.draw(g);
 
         for (Button button: pauseMenuOverlayButtons.values()) {
             button.draw(g);

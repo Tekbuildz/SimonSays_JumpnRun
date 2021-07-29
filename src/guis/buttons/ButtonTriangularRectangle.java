@@ -18,7 +18,7 @@ public class ButtonTriangularRectangle extends Button {
     private boolean mouseOverButton;
     private boolean buttonWasReleased;
 
-    private Polygon triangularRectangle;
+    private final Polygon triangularRectangle;
 
     private int x, y;
     private int width, height;
