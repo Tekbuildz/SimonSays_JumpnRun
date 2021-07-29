@@ -21,7 +21,16 @@ public class ButtonCircle extends Button {
 
     private final Ellipse2D.Double ellipse;
 
-    // button has shape of a circle
+    /**
+     *
+     * the basic constructor of a circular-shaped button
+     *
+     * @param x - the x coordinate of the button
+     * @param y - the y coordinate of the button
+     * @param diameter - the diameter of the circular-shaped button
+     * @param text - the text displayed inside of the button
+     *             (acting as a description of what the button does)
+     */
     public ButtonCircle (int x, int y, int diameter, String text) {
         this.text = text;
 
@@ -63,6 +72,13 @@ public class ButtonCircle extends Button {
         return buttonWasReleased;
     }
 
+    /**
+     *
+     * updating the state of the button
+     * checking if the mouse is hovering over the button
+     * checking if the mouse was released over the
+     * button in the previous tick/frame
+     */
     @Override
     public void update() {
         buttonWasReleased = false;
@@ -73,6 +89,14 @@ public class ButtonCircle extends Button {
         }
     }
 
+    /**
+     *
+     * drawing the button
+     * changing the color according the position and action of the mouse
+     * drawing the button and its string to the screen
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     @Override
     public void draw(Graphics2D g) {
         g.setColor(fillColor);

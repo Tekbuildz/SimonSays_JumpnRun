@@ -5,10 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Cube {
 
-    /**
-     *
-     * the cubeID represents the type of this cube (air, dirt, etc.)
-     */
+
     private final int cubeID;
     private final int pixelSIZE = 40;
     private final int SIZE = 1;
@@ -17,9 +14,17 @@ public class Cube {
 
     /**
      *
+     * basic constructor for the cube
+     * constructor adds a cubeID to the cube representing the type of this
+     * cube (air, dirt, etc.)
+     * it creates a rectangle using the remaining parameters to represent
+     * its location in the coordinate system
+     *
      * @param cubeID - the type of this cube
-     * @param x      - the x coordinate of the cube measured in cubes from the left screen side
-     * @param y      - the y coordinate of the cube measured in cubes from the bottom screen side
+     * @param x      - the x coordinate of the cube measured in
+     *               cubes from the left screen side
+     * @param y      - the y coordinate of the cube measured in
+     *               cubes from the bottom screen side
      */
     public Cube(int cubeID, int x, int y) {
         this.cubeID = cubeID;
@@ -38,7 +43,8 @@ public class Cube {
 
     /**
      *
-     * @return the x coordinate of the cube measured in cubes from the left screen side
+     * @return the x coordinate of the cube measured in
+     *          cubes from the left screen side
      */
     public double getX() {
         return rectangle.getX();
@@ -54,7 +60,8 @@ public class Cube {
 
     /**
      *
-     * @return the y coordinate of the cube measured in cubes from the bottom screen side
+     * @return the y coordinate of the cube measured in
+     *          cubes from the bottom screen side
      */
     public double getY() {
         return rectangle.getY();

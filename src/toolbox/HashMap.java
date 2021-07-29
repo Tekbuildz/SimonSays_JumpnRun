@@ -6,6 +6,15 @@ public class HashMap {
 
     /**
      *
+     * gets the key if given the map and value
+     * this function will return the key assigned to the given value by
+     * querying the given map
+     * <p>
+     * since the HashMap itself does not have a getKey() function,
+     * Map.Entry<K, V> can be used since Map.Entry has a getKey() function.
+     * Therefore the entry can be checked if it contains the value in question
+     * and the key assigned to it can be retrieved
+     *
      * @param map - the map to be searched through
      * @param value - the value, the map above should be queried for
      * @param <K> - the key of a key/value pair

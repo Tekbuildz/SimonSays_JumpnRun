@@ -32,6 +32,12 @@ public class Polyline {
         createPolylineFromPoints();
     }
 
+    /**
+     *
+     * using points to create an array of lines forging the PolyLine
+     * using the points, the function creates multiple lines between
+     * each of the points that should be connected to then form a PolyLine
+     */
     private void createPolylineFromPoints() {
         if (xpoints.length != ypoints.length || xpoints.length != npoints) {
             System.err.println("The number of xpoints do not match the number of ypoints or npoints");
@@ -46,6 +52,13 @@ public class Polyline {
         }
     }
 
+    /**
+     *
+     * drawing the PolyLine
+     * the function draws all the lines in the lines array forming a PolyLine
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     public void draw(Graphics2D g) {
         g.setColor(fillColor);
         g.setStroke(new BasicStroke(strokeWeight));

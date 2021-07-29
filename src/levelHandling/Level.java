@@ -15,6 +15,13 @@ public class Level {
     private static ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
     private static Point2D spawnPoint;
 
+    /**
+     *
+     * basic constructor of a Level
+     * loads the data (collision boxes, cubeID and spawn point) from XML file
+     *
+     * @param levelName
+     */
     public Level(String levelName) {
         // loading the level and its details
         LevelLoader.loadLevelData("levels/flioLevel.litidata"); // replace this line with LevelLoader.loadLevelData("levels/" + levelName + ".litidata");
@@ -34,10 +41,19 @@ public class Level {
         return levelCubes;
     }
 
+    /**
+     *
+     * @return the point where the player enters the level
+     */
     public static Point getSpawnLocation() {
         return new Point((int) spawnPoint.getX(), (int) spawnPoint.getY());
     }
 
+    /**
+     *
+     * @return an ArrayList of rectangles containing all the collision boxes
+     *          with which the player can collide
+     */
     public static ArrayList<Rectangle2D> getCollisionBoxes() {
         return collisionBoxes;
     }

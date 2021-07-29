@@ -21,7 +21,10 @@ public class Main implements Runnable{
 
     public static Player player;
 
-
+    /**
+     *
+     * basic constructor calling the setup() function
+     */
     public Main() {
         setup();
     }
@@ -30,6 +33,12 @@ public class Main implements Runnable{
         new Main();
     }
 
+    /**
+     *
+     * setting up the display
+     * creating a new player
+     * a new thread and setting the current state
+     */
     private void setup() {
         level = new Level("Level_1");
 
@@ -48,7 +57,9 @@ public class Main implements Runnable{
 
     /**
      *
-     * updating the game logic
+     * updating the game logic of the currently active state
+     * updating any inputs from the player which are
+     * required all the time such as mouse and keyboard inputs
      */
     private void update() {
         // updating all the game logic
@@ -61,9 +72,14 @@ public class Main implements Runnable{
         PlayerInputs.updateKeysReleased();
     }
 
-    @Override
     // main game loop
     // changed version of the second loop found here: https://gamedev.stackexchange.com/questions/160329/java-game-loop-efficiency
+
+    /**
+     *
+     * main game loop updates 120 times per second (amountOfTicks)
+     */
+    @Override
     public void run() {
         long lastTime = System.nanoTime();
         double amountOfTicks = 120.0;
@@ -90,9 +106,5 @@ public class Main implements Runnable{
                 frames = 0;
             }
         }
-    }
-
-    public static int getCurrentFPS() {
-        return currentFPS;
     }
 }

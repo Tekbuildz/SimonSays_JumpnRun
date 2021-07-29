@@ -12,6 +12,17 @@ public class SpriteSheet {
 
     /**
      *
+     * basic constructor of the sprite sheet
+     * loads the sprite sheet using the ImageLoader.loadImage() function and
+     * passing it the fileName
+     * <p>
+     * getting the sprite sheet size using the
+     * SpriteSheetLoader.getSpriteSheetSize() function
+     * <p>
+     * getting all the sprite images as an array by passing the
+     * SpriteSheetLoader.getSprites() function both the sprite sheet size and
+     * the sprite sheet itself
+     *
      * @param fileName - name of the sprite sheet to be loaded
      */
     public SpriteSheet(String fileName) {

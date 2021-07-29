@@ -12,6 +12,11 @@ public class SpriteSheetLoader {
 
     /**
      *
+     * gets the size of the sprite sheet measured in tiles
+     * the function gets the width and height of the sprite sheet
+     * and divides them by 40 to acquire the width and height in tiles
+     * it then returns those values in an integer array of length 2
+     *
      * @param spriteSheet - image containing all the individual sprites to be split up
      * @return the amount of sprites horizontally and vertically contained in the sprite sheet as an array
      */
@@ -29,6 +34,12 @@ public class SpriteSheetLoader {
     }
 
     /**
+     *
+     * gets all the sprites in a sprite sheet and puts them in an array
+     * using the sprite sheet size calculated in the function
+     * getSpriteSheetSize(), the total amount of sprites can be calculated.
+     * This number is used to create a new Image array in which all the
+     * individual sprites are stored using the Image.getSumbimage() function
      *
      * @param spriteSheet - image containing all the individual sprites to be split up
      * @param size - array containing width and height as the number of sprites horizontally and vertically

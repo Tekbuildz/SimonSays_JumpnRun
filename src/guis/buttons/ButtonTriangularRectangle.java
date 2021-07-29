@@ -24,7 +24,22 @@ public class ButtonTriangularRectangle extends Button {
     private int width, height;
     private int triangularCutoffSize;
 
-    // button has shape of a rectangle with its edges cut off in a triangular shape
+    /**
+     *
+     * the basic constructor of the triangular-rectangle-button
+     * this button consists of a basic rectangle of which the
+     * edges were cut off in a triangular shape
+     * these are isosceles triangles
+     *
+     * @param x - the x coordinate of the button
+     * @param y - the y coordinate of the button
+     * @param width - the width of the rectangle enclosing the button
+     * @param height - the height of the rectangle enclosing the button
+     * @param triangularCutoffSize - length of one of the sides
+     *                             that are equal of the isosceles triangle
+     * @param text - the text displayed in the button
+     *             (acting as a description of its action)
+     */
     public ButtonTriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, String text) {
         this.x = x;
         this.y = y;
@@ -78,6 +93,13 @@ public class ButtonTriangularRectangle extends Button {
         return buttonWasReleased;
     }
 
+    /**
+     *
+     * updating the state of the button
+     * checking if the mouse is hovering over the button
+     * checking if the mouse was released over the
+     * button in the previous tick/frame
+     */
     @Override
     public void update() {
         buttonWasReleased = false;
@@ -88,6 +110,14 @@ public class ButtonTriangularRectangle extends Button {
         }
     }
 
+    /**
+     *
+     * drawing the button
+     * changing the color according the position and action of the mouse
+     * drawing the button and its string to the screen
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     @Override
     public void draw(Graphics2D g) {
         g.setColor(fillColor);

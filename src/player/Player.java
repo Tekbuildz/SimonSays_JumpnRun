@@ -10,23 +10,24 @@ public class Player {
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
-    private double xChange = 0;
-    private double yChange = 0;
+    private double xSpeed = 0;
+    private double ySpeed = 0;
     private static final int cubeSizePixels = 40;
     private static final int playerWidth = 40;
     private static final int playerHeight = 79;
 
-    /**
-     *
-     * the amount of health the player has left of the current life
-     * if the health reaches the maximum, another life cannot be gained this way
-     * if the health reaches 0, a life is removed from the players total number of lives
-     */
+    // the amount of health the player has left of the current life
+    // if the health reaches the maximum, another life cannot be gained this way
+    // if the health reaches 0, a life is removed from the players total number of lives
     private int health;
     private int lives;
 
 
     /**
+     *
+     * basic constructor of the player
+     * creates a rectangle representing the hitbox of the player
+     * setting the amount of health and number of lives
      *
      * @param p - the starting point of the player in the level
      */
@@ -39,27 +40,47 @@ public class Player {
     /**
      *
      * applies gravity to the player
+     * (roughly representing gravity similar to
+     * the one on the earth)
+     * checks if the player is standing on the ground or hitting the ceiling in
+     * which case the vertical momentum/speed has to be canceled
      */
     public void applyGravity() {
-        yChange += gravityAccel;
-        if (yChange >= 6) {
-            yChange = 6;
+        ySpeed += gravityAccel;
+        if (ySpeed >= 6) {
+            ySpeed = 6;
         }
-        if (hasVerticalCollision(Level.getCollisionBoxes(), yChange)) yChange = 0;
+        if (hasVerticalCollision(Level.getCollisionBoxes(), ySpeed)) ySpeed = 0;
     }
 
     /**
      *
-     * allows the player to jump upwards
+     * handling the jumping-ability of the player
+     * sets the ySpeed to a reasonable negative value (where the player can jump roughly 1.5 tiles high) if the player collides and
+     * therefore stands on the ground and has no vertical speed
      */
     public void jump() {
         // if statement checks if the velocity is 0 which is the case if the player is either colliding with the ceiling or the floor
         // checking the vertical collision with a positive velocity to eliminate the possibility for the player to jump when colliding with the ceiling
-        if (yChange == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
-            yChange = -3.5f;
+        if (ySpeed == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
+            ySpeed = -3.5f;
         }
     }
 
+    /**
+     *
+     * checks if the player would collide with a wall in the upcoming tick
+     * using a copy of the playerRect called movedRect to which the xVelocity
+     * depending on the direction of the movement was added, the function
+     * checks whether the player intersects with a wall or not
+     *
+     * @param collisionBoxes - the ArrayList containing all the collision boxes
+     *                       with which the player can collide
+     * @param direction - the direction in which the player will move, should
+     *                  the move be legal, it is given according to the
+     *                  keyboard inputs from the player
+     * @return whether the player intersects with a wall or not
+     */
     private boolean hasHorizontalCollision(ArrayList<Rectangle2D> collisionBoxes, Character direction) {
         boolean doesIntersect = false;
         Rectangle2D movedRect = playerRect.getBounds2D();
@@ -76,6 +97,19 @@ public class Player {
         return doesIntersect;
     }
 
+    /**
+     *
+     * checks if the player would collide with a ceiling/floor in the next tick
+     * using a copy of the playerRect called movedRect to which the yVelocity
+     * was added, the function checks whether the player collides with a
+     * ceiling/floor
+     *
+     * @param collisionBoxes - the ArrayList containing all the collision boxes
+     *                       with which the player can collide
+     * @param yVelocity - the velocity which would be added to the player's
+     *                  coordinates if the move is legal
+     * @return whether the player intersects with another rectangle or not
+     */
     private boolean hasVerticalCollision(ArrayList<Rectangle2D> collisionBoxes, double yVelocity) {
         boolean doesIntersect = false;
         Rectangle2D movedRect = playerRect.getBounds2D();
@@ -88,31 +122,35 @@ public class Player {
 
     /**
      *
+     * handles the movement of the player according to the keyboard inputs
+     * the xSpeed is set according to the key pressed in which case different
+     * characters are passed to the function
+     *
      * @param direction - the character, either 'l' or 'r' for left or right respectively indicating the direction of the player's movement
      *                    'n' refers to 'none' or i.o.w. no change at all
      */
     public void move(Character direction) {
         if (direction == 'r') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
-                xChange = 2;
+                xSpeed = 2;
             }
         } else if (direction == 'l') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
-                xChange = -2;
+                xSpeed = -2;
             }
         } else if (direction == 'n') {
-            xChange = 0;
+            xSpeed = 0;
         }
     }
 
     /**
      *
-     * updating the location of the player bounding box using change-values since there is no Rectangle2D.Double.setX()
-     * function and therefore the entire rectangle would have to be set again, removing the possibility to move in two
-     * directions at once using multiple functions
+     * updating the location of the player bounding box using the change-values
+     * since there is no Rectangle2D.Double.setX() function and therefore
+     * the entire rectangle has to be set again
      */
     public void updatePlayerRectCoords() {
-        playerRect.setRect(playerRect.getX() + xChange, playerRect.getY() + yChange, playerWidth, playerHeight);
+        playerRect.setRect(playerRect.getX() + xSpeed, playerRect.getY() + ySpeed, playerWidth, playerHeight);
     }
 
     /**
@@ -179,10 +217,18 @@ public class Player {
         lives++;
     }
 
+    /**
+     *
+     * @return the width of the player in pixels
+     */
     public static int getPlayerWidth() {
         return playerWidth;
     }
 
+    /**
+     *
+     * @return the height of the player in pixels
+     */
     public static int getPlayerHeight() {
         return playerHeight;
     }

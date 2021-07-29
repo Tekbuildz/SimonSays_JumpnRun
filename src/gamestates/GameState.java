@@ -51,7 +51,12 @@ public class GameState extends State {
     private final Polygon topLeftOverlay = new Polygon(new int[]{0, (int) (140 * rsf), (int) (80 * rsf), 0}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
     private final Polygon topRightOverlay = new Polygon(new int[]{WIDTH, WIDTH - (int) (240 * rsf), WIDTH - (int) (180 * rsf), WIDTH}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
 
-
+    /**
+     *
+     * constructor of the GameState class
+     * adding buttons of this state to an ArrayList and giving them
+     * a default font
+     */
     public GameState() {
         pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
 
@@ -63,6 +68,15 @@ public class GameState extends State {
         }
     }
 
+    /**
+     *
+     * updating the game logic
+     * updating the player's location and applying gravity to it
+     * handling player input and converting it
+     * into movement of the digital player
+     * updating the buttons and listening for any mouse releases
+     * over the buttons, then executing the action corresponding to the button
+     */
     @Override
     public void update() {
         Main.player.applyGravity();
@@ -119,6 +133,8 @@ public class GameState extends State {
     /**
      *
      * drawing all the level-rectangles
+     *
+     * @param g - the graphics object used to paint onto the screen
      */
     private void drawLevel(Graphics2D g) {
         Image[] dirtGrassSky = SpriteSheetMaster.getSpriteSheetFromMap("dirtGrassSky").getSpriteImages();
@@ -137,7 +153,10 @@ public class GameState extends State {
     }
 
     /**
+     *
      * drawing the player to the screen
+     *
+     * @param g - the graphics object used to paint onto the screen
      */
     private void drawPlayer(Graphics2D g) {
         g.setColor(Color.BLUE);
@@ -155,7 +174,8 @@ public class GameState extends State {
 
     /**
      *
-     * calls the functions in the player class corresponding to the input from the player
+     * calls the functions in the player class
+     * corresponding to the input from the player
      */
     private void handleMovement() {
         // clearing any previous movement

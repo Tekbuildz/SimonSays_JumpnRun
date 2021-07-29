@@ -1,6 +1,5 @@
 package Loader;
 
-import gameLoop.Main;
 import levelHandling.Cube;
 
 import javax.xml.namespace.QName;
@@ -19,6 +18,19 @@ public class LevelLoader {
     private static ArrayList<Rectangle2D> collisionBoxes;
     private static Point2D spawnPoint;
 
+    /**
+     *
+     * loads all information about the level from XML file
+     * this function uses an XML parser reading the data from a file
+     * given by a FileInputStream and then checking for specific XML-Elements
+     * <p>
+     * Using those elements, the XML parser checks for collision boxes,
+     * the spawn point and also the level with all of the cubeIDs stored
+     *
+     *
+     * @param fileName - the name of the level to be loaded of the format
+     *                 fileName.litidata
+     */
     public static void loadLevelData(String fileName) {
         levelCubes = new ArrayList<>();
         collisionBoxes = new ArrayList<>();
@@ -87,20 +99,28 @@ public class LevelLoader {
         } catch (XMLStreamException | FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        for (Rectangle2D collisionBox : collisionBoxes) {
-            collisionBox.setRect(collisionBox.getX(), collisionBox.getY(), collisionBox.getWidth(), collisionBox.getHeight());
-        }
     }
 
+    /**
+     *
+     * @return a 2D ArrayList of all the Cubes containing their cubeIDs
+     */
     public static ArrayList<ArrayList<Cube>> getLevelCubes() {
         return levelCubes;
     }
 
+    /**
+     *
+     * @return an ArrayList of all the collision boxes in the level
+     */
     public static ArrayList<Rectangle2D> getCollisionBoxes() {
         return collisionBoxes;
     }
 
+    /**
+     *
+     * @return a Point2D representing the entry point of the player
+     */
     public static Point2D getSpawnPoint() {
         return spawnPoint;
     }

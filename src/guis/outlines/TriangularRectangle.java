@@ -4,7 +4,7 @@ import toolbox.BasicColors;
 
 import java.awt.*;
 
-public class TriangularRectangle extends Outline{
+public class TriangularRectangle {
 
     private final Polygon polygon;
     private Polyline outline;
@@ -16,10 +16,43 @@ public class TriangularRectangle extends Outline{
     private int width, height;
     private int triangularCutoffSize;
 
+    /**
+     *
+     * alternate constructor of a triangular-rectangle-shape missing outline
+     * this shape consists of a basic rectangle of which the
+     * edges were cut off in a triangular shape
+     * these are isosceles triangles
+     *
+     * @param x - the x coordinate of the shape
+     * @param y - the y coordinate of the shape
+     * @param width - the width of the rectangle enclosing the shape
+     * @param height - the height of the rectangle enclosing the shape
+     * @param triangularCutoffSize - length of one of the sides
+     *                             that are equal of the isosceles triangle
+     */
     public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize) {
         this(x, y, width, height, triangularCutoffSize, null, 0f);
     }
 
+    /**
+     *
+     * basic constructor of a triangular-rectangle-shape
+     * this version of the constructor also contains an outline of the shape
+     * to help enclosing the area further
+     * <p>
+     * this shape consists of a basic rectangle of which the
+     * edges were cut off in a triangular shape
+     * these are isosceles triangles
+     *
+     * @param x - the x coordinate of the shape
+     * @param y - the y coordinate of the shape
+     * @param width - the width of the rectangle enclosing the shape
+     * @param height - the height of the rectangle enclosing the shape
+     * @param triangularCutoffSize - length of one of the sides
+     *                             that are equal of the isosceles triangle
+     * @param outlineColor - the color of the outline enclosing the polygon
+     * @param strokeWeight - the thickness or width of the outline-line
+     */
     public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, Color outlineColor, float strokeWeight) {
         this.x = x;
         this.y = y;
@@ -48,10 +81,15 @@ public class TriangularRectangle extends Outline{
         }
     }
 
-    public void setFillColor(Color fillColor) {
-        this.fillColor = fillColor;
-    }
-
+    /**
+     *
+     * drawing the triangular-rectangle-shape to the screen
+     * optionally, if the outlineColor and the strokeWeight were defined
+     * when calling the constructor, and therefore, an outline is requested,
+     * it is drawn as well
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     public void draw(Graphics2D g) {
         g.fill(polygon);
 
