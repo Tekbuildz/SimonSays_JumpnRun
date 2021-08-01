@@ -15,8 +15,6 @@ public class Main implements Runnable{
     private Thread thread;
     private Renderer renderer;
 
-    private static int currentFPS;
-
     private static final boolean running = true;
 
     public static Player player;
@@ -98,13 +96,6 @@ public class Main implements Runnable{
             if (running)
                 renderer.repaint();
             frames++;
-
-            // updating the frames on the screen every 0.5 seconds
-            if (System.currentTimeMillis() - timer > 500) {
-                currentFPS = frames;
-                timer += 500;
-                frames = 0;
-            }
         }
     }
 }

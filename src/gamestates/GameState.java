@@ -29,6 +29,9 @@ public class GameState extends State {
     public HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
 
     private boolean drawPauseMenuOverlay = false;
+    private boolean drawDeathOverlay = false;
+
+    private boolean gameInterrupted = false;
 
     // not having to stretch WIDTH and HEIGHT since they contain the size of the current display and are not hard-coded
     private final int WIDTH = DisplayManager.getWIDTH();
@@ -89,21 +92,12 @@ public class GameState extends State {
      */
     @Override
     public void update() {
-        Main.player.applyGravity();
-        Main.player.updatePlayerRectCoords();
-
-        handleMovement();
-
-        pauseButton.update();
-        if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
-            drawPauseMenuOverlay = true;
-        }
-
         for (Button button: pauseMenuOverlayButtons.values()) {
             button.update();
             if (button.isButtonWasReleased()) {
                 switch (Objects.requireNonNull(toolbox.HashMap.getKey(pauseMenuOverlayButtons, button))) {
                     case "continueButton":
+                        gameInterrupted = false;
                         drawPauseMenuOverlay = false;
                         break;
 
@@ -123,9 +117,25 @@ public class GameState extends State {
             if (!drawPauseMenuOverlay) drawPauseMenuOverlay = true;
         }
 
-        health.setFillLevel(Main.player.getHealth());
-        health.update();
-        textBox.setText(Main.player.getLives() + "x");
+        if (!gameInterrupted) {
+            Main.player.applyGravity();
+            Main.player.updatePlayerRectCoords();
+
+            handleMovement();
+
+            pauseButton.update();
+            if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
+                drawPauseMenuOverlay = true;
+            }
+
+            health.setFillLevel(Main.player.getHealth());
+            health.update();
+            textBox.setText(Main.player.getLives() + "x");
+
+            if (Main.player.getY() > 2200) {
+                drawDeathOverlay = true;
+            }
+        }
     }
 
     @Override
@@ -210,6 +220,12 @@ public class GameState extends State {
         }
     }
 
+    /**
+     *
+     * drawing all the overlays for the GUI
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     private void drawGUIOverlay(Graphics2D g) {
         // basic GUI overlays
         bottomOverlay.draw(g);
@@ -226,7 +242,19 @@ public class GameState extends State {
         textBox.draw(g);
     }
 
+    /**
+     *
+     * drawing the overlay when hitting the pause button or pressing ESC
+     * adds an overlay over the entire screen darkening out the background
+     * to center the focus of the player to the buttons in the middle
+     * also stops the gameplay itself from progressing by interrupting the
+     * updates affecting the player and the level, however not the buttons in
+     * order for the player to be able to get back into the game again
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     private void drawPauseMenuOverlay(Graphics2D g) {
+        gameInterrupted = true;
         // creating a semi-transparent overlay over the entire screen to remove focus on the game and switch it to buttons
         g.setColor(new Color(0, 0, 0, 120));
         g.fillRect(0, 0, (int) (WIDTH * rsf), (int) (HEIGHT * rsf));
