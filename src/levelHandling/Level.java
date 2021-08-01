@@ -20,7 +20,7 @@ public class Level {
      * basic constructor of a Level
      * loads the data (collision boxes, cubeID and spawn point) from XML file
      *
-     * @param levelName
+     * @param levelName - the name of the level to be loaded
      */
     public Level(String levelName) {
         // loading the level and its details

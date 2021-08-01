@@ -33,7 +33,7 @@ public class Player {
      */
     public Player(Point p) {
         playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
-        health = 100;
+        health = 75;
         lives = 1;
     }
 

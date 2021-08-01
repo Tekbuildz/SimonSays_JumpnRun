@@ -20,7 +20,7 @@ public class LevelLoader {
 
     /**
      *
-     * loads all information about the level from XML file
+     * loads all information about the level from an XML file
      * this function uses an XML parser reading the data from a file
      * given by a FileInputStream and then checking for specific XML-Elements
      * <p>

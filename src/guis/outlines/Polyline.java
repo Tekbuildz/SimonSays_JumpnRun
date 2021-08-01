@@ -12,14 +12,19 @@ public class Polyline {
 
     private final Line2D.Double[] lines;
 
-    public Polyline(int[] xpoints, int[] ypoints, int npoints) {
-        this(xpoints, ypoints, npoints, Color.WHITE, 1);
-    }
-
-    public Polyline(int[] xpoints, int[] ypoints, int npoints, Color fillColor) {
-        this(xpoints, ypoints, npoints, fillColor, 1);
-    }
-
+    /**
+     *
+     * basic constructor of the PolyLine with specific fillColor and thickness
+     * using points to create an array of lines forging the PolyLine
+     * using the points, the function creates multiple lines between each
+     * of the points that should be connected to then form a PolyLine
+     *
+     * @param xpoints - the x coordinates of the points to be connected
+     * @param ypoints - the y coordinates of the points to be connected
+     * @param npoints - the number of points to be connected
+     * @param fillColor - the color of the line
+     * @param strokeWeight - the thickness of the line
+     */
     public Polyline(int[] xpoints, int[] ypoints, int npoints, Color fillColor, float strokeWeight) {
         this.xpoints = xpoints;
         this.ypoints = ypoints;
@@ -29,16 +34,6 @@ public class Polyline {
 
         lines = new Line2D.Double[npoints];
 
-        createPolylineFromPoints();
-    }
-
-    /**
-     *
-     * using points to create an array of lines forging the PolyLine
-     * using the points, the function creates multiple lines between
-     * each of the points that should be connected to then form a PolyLine
-     */
-    private void createPolylineFromPoints() {
         if (xpoints.length != ypoints.length || xpoints.length != npoints) {
             System.err.println("The number of xpoints do not match the number of ypoints or npoints");
             System.exit(-1);

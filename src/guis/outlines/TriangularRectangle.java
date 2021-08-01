@@ -29,9 +29,10 @@ public class TriangularRectangle {
      * @param height - the height of the rectangle enclosing the shape
      * @param triangularCutoffSize - length of one of the sides
      *                             that are equal of the isosceles triangle
+     * @param fillColor - the color of the polygon
      */
-    public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize) {
-        this(x, y, width, height, triangularCutoffSize, null, 0f);
+    public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, Color fillColor) {
+        this(x, y, width, height, triangularCutoffSize, fillColor, null, 0f);
     }
 
     /**
@@ -50,17 +51,18 @@ public class TriangularRectangle {
      * @param height - the height of the rectangle enclosing the shape
      * @param triangularCutoffSize - length of one of the sides
      *                             that are equal of the isosceles triangle
+     * @param fillColor - the color of the polygon
      * @param outlineColor - the color of the outline enclosing the polygon
-     * @param strokeWeight - the thickness or width of the outline-line
+     * @param strokeWeight - the width/thickness of the outline-line
      */
-    public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, Color outlineColor, float strokeWeight) {
+    public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, Color fillColor, Color outlineColor, float strokeWeight) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.triangularCutoffSize = triangularCutoffSize;
 
-        this.fillColor = BasicColors.GUI_OVERLAY_DEFAULT_COLOR;
+        this.fillColor = fillColor;
 
         polygon = new Polygon(
                 new int[]{x + triangularCutoffSize, x + width - triangularCutoffSize, x + width, x + width, x + width - triangularCutoffSize, x + triangularCutoffSize, x, x},
@@ -91,6 +93,7 @@ public class TriangularRectangle {
      * @param g - the graphics object used to paint onto the screen
      */
     public void draw(Graphics2D g) {
+        g.setColor(fillColor);
         g.fill(polygon);
 
         if (hasOutline) outline.draw(g);

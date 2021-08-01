@@ -3,9 +3,13 @@ package gamestates;
 import SpriteSheet.SpriteSheetMaster;
 import display.DisplayManager;
 import gameLoop.Main;
+import guis.HealthBar;
+import guis.TextBox;
 import guis.buttons.Button;
 import guis.buttons.ButtonCircle;
 import guis.buttons.ButtonTriangularRectangle;
+import guis.outlines.OutlinedEllipse;
+import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
 import levelHandling.Cube;
 import levelHandling.Level;
@@ -38,7 +42,7 @@ public class GameState extends State {
     private final int pauseMenuOverlayButtonsWidth = (int) (180 * rsf);
     private final int pauseMenuOverlayButtonsHeight = (int) (50 * rsf);
 
-    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3, pauseMenuOverlayButtonsWidth * 2, pauseMenuOverlayButtonsHeight * 6, (int) (20 * rsf), Color.BLACK, 2f);
+    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3, pauseMenuOverlayButtonsWidth * 2, pauseMenuOverlayButtonsHeight * 6, (int) (20 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
 
     private final ButtonTriangularRectangle continueButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Continue");
     private final ButtonTriangularRectangle optionsButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight / 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Options");
@@ -47,9 +51,15 @@ public class GameState extends State {
 
     // ----------------- GENERAL OVERLAY -----------------
     private final ButtonCircle pauseButton = new ButtonCircle((int) (20 * rsf), (int) (10 * rsf), (int) (60 * rsf), "II");
-    private final Polygon bottomOverlay = new Polygon(new int[]{0, (int) (280 * rsf), (int) (400 * rsf), WIDTH - (int) (400 * rsf), WIDTH - (int) (280 * rsf), WIDTH, WIDTH, 0}, new int[]{HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT, HEIGHT}, 8);
-    private final Polygon topLeftOverlay = new Polygon(new int[]{0, (int) (140 * rsf), (int) (80 * rsf), 0}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
-    private final Polygon topRightOverlay = new Polygon(new int[]{WIDTH, WIDTH - (int) (240 * rsf), WIDTH - (int) (180 * rsf), WIDTH}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4);
+    private final OutlinedPolygon bottomOverlay = new OutlinedPolygon(new int[]{0, (int) (280 * rsf), (int) (400 * rsf), WIDTH - (int) (400 * rsf), WIDTH - (int) (280 * rsf), WIDTH, WIDTH, 0}, new int[]{HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT, HEIGHT}, 8, BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+    private final OutlinedPolygon topLeftOverlay = new OutlinedPolygon(new int[]{0, (int) (140 * rsf), (int) (80 * rsf), 0}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4, BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+    private final OutlinedPolygon topRightOverlay = new OutlinedPolygon(new int[]{WIDTH, WIDTH - (int) (240 * rsf), WIDTH - (int) (180 * rsf), WIDTH}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4, BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+
+    private final HealthBar health = new HealthBar((int) (80 * rsf), HEIGHT - (int) (110 * rsf), (int) (180 * rsf), (int) (30 * rsf), (int) (10 * rsf), BasicColors.HEALTH_BAR_GREEN_COLOR, Color.BLACK, 4f);
+    private final OutlinedEllipse faiOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (110 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f); // faiOutline = firstAidImageOutline
+    private final OutlinedEllipse livesOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (60 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f);
+
+    private final TextBox textBox = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), 10, BasicColors.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5);
 
     /**
      *
@@ -108,6 +118,14 @@ public class GameState extends State {
                 }
             }
         }
+
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_ESCAPE)) {
+            if (!drawPauseMenuOverlay) drawPauseMenuOverlay = true;
+        }
+
+        health.setFillLevel(Main.player.getHealth());
+        health.update();
+        textBox.setText(Main.player.getLives() + "x");
     }
 
     @Override
@@ -193,12 +211,19 @@ public class GameState extends State {
     }
 
     private void drawGUIOverlay(Graphics2D g) {
-        g.setColor(BasicColors.GUI_OVERLAY_DEFAULT_COLOR);
-        g.fill(bottomOverlay);
-        g.fill(topLeftOverlay);
-        g.fill(topRightOverlay);
+        // basic GUI overlays
+        bottomOverlay.draw(g);
+        topLeftOverlay.draw(g);
+        topRightOverlay.draw(g);
 
+        // buttons
         pauseButton.draw(g);
+
+        // health bars and additions
+        health.draw(g);
+        faiOutline.draw(g);
+        livesOutline.draw(g);
+        textBox.draw(g);
     }
 
     private void drawPauseMenuOverlay(Graphics2D g) {
