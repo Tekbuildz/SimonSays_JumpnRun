@@ -1,5 +1,7 @@
 package guis;
 
+import toolbox.UIConstraints;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
@@ -10,11 +12,12 @@ public class TextBox {
 
     private final int x;
     private final int y;
-    private final int width;
+    private final int totalWidth;
     private final Color textColor;
     private final Font font;
     private String[] lines;
     private final int verticalPixelsBetweenLines;
+    private final int uiConstraint;
 
     private final int textMaxHeight;
 
@@ -30,27 +33,31 @@ public class TextBox {
      *
      * @param x - the x coordinate of the first character in the first line
      * @param y - the y coordinate of the first character in the first line
-     * @param widthInChars - the amount of characters allowed per line before
-     *                     inserting a newline
+     * @param widthInPixels - the width in pixels constraining the amount of
+     *                      characters allowed per line before inserting a
+     *                      newline
      * @param textColor - the color of the text
      * @param textFont - the font of the text
      * @param text - the text to be split and displayed
      * @param verticalPixelsBetweenLines - the line spacing in pixels
+     * @param uiConstraint - the ui constraint of the text box, determines
+     *                     where the text is bound to (left, center)
      * @see org.apache.commons.text.WordUtils
      * @see Color
      * @see Font
      */
-    public TextBox(int x, int y, int widthInChars, Color textColor, Font textFont, String text, int verticalPixelsBetweenLines) {
+    public TextBox(int x, int y, int widthInPixels, Color textColor, Font textFont, String text, int verticalPixelsBetweenLines, int uiConstraint) {
         this.x = x;
         this.y = y;
-        this.width = widthInChars;
+        this.totalWidth = widthInPixels;
         this.textColor = textColor;
         this.font = textFont;
         this.verticalPixelsBetweenLines = verticalPixelsBetweenLines;
+        this.uiConstraint = uiConstraint;
 
         this.textMaxHeight = getTextMaxHeight(text, font);
 
-        lines = wrap(text, width).split("\\n");
+        lines = wrap(text, totalWidth / getTextMaxWidth("a", font)).split("\\n");
     }
 
     /**
@@ -79,6 +86,30 @@ public class TextBox {
 
     /**
      *
+     * returns the maximum width of the string
+     * this function uses a FontRenderContext to retrieve information about the
+     * dimensions of a string
+     * <p>
+     * an alternative method to get the dimensions is using an instance of
+     * the Graphics2D class and using its
+     * getFontMetrics().getStringBounds().getWidth() function
+     *
+     * @param text - the text to be displayed
+     * @param font - the font used to display the text
+     * @return - the maximum height of the string
+     * @see AffineTransform
+     * @see FontRenderContext
+     * @see Graphics2D
+     * @see Font
+     */
+    private int getTextMaxWidth(String text, Font font) {
+        AffineTransform affineTransform = new AffineTransform();
+        FontRenderContext frc = new FontRenderContext(affineTransform, true, true);
+        return (int) font.getStringBounds(text, frc).getWidth();
+    }
+
+    /**
+     *
      * sets the text of the TextBox
      * this function again uses the wrap() function from the external
      * apache library to easily wrap text at whitespaces before a specified
@@ -94,7 +125,7 @@ public class TextBox {
      * @see String
      */
     public void setText(String text) {
-        lines = wrap(text, width).split("\\n");
+        lines = wrap(text, totalWidth / getTextMaxWidth("a", font)).split("\\n");
     }
 
     /**
@@ -112,8 +143,54 @@ public class TextBox {
     public void draw(Graphics2D g) {
         g.setColor(textColor);
         g.setFont(font);
-        for (int i = 0; i < lines.length; i++) {
-            g.drawString(lines[i], x, y + i * (verticalPixelsBetweenLines + textMaxHeight));
+        if (uiConstraint == UIConstraints.UI_LEFT_BOUND_CONSTRAINT) {
+            for (int i = 0; i < lines.length; i++) {
+                g.drawString(lines[i], x, y + i * (verticalPixelsBetweenLines + textMaxHeight));
+            }
+        } else if (uiConstraint == UIConstraints.UI_CENTER_BOUND_CONSTRAINT) {
+            for (int i = 0; i < lines.length; i++) {
+                g.drawString(lines[i], x + getCenterBoundOffset(lines[i], font, totalWidth), y + i * (verticalPixelsBetweenLines + textMaxHeight));
+            }
+        } else if (uiConstraint == UIConstraints.UI_RIGHT_BOUND_CONSTRAINT) {
+            for (int i = 0; i < lines.length; i++) {
+                g.drawString(lines[i], x + getRightBoundOffset(lines[i], font, totalWidth), y + i * (verticalPixelsBetweenLines + textMaxHeight));
+            }
         }
+    }
+
+    /**
+     *
+     * this function is used to get the x offset of a CENTER_BOUND_CONSTRAINT
+     * it first calculates the length of the given string in pixels, then
+     * subtracts the length of the string from the totalWidth to get the total
+     * offset of both the left and right side of the string combined and in
+     * order to get only one half, the value is divided by two
+     *
+     * @param text - the string to be centered
+     * @param font - the font of the string (contains the size of the text)
+     * @param totalWidth - the totalWidth in which the text can be rendered
+     * @return the x offset of a string needed in order to center it
+     */
+    private int getCenterBoundOffset(String text, Font font, int totalWidth) {
+        int lineWidth = getTextMaxWidth(text, font);
+        return (totalWidth - lineWidth) / 2;
+    }
+
+    /**
+     *
+     * this function is used to get the x offset of a RIGHT_BOUND_CONSTRAINT
+     * it first calculates the length of the given string in pixels, then
+     * subtracts the length of the string from the totalWidth to get the total
+     * offset
+     *
+     * @param text - the string to be bound to the right side of the
+     *             rectangle in which the string can be rendered
+     * @param font - the font of the string (contains the size of the text)
+     * @param totalWidth - the totalWidth in which the text can be rendered
+     * @return - the x offset of a string needed in order to right-bind it
+     */
+    private int getRightBoundOffset(String text, Font font, int totalWidth) {
+        int lineWidth = getTextMaxWidth(text, font);
+        return totalWidth - lineWidth;
     }
 }

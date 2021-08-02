@@ -6,6 +6,7 @@ public class BasicColors {
 
     public static final Color GUI_OVERLAY_DEFAULT_COLOR = new Color(34, 52, 92);
     public static final Color HEALTH_BAR_GREEN_COLOR = new Color(23, 176, 38);
+    public static final Color TRANSPARENT_DARKENING_COLOR = new Color(0, 0, 0, 120);
 
     // ------------ BUTTON COLORS ------------
     public static final Color BUTTON_FILL_COLOR = new Color(17, 23, 36);

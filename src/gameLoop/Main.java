@@ -83,7 +83,6 @@ public class Main implements Runnable{
         double amountOfTicks = 120.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        int frames = 0;
         long timer = System.currentTimeMillis();
         while (running) {
             long now = System.nanoTime();
@@ -95,7 +94,6 @@ public class Main implements Runnable{
             }
             if (running)
                 renderer.repaint();
-            frames++;
         }
     }
 }

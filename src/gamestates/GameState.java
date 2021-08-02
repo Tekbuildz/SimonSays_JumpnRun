@@ -16,6 +16,7 @@ import levelHandling.Level;
 import player.Player;
 import player.PlayerInputs;
 import toolbox.BasicColors;
+import toolbox.UIConstraints;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,7 +27,6 @@ import java.util.Objects;
 
 public class GameState extends State {
 
-    public HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
 
     private boolean drawPauseMenuOverlay = false;
     private boolean drawDeathOverlay = false;
@@ -39,18 +39,18 @@ public class GameState extends State {
 
     // rsf = resolutionStretchFactor (converting the points from 1920x1080 screen to the resolution of the current main screen
     private final double rsf = (double) WIDTH / 1920;
+    private final int overlayButtonsWidth = (int) (180 * rsf);
+    private final int overlayButtonsHeight = (int) (50 * rsf);
 
 
     // ----------------- PAUSE MENU OVERLAY -----------------
-    private final int pauseMenuOverlayButtonsWidth = (int) (180 * rsf);
-    private final int pauseMenuOverlayButtonsHeight = (int) (50 * rsf);
+    private final HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
+    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (20 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
 
-    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 3, pauseMenuOverlayButtonsWidth * 2, pauseMenuOverlayButtonsHeight * 6, (int) (20 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
-
-    private final ButtonTriangularRectangle continueButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight * 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Continue");
-    private final ButtonTriangularRectangle optionsButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 - pauseMenuOverlayButtonsHeight / 2, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Options");
-    private final ButtonTriangularRectangle exitGameButton = new ButtonTriangularRectangle(WIDTH / 2 - pauseMenuOverlayButtonsWidth / 2, HEIGHT / 2 + pauseMenuOverlayButtonsHeight, pauseMenuOverlayButtonsWidth, pauseMenuOverlayButtonsHeight, (int) (10 * rsf), "Exit Game");
-
+    // ----------------- DEATH OVERLAY -----------------
+    private final HashMap<String, Button> deathOverlayButtons = new HashMap<>();
+    private final TriangularRectangle deathOverlayPolygon = new TriangularRectangle(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (15 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
+    private final TextBox deathOverlayYouDied = new TextBox(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - (int) (overlayButtonsHeight * 1.5), overlayButtonsWidth * 2, Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * rsf)), "You Died!", 5, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
 
     // ----------------- GENERAL OVERLAY -----------------
     private final ButtonCircle pauseButton = new ButtonCircle((int) (20 * rsf), (int) (10 * rsf), (int) (60 * rsf), "II");
@@ -62,21 +62,29 @@ public class GameState extends State {
     private final OutlinedEllipse faiOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (110 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f); // faiOutline = firstAidImageOutline
     private final OutlinedEllipse livesOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (60 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicColors.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f);
 
-    private final TextBox textBox = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), 10, BasicColors.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5);
+    private final TextBox textBox = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), (int) (180 * rsf), BasicColors.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5, UIConstraints.UI_RIGHT_BOUND_CONSTRAINT);
 
     /**
      *
      * constructor of the GameState class
-     * adding buttons of this state to an ArrayList and giving them
-     * a default font
+     * creating and adding buttons of this state to an ArrayList and giving
+     * them a default font
      */
     public GameState() {
         pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
 
-        pauseMenuOverlayButtons.put("continueButton", continueButton);
-        pauseMenuOverlayButtons.put("optionsButton", optionsButton);
-        pauseMenuOverlayButtons.put("exitGameButton", exitGameButton);
+        // ----------------- PAUSE MENU OVERLAY -----------------
+        pauseMenuOverlayButtons.put("continueButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight * 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Continue"));
+        pauseMenuOverlayButtons.put("optionsButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Options"));
+        pauseMenuOverlayButtons.put("exitGameButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Exit Game"));
         for (Button button: pauseMenuOverlayButtons.values()) {
+            button.setTextFont(new Font("Calibri", Font.PLAIN, (int) (30 * rsf)));
+        }
+
+        // ----------------- DEATH OVERLAY -----------------
+        deathOverlayButtons.put("restartButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Restart"));
+        deathOverlayButtons.put("exitGameDeathButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Titlescreen"));
+        for (Button button: deathOverlayButtons.values()) {
             button.setTextFont(new Font("Calibri", Font.PLAIN, (int) (30 * rsf)));
         }
     }
@@ -94,21 +102,43 @@ public class GameState extends State {
     public void update() {
         for (Button button: pauseMenuOverlayButtons.values()) {
             button.update();
-            if (button.isButtonWasReleased()) {
-                switch (Objects.requireNonNull(toolbox.HashMap.getKey(pauseMenuOverlayButtons, button))) {
-                    case "continueButton":
-                        gameInterrupted = false;
-                        drawPauseMenuOverlay = false;
-                        break;
+            if (drawPauseMenuOverlay) {
+                if (button.isButtonWasReleased()) {
+                    switch (Objects.requireNonNull(toolbox.HashMap.getKey(pauseMenuOverlayButtons, button))) {
+                        case "continueButton":
+                            gameInterrupted = false;
+                            drawPauseMenuOverlay = false;
+                            break;
 
-                    case "optionsButton":
-                        // do sth else
-                        break;
+                        case "optionsButton":
+                            // do sth else
+                            break;
 
-                    case "exitGameButton":
-                        // replace this later by going back to main menu screen
-                        System.exit(0);
-                        break;
+                        case "exitGameButton":
+                            // replace this later by going back to main menu screen
+                            // StateMaster.setState(new MainMenuState());
+                            System.exit(0);
+                            break;
+                    }
+                }
+            }
+        }
+
+        for (Button button: deathOverlayButtons.values()) {
+            button.update();
+            if (drawDeathOverlay) {
+                if (button.isButtonWasReleased()) {
+                    switch (Objects.requireNonNull(toolbox.HashMap.getKey(deathOverlayButtons, button))) {
+                        case "restartButton":
+                            resetLevel();
+                            break;
+                        case "exitGameDeathButton":
+                            resetLevel();
+                            // replace this later by going back to main menu screen
+                            // StateMaster.setState(new MainMenuState());
+                            System.exit(0);
+                            break;
+                    }
                 }
             }
         }
@@ -125,6 +155,7 @@ public class GameState extends State {
 
             pauseButton.update();
             if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
+                gameInterrupted = true;
                 drawPauseMenuOverlay = true;
             }
 
@@ -133,6 +164,7 @@ public class GameState extends State {
             textBox.setText(Main.player.getLives() + "x");
 
             if (Main.player.getY() > 2200) {
+                gameInterrupted = true;
                 drawDeathOverlay = true;
             }
         }
@@ -154,6 +186,10 @@ public class GameState extends State {
 
         if (drawPauseMenuOverlay) {
             drawPauseMenuOverlay(g);
+        }
+
+        if (drawDeathOverlay) {
+            drawDeathOverlay(g);
         }
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
@@ -247,24 +283,57 @@ public class GameState extends State {
      * drawing the overlay when hitting the pause button or pressing ESC
      * adds an overlay over the entire screen darkening out the background
      * to center the focus of the player to the buttons in the middle
-     * also stops the gameplay itself from progressing by interrupting the
-     * updates affecting the player and the level, however not the buttons in
-     * order for the player to be able to get back into the game again
+     * adds option to go to the options settings, resume the level or quit
+     * to the main screen in which case the progress would not be saved
      *
      * @param g - the graphics object used to paint onto the screen
      */
     private void drawPauseMenuOverlay(Graphics2D g) {
-        gameInterrupted = true;
         // creating a semi-transparent overlay over the entire screen to remove focus on the game and switch it to buttons
-        g.setColor(new Color(0, 0, 0, 120));
-        g.fillRect(0, 0, (int) (WIDTH * rsf), (int) (HEIGHT * rsf));
+        g.setColor(BasicColors.TRANSPARENT_DARKENING_COLOR);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        g.setColor(BasicColors.GUI_OVERLAY_DEFAULT_COLOR);
-//        g.fill(pauseMenuOverlayPolygon);
         pauseMenuOverlayPolygon.draw(g);
 
         for (Button button: pauseMenuOverlayButtons.values()) {
             button.draw(g);
         }
+    }
+
+    /**
+     *
+     * drawing the death overlay when the player
+     * adds an overlay over the entire screen darkening out the background
+     * to center the focus of the player to the buttons in the middle
+     * adds option to reset the level and try again or return to the
+     * main menu
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
+    private void drawDeathOverlay(Graphics2D g) {
+        // semi-transparent overlay again
+        g.setColor(BasicColors.TRANSPARENT_DARKENING_COLOR);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+
+        deathOverlayPolygon.draw(g);
+        deathOverlayYouDied.draw(g);
+
+        for (Button button: deathOverlayButtons.values()) {
+            button.draw(g);
+        }
+    }
+
+    /**
+     *
+     * resetting the level if the player died
+     * this function resets all the variables like the player's location,
+     * removing any overlays and removing the interruption of the player's
+     * movement
+     */
+    private void resetLevel() {
+        Main.player = new Player(Level.getSpawnLocation());
+        drawDeathOverlay = false;
+        drawPauseMenuOverlay = false;
+        gameInterrupted = false;
     }
 }
