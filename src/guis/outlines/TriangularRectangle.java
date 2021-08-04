@@ -1,7 +1,5 @@
 package guis.outlines;
 
-import toolbox.BasicColors;
-
 import java.awt.*;
 
 public class TriangularRectangle {

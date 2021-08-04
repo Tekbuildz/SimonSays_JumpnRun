@@ -36,5 +36,7 @@ public class Renderer extends JPanel{
         if (StateMaster.getState() != null) {
             StateMaster.getState().render(graphics2D);
         }
+
+        graphics2D.dispose();
     }
 }

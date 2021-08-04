@@ -384,6 +384,196 @@
      </properties>
     </object>
     <object id="66" type="SPAWNPOINT" x="40" y="1600" width="40" height="80"/>
+    <object id="67" name="10" type="PROP" x="280" y="1440" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="68" name="5" type="PROP" x="800" y="1520" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="69" name="10" type="PROP" x="880" y="1480" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="70" name="5" type="PROP" x="960" y="1520" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="71" name="5" type="PROP" x="1720" y="1480" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="72" name="5" type="PROP" x="1960" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="73" name="20" type="PROP" x="2040" y="1320" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="74" name="20" type="PROP" x="2120" y="1320" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="76" name="5" type="PROP" x="2200" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="77" name="5" type="PROP" x="2680" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="78" name="5" type="PROP" x="2720" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="79" name="5" type="PROP" x="3080" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="80" name="5" type="PROP" x="3160" y="1400" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="81" name="10" type="PROP" x="2000" y="1840" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="82" name="10" type="PROP" x="2040" y="1840" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="83" name="5" type="PROP" x="2560" y="1840" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="84" name="10" type="PROP" x="2640" y="1840" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="85" name="5" type="PROP" x="2720" y="1840" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="86" name="10" type="PROP" x="3240" y="1720" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="87" name="10" type="PROP" x="3480" y="1600" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="88" name="20" type="PROP" x="3880" y="1520" width="40" height="40">
+     <properties>
+      <property name="addShadow" type="bool" value="true"/>
+      <property name="collision" type="bool" value="true"/>
+      <property name="collisionboxHeight" type="float" value="16.0"/>
+      <property name="collisionboxWidth" type="float" value="16.0"/>
+      <property name="indestructible" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="89" type="TRIGGER" x="3920" y="1480" width="40" height="120"/>
    </objectgroup>
   </map>
  </maps>

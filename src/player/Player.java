@@ -1,5 +1,7 @@
 package player;
 
+import entities.Coin;
+import gamestates.StateMaster;
 import levelHandling.Level;
 
 import java.awt.*;
@@ -21,6 +23,8 @@ public class Player {
     // if the health reaches 0, a life is removed from the players total number of lives
     private int health;
     private int lives;
+    private int coins;
+    private int backupCoins;
 
 
     /**
@@ -31,10 +35,12 @@ public class Player {
      *
      * @param p - the starting point of the player in the level
      */
-    public Player(Point p) {
+    public Player(Point p, int lives, int coins) {
         playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
         health = 75;
-        lives = 1;
+        this.lives = lives;
+        this.coins = coins;
+        this.backupCoins = coins;
     }
 
     /**
@@ -64,6 +70,26 @@ public class Player {
         // checking the vertical collision with a positive velocity to eliminate the possibility for the player to jump when colliding with the ceiling
         if (ySpeed == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
             ySpeed = -3.5f;
+        }
+    }
+
+    /**
+     *
+     * checking if the player collides with any coin and if so, removes it
+     * and adds its value to the player's bank
+     *
+     * @param coins
+     */
+    public void checkCoinCollision(ArrayList<ArrayList<Coin>> coins) {
+        for (ArrayList<Coin> list:coins) {
+            for (Coin coin:list) {
+                if (playerRect.intersects(coin.getCollisionBox())) {
+                    if (!coin.isWasCollected()) {
+                        this.coins += coin.getValue();
+                    }
+                    coin.setWasCollected(true);
+                }
+            }
         }
     }
 
@@ -163,10 +189,12 @@ public class Player {
 
     /**
      *
-     * increases the number of lives by one
+     * @param increase - if the boolean is true, a life is added, otherwise
+     *                 one is removed
      */
-    public void increaseLives() {
-        lives++;
+    public void addOrRemoveLives(boolean increase) {
+        if (increase) lives++;
+        else lives --;
     }
 
     /**
@@ -183,6 +211,14 @@ public class Player {
      */
     public float getY() {
         return (float) playerRect.getY();
+    }
+
+    /**
+     *
+     * @return the rectangle representing the hitbox of the player
+     */
+    public Rectangle2D.Double getPlayerRect() {
+        return playerRect;
     }
 
     /**
@@ -211,10 +247,20 @@ public class Player {
 
     /**
      *
-     * increases the total number of lives by one
+     * @return the current amount of coins the player has
      */
-    public void increaseNumOfLives() {
-        lives++;
+    public int getCoins() {
+        return coins;
+    }
+
+    /**
+     *
+     * @param changeValue - the amount by which the number of coins of the
+     *                    player is changed (could be positive, e.g. receiving
+     *                    a reward; could be negative, e.g. paying for sth.)
+     */
+    public void changeCoins(int changeValue) {
+        coins += changeValue;
     }
 
     /**
@@ -231,5 +277,13 @@ public class Player {
      */
     public static int getPlayerHeight() {
         return playerHeight;
+    }
+
+    /**
+     *
+     * @return the coins the player had before entering the current level
+     */
+    public int getBackupCoins() {
+        return backupCoins;
     }
 }

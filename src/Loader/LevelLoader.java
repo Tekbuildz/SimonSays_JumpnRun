@@ -1,5 +1,6 @@
 package Loader;
 
+import entities.Coin;
 import levelHandling.Cube;
 
 import javax.xml.namespace.QName;
@@ -17,6 +18,8 @@ public class LevelLoader {
     private static ArrayList<ArrayList<Cube>> levelCubes;
     private static ArrayList<Rectangle2D> collisionBoxes;
     private static Point2D spawnPoint;
+    private static Rectangle2D.Double finish;
+    private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
 
     /**
      *
@@ -25,7 +28,7 @@ public class LevelLoader {
      * given by a FileInputStream and then checking for specific XML-Elements
      * <p>
      * Using those elements, the XML parser checks for collision boxes,
-     * the spawn point and also the level with all of the cubeIDs stored
+     * the spawn point and also the level with all the cubeIDs stored
      *
      *
      * @param fileName - the name of the level to be loaded of the format
@@ -34,6 +37,11 @@ public class LevelLoader {
     public static void loadLevelData(String fileName) {
         levelCubes = new ArrayList<>();
         collisionBoxes = new ArrayList<>();
+
+        // adding three new ArrayLists for coins of value 5, 10, 20
+        for (int i = 0; i < 3; i++) {
+            coins.add(new ArrayList<>());
+        }
 
         // XML parser reading the xml-data in the .litidata file which contains information about the map and the collision boxes
         try {
@@ -53,20 +61,64 @@ public class LevelLoader {
                             Attribute objectType = startElement.getAttributeByName(new QName("type"));
                             if (objectType != null) {
                                 // handling type collision box
-                                if (objectType.getValue().equals("COLLISIONBOX")) {
-                                    collisionBoxes.add(new Rectangle2D.Double(
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
-                                    ));
-                                }
-                                // handling type spawn point
-                                else if (objectType.getValue().equals("SPAWNPOINT")) {
-                                    spawnPoint = new Point2D.Double(
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
-                                            Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
-                                    );
+                                switch (objectType.getValue()) {
+                                    case "COLLISIONBOX":
+                                        collisionBoxes.add(new Rectangle2D.Double(
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
+                                        ));
+                                        break;
+                                    // handling type spawn point
+                                    case "SPAWNPOINT":
+                                        spawnPoint = new Point2D.Double(
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
+                                        );
+                                        break;
+                                    // handling props (coins)
+                                    case "PROP":
+                                        switch (startElement.getAttributeByName(new QName("name")).getValue()) {
+                                            case "5":
+                                                coins.get(0).add(new Coin(
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue()),
+                                                            5)
+                                                );
+                                                break;
+
+                                            case "10":
+                                                coins.get(1).add(new Coin(
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue()),
+                                                            10)
+                                                );
+                                                break;
+
+                                            case "20":
+                                                coins.get(2).add(new Coin(
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                            Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue()),
+                                                            20)
+                                                );
+                                                break;
+                                        }
+                                        break;
+
+                                    case "TRIGGER":
+                                        finish = new Rectangle2D.Double(
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
+                                        );
                                 }
                             }
                             break;
@@ -123,5 +175,22 @@ public class LevelLoader {
      */
     public static Point2D getSpawnPoint() {
         return spawnPoint;
+    }
+
+    /**
+     *
+     * @return an arraylist containing arraylists of all the locations of
+     *          5-er, 10-er and 20-er coins in this order of lists
+     */
+    public static ArrayList<ArrayList<Coin>> getCoins() {
+        return coins;
+    }
+
+    /**
+     *
+     * @return the rectangle representing the hitbox of the finish
+     */
+    public static Rectangle2D.Double getFinish() {
+        return finish;
     }
 }

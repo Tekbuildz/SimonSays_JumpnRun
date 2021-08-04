@@ -11,6 +11,7 @@ import java.util.Iterator;
 public class PlayerInputs implements KeyListener, MouseListener {
 
     private static final ArrayList<Integer> keysPressedInFrame = new ArrayList<>();
+    private static final ArrayList<Integer> keysReleasedInFrame = new ArrayList<>();
     private static final ArrayList<Integer> mouseButtonsReleasedInFrame = new ArrayList<>();
     private static final Point mousePos = new Point();
     private static boolean mousePressed = false;
@@ -22,6 +23,10 @@ public class PlayerInputs implements KeyListener, MouseListener {
      */
     public static ArrayList<Integer> getKeysPressedInFrame() {
         return keysPressedInFrame;
+    }
+
+    public static ArrayList<Integer> getKeysReleasedInFrame() {
+        return keysReleasedInFrame;
     }
 
     @Override
@@ -57,6 +62,7 @@ public class PlayerInputs implements KeyListener, MouseListener {
     public void keyReleased(KeyEvent e) {
         // Integer.valueOf needed, since otherwise the code would try to remove the object at index i, instead of the object with value i
         keysPressedInFrame.remove(Integer.valueOf(e.getKeyCode()));
+        keysReleasedInFrame.add(e.getKeyCode());
     }
 
     @Override
@@ -129,6 +135,9 @@ public class PlayerInputs implements KeyListener, MouseListener {
     public static void updateKeysReleased() {
         ArrayList<Integer> mouseButtonsToRemove = new ArrayList<>(mouseButtonsReleasedInFrame);
         mouseButtonsReleasedInFrame.removeAll(mouseButtonsToRemove);
+
+        ArrayList<Integer> keysToRemove = new ArrayList<>(keysReleasedInFrame);
+        keysReleasedInFrame.removeAll(keysToRemove);
     }
 
     /**

@@ -1,7 +1,6 @@
 package guis;
 
 import guis.outlines.TriangularRectangle;
-import toolbox.BasicColors;
 
 import java.awt.*;
 

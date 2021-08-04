@@ -1,7 +1,7 @@
 package guis.buttons;
 
 import player.PlayerInputs;
-import toolbox.BasicColors;
+import toolbox.BasicGUIConstants;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -34,10 +34,10 @@ public class ButtonCircle extends Button {
     public ButtonCircle (int x, int y, int diameter, String text) {
         this.text = text;
 
-        fillColor = BasicColors.BUTTON_FILL_COLOR;
-        hoverColor = BasicColors.BUTTON_HOVER_COLOR;
-        pressedColor = BasicColors.BUTTON_PRESSED_COLOR;
-        textColor = BasicColors.BUTTON_TEXT_COLOR;
+        fillColor = BasicGUIConstants.BUTTON_FILL_COLOR;
+        hoverColor = BasicGUIConstants.BUTTON_HOVER_COLOR;
+        pressedColor = BasicGUIConstants.BUTTON_PRESSED_COLOR;
+        textColor = BasicGUIConstants.BUTTON_TEXT_COLOR;
 
         ellipse = new Ellipse2D.Double(x, y, diameter, diameter);
     }

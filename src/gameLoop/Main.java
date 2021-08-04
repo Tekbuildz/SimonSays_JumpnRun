@@ -1,5 +1,6 @@
 package gameLoop;
 
+import Loader.DataLoader;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.GameState;
@@ -34,13 +35,14 @@ public class Main implements Runnable{
     /**
      *
      * setting up the display
-     * creating a new player
+     * creating a new player,
      * a new thread and setting the current state
      */
     private void setup() {
-        level = new Level("Level_1");
+        level = new Level("flioLevel");
+        DataLoader.loadPlayerData("testXML");
 
-        player = new Player(Level.getSpawnLocation());
+        player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins());
 
         renderer = new Renderer(DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
@@ -94,6 +96,12 @@ public class Main implements Runnable{
             }
             if (running)
                 renderer.repaint();
+
+            // animation updater
+            if (System.currentTimeMillis() - timer > 100) {
+                // update the animations
+                timer += 500;
+            }
         }
     }
 }
