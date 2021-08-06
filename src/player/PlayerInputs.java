@@ -25,6 +25,10 @@ public class PlayerInputs implements KeyListener, MouseListener {
         return keysPressedInFrame;
     }
 
+    /**
+     *
+     * @return the keys released in the previous tick/frame
+     */
     public static ArrayList<Integer> getKeysReleasedInFrame() {
         return keysReleasedInFrame;
     }

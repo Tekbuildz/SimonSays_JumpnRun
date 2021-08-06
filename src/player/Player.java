@@ -1,11 +1,15 @@
 package player;
 
+import SpriteSheet.ResourceMaster;
 import entities.Coin;
+import gameLoop.Main;
 import gamestates.StateMaster;
 import levelHandling.Level;
+import toolbox.ImageProcessing;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Player {
@@ -13,10 +17,10 @@ public class Player {
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
     private double xSpeed = 0;
-    private double ySpeed = 0;
+    public double ySpeed = 0;
     private static final int cubeSizePixels = 40;
     private static final int playerWidth = 40;
-    private static final int playerHeight = 79;
+    private static final int playerHeight = 60;
 
     // the amount of health the player has left of the current life
     // if the health reaches the maximum, another life cannot be gained this way
@@ -24,7 +28,9 @@ public class Player {
     private int health;
     private int lives;
     private int coins;
-    private int backupCoins;
+    private final int backupCoins;
+
+    private static Image currentPlayerImage;
 
 
     /**
@@ -78,7 +84,7 @@ public class Player {
      * checking if the player collides with any coin and if so, removes it
      * and adds its value to the player's bank
      *
-     * @param coins
+     * @param coins - a 2D ArrayList containing all the coin objects
      */
     public void checkCoinCollision(ArrayList<ArrayList<Coin>> coins) {
         for (ArrayList<Coin> list:coins) {
@@ -136,7 +142,7 @@ public class Player {
      *                  coordinates if the move is legal
      * @return whether the player intersects with another rectangle or not
      */
-    private boolean hasVerticalCollision(ArrayList<Rectangle2D> collisionBoxes, double yVelocity) {
+    public boolean hasVerticalCollision(ArrayList<Rectangle2D> collisionBoxes, double yVelocity) {
         boolean doesIntersect = false;
         Rectangle2D movedRect = playerRect.getBounds2D();
         movedRect.setRect(movedRect.getX(), movedRect.getY() + yVelocity, movedRect.getWidth(), movedRect.getHeight());
@@ -159,13 +165,17 @@ public class Player {
         if (direction == 'r') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = 2;
+                Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentImage % 6]);
+//                Player.setCurrentPlayerImage(ResourceMaster.player_walk.getSpriteImages()[Main.currentImage % 6]);
             }
         } else if (direction == 'l') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = -2;
+                Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentImage % 6]));
             }
         } else if (direction == 'n') {
             xSpeed = 0;
+            Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_idle"));
         }
     }
 
@@ -285,5 +295,21 @@ public class Player {
      */
     public int getBackupCoins() {
         return backupCoins;
+    }
+
+    /**
+     *
+     * @return the image as which the player is currently displayed
+     */
+    public static Image getCurrentPlayerImage() {
+        return currentPlayerImage;
+    }
+
+    /**
+     *
+     * @param currentPlayerImage - the new currentPlayerImage
+     */
+    public static void setCurrentPlayerImage(Image currentPlayerImage) {
+        Player.currentPlayerImage = currentPlayerImage;
     }
 }

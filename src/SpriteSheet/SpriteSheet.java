@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class SpriteSheet {
 
-    private static Image[] spriteImages;
+    private final Image[] spriteImages;
 
     /**
      *
@@ -24,14 +24,16 @@ public class SpriteSheet {
      * the sprite sheet itself
      *
      * @param fileName - name of the sprite sheet to be loaded
+     * @param spriteWidth - the width of an individual sprite
+     * @param spriteHeight - the height of an individual sprite
      */
-    public SpriteSheet(String fileName) {
+    public SpriteSheet(String fileName, int spriteWidth, int spriteHeight) {
         // loading the sprite sheet as a buffered image
         BufferedImage spriteSheet = ImageLoader.loadImage(fileName);
         // getting the number of sprites horizontally and vertically contained in the sprite sheet
-        int[] spriteSheetSize = SpriteSheetLoader.getSpriteSheetSize(spriteSheet);
+        int[] spriteSheetSize = SpriteSheetLoader.getSpriteSheetSize(spriteSheet, spriteWidth, spriteHeight);
         // getting the individual sprites as an array
-        spriteImages = SpriteSheetLoader.getSprites(spriteSheet, spriteSheetSize);
+        spriteImages = SpriteSheetLoader.getSprites(spriteSheet, spriteSheetSize, spriteWidth, spriteHeight);
     }
 
     /**

@@ -82,12 +82,4 @@ public class Cube {
     public int getPixelSIZE() {
         return pixelSIZE;
     }
-
-    /**
-     *
-     * @return the rectangle of the cube
-     */
-    public Rectangle2D getRectangle() {
-        return rectangle;
-    }
 }

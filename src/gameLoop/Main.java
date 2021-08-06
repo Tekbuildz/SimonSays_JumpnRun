@@ -1,6 +1,9 @@
 package gameLoop;
 
 import Loader.DataLoader;
+import Loader.ImageLoader;
+import SpriteSheet.ResourceMaster;
+import SpriteSheet.SpriteSheet;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.GameState;
@@ -8,6 +11,8 @@ import gamestates.StateMaster;
 import levelHandling.Level;
 import player.Player;
 import player.PlayerInputs;
+
+import java.awt.*;
 
 public class Main implements Runnable{
 
@@ -19,6 +24,8 @@ public class Main implements Runnable{
     private static final boolean running = true;
 
     public static Player player;
+    public static long timer;
+    public static int currentImage;
 
     /**
      *
@@ -40,7 +47,8 @@ public class Main implements Runnable{
      */
     private void setup() {
         level = new Level("flioLevel");
-        DataLoader.loadPlayerData("testXML");
+        DataLoader.loadPlayerData("player");
+        loadAllResources();
 
         player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins());
 
@@ -53,6 +61,23 @@ public class Main implements Runnable{
         thread.start();
 
         StateMaster.setState(new GameState());
+    }
+
+    /**
+     *
+     * loads all sprite sheets and images required for the game to a map
+     */
+    public static void loadAllResources() {
+        ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage("res\\images\\player_jump.png"));
+        ResourceMaster.addImageToMap("player_idle", ImageLoader.loadImage("res\\images\\player_idle.png"));
+        ResourceMaster.addImageToMap("coin_5", ImageLoader.loadImage("res\\images\\coin_5.png"));
+        ResourceMaster.addImageToMap("coin_10", ImageLoader.loadImage("res\\images\\coin_10.png"));
+        ResourceMaster.addImageToMap("coin_20", ImageLoader.loadImage("res\\images\\coin_20.png"));
+
+        ResourceMaster.addSpriteSheetToMap("player_die", new SpriteSheet("res\\spritesheets\\player_die_spritesheet.png", 40, 60));
+        ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet("res\\spritesheets\\player_walk_spritesheet.png", 40, 60));
+        ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet("res\\spritesheets\\snail_walk_spritesheet.png", 60, 25));
+        ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet("res\\spritesheets\\dirt_gras.png", 40, 40));
     }
 
     /**
@@ -85,7 +110,7 @@ public class Main implements Runnable{
         double amountOfTicks = 120.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        long timer = System.currentTimeMillis();
+        timer = System.currentTimeMillis();
         while (running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -98,9 +123,10 @@ public class Main implements Runnable{
                 renderer.repaint();
 
             // animation updater
-            if (System.currentTimeMillis() - timer > 100) {
-                // update the animations
-                timer += 500;
+            if (System.currentTimeMillis() - timer > 20) {
+                timer += 20;
+
+                currentImage++;
             }
         }
     }

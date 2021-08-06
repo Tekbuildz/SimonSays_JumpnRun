@@ -2,7 +2,7 @@ package gamestates;
 
 import entities.Coin;
 import toolbox.DataSaver;
-import SpriteSheet.SpriteSheetMaster;
+import SpriteSheet.ResourceMaster;
 import display.DisplayManager;
 import gameLoop.Main;
 import guis.HealthBar;
@@ -189,9 +189,11 @@ public class GameState extends State {
         }
 
         if (!gameInterrupted) {
+            // updating player
             Main.player.applyGravity();
             Main.player.updatePlayerRectCoords();
-            coins.setText(String.valueOf(Main.player.getCoins()));
+
+            coins.setText("$ " + Main.player.getCoins());
             Main.player.checkCoinCollision(Level.getCoins());
             if (Level.getFinish().intersects(Main.player.getPlayerRect())) {
                 gameInterrupted = true;
@@ -218,8 +220,15 @@ public class GameState extends State {
                 levelFinishedTexts.get("timeTaken").setText(        "Time elapsed:              ");
             }
 
+            // handling player movement and updating player image when moving
             handleMovement();
 
+            // updating player image when jumping
+            if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
+                Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
+            }
+
+            // updating gui
             pauseButton.update();
             if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
                 gameInterrupted = true;
@@ -230,10 +239,31 @@ public class GameState extends State {
             health.update();
             lives.setText(Main.player.getLives() + "x");
 
+            // checking death scenario
             if (Main.player.getY() > 2200) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
+        }
+    }
+
+    /**
+     *
+     * calls the functions in the player class
+     * corresponding to the input from the player
+     */
+    private void handleMovement() {
+        // clearing any previous movement
+        Main.player.move('n');
+        // moving upon key press accordingly
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_A)) {
+            Main.player.move('l');
+        }
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_D)) {
+            Main.player.move('r');
+        }
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_SPACE)) {
+            Main.player.jump();
         }
     }
 
@@ -271,14 +301,13 @@ public class GameState extends State {
      */
     private void drawLevel(Graphics2D g) {
         // drawing the level rectangles
-        Image[] dirtGrassSky = SpriteSheetMaster.getSpriteSheetFromMap("dirtGrassSky").getSpriteImages();
         for (List<Cube> list:Level.getLevelCubes()) {
             for (Cube cube:list) {
                 // simulating player movement by shifting the level to the side and keeping the player centered
                 if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
-                    g.drawImage(dirtGrassSky[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE() - ((int) Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE() - ((int) Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 } else {
-                    g.drawImage(dirtGrassSky[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 }
             }
         }
@@ -289,14 +318,31 @@ public class GameState extends State {
         for (List<Coin> list:Level.getCoins()) {
             for (Coin coin:list) {
                 if (!coin.isWasCollected()) {
-                    Rectangle2D rectangle2D;
                     if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
-                        rectangle2D = new Rectangle2D.Double(coin.getCollisionBox().getX() - ((int) (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), coin.getCollisionBox().getWidth(), coin.getCollisionBox().getHeight());
+                        switch (coin.getValue()) {
+                            case 5:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_5"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                            case 10:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_10"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                            case 20:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_20"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                        }
                     } else {
-                        rectangle2D = new Rectangle2D.Double(coin.getCollisionBox().getX(), -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), coin.getCollisionBox().getWidth(), coin.getCollisionBox().getHeight());
+                        switch (coin.getValue()) {
+                            case 5:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_5"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                            case 10:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_10"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                            case 20:
+                                g.drawImage(ResourceMaster.getImageFromMap("coin_20"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                break;
+                        }
                     }
-
-                    g.fill(rectangle2D);
                 }
             }
         }
@@ -309,36 +355,11 @@ public class GameState extends State {
      * @param g - the graphics object used to paint onto the screen
      */
     private void drawPlayer(Graphics2D g) {
-        g.setColor(Color.BLUE);
-        Rectangle2D.Double playerRect;
-
         // simulating player movement by shifting the level to the side and keeping the player centered
         if (Main.player.getX() >= (float) (DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2)){
-            playerRect = new Rectangle2D.Double((float) (DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2), -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), Player.getPlayerWidth(), Player.getPlayerHeight());
+            g.drawImage(Player.getCurrentPlayerImage(), DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2, (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
         } else {
-            playerRect = new Rectangle2D.Double(Main.player.getX(), -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), Player.getPlayerWidth(), Player.getPlayerHeight());
-        }
-
-        g.fill(playerRect);
-    }
-
-    /**
-     *
-     * calls the functions in the player class
-     * corresponding to the input from the player
-     */
-    private void handleMovement() {
-        // clearing any previous movement
-        Main.player.move('n');
-        // moving upon key press accordingly
-        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_A)) {
-            Main.player.move('l');
-        }
-        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_D)) {
-            Main.player.move('r');
-        }
-        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_SPACE)) {
-            Main.player.jump();
+            g.drawImage(Player.getCurrentPlayerImage(), (int) Main.player.getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
         }
     }
 

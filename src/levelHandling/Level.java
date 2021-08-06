@@ -1,8 +1,6 @@
 package levelHandling;
 
 import Loader.LevelLoader;
-import SpriteSheet.SpriteSheet;
-import SpriteSheet.SpriteSheetMaster;
 import entities.Coin;
 
 import java.awt.*;
@@ -34,9 +32,6 @@ public class Level {
         coins = LevelLoader.getCoins();
         spawnPoint = LevelLoader.getSpawnPoint();
         finish = LevelLoader.getFinish();
-
-        // loading the necessary sprite sheets for the level and the player
-        SpriteSheetMaster.addSpriteSheetToMap("dirtGrassSky", new SpriteSheet("C:\\Users\\thoma\\Documents\\Programming\\Projects\\SimonSays_JumpnRun\\res\\spritesheets\\dirt_gras.png"));
     }
 
     /**
