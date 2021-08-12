@@ -1,6 +1,7 @@
 package levelHandling;
 
 import Loader.LevelLoader;
+import SimonSays.SimonSaysMaster;
 import entities.Coin;
 
 import java.awt.*;
@@ -13,6 +14,7 @@ public class Level {
     private static ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
     private static ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
     private static ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    public static SimonSaysMaster simonSaysMaster;
     private static Point2D spawnPoint;
     private static Rectangle2D finish;
 
@@ -30,6 +32,7 @@ public class Level {
         levelCubes = LevelLoader.getLevelCubes();
         collisionBoxes = LevelLoader.getCollisionBoxes();
         coins = LevelLoader.getCoins();
+        simonSaysMaster = new SimonSaysMaster(LevelLoader.getSimonSays());
         spawnPoint = LevelLoader.getSpawnPoint();
         finish = LevelLoader.getFinish();
     }

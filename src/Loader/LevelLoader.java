@@ -1,6 +1,7 @@
 package Loader;
 
 import entities.Coin;
+import SimonSays.SimonSays;
 import levelHandling.Cube;
 
 import javax.xml.namespace.QName;
@@ -12,14 +13,17 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LevelLoader {
 
-    private static ArrayList<ArrayList<Cube>> levelCubes;
-    private static ArrayList<Rectangle2D> collisionBoxes;
+    private static final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
+    private static final ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
+    private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    // each level only contains 3 SimonSays-stations
+    private static final SimonSays[] simonSays = new SimonSays[3];
     private static Point2D spawnPoint;
     private static Rectangle2D.Double finish;
-    private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
 
     /**
      *
@@ -35,9 +39,6 @@ public class LevelLoader {
      *                 fileName.litidata
      */
     public static void loadLevelData(String fileName) {
-        levelCubes = new ArrayList<>();
-        collisionBoxes = new ArrayList<>();
-
         // adding three new ArrayLists for coins of value 5, 10, 20
         for (int i = 0; i < 3; i++) {
             coins.add(new ArrayList<>());
@@ -49,6 +50,7 @@ public class LevelLoader {
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
             XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(fileInputStream);
 
+            int currentSimonSays = 0;
             // looping through all the xml events (<> || </>)
             while (xmlEventReader.hasNext()) {
                 XMLEvent event = xmlEventReader.nextEvent();
@@ -113,12 +115,25 @@ public class LevelLoader {
                                         break;
 
                                     case "TRIGGER":
-                                        finish = new Rectangle2D.Double(
-                                                Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
-                                                Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
-                                                Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
-                                                Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
-                                        );
+                                        switch (startElement.getAttributeByName(new QName("name")).getValue()) {
+                                            case "finish":
+                                                finish = new Rectangle2D.Double(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
+                                                );
+                                                break;
+                                            case "simon_says":
+                                                simonSays[currentSimonSays] = new SimonSays(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue())
+                                                );
+                                                currentSimonSays++;
+                                                break;
+                                        }
                                 }
                             }
                             break;
@@ -184,6 +199,15 @@ public class LevelLoader {
      */
     public static ArrayList<ArrayList<Coin>> getCoins() {
         return coins;
+    }
+
+    /**
+     *
+     * @return a list containing all the SimonSays objects with their
+     *          respective sequence and position
+     */
+    public static SimonSays[] getSimonSays() {
+        return simonSays;
     }
 
     /**

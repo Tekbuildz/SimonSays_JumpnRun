@@ -3,7 +3,6 @@ package player;
 import SpriteSheet.ResourceMaster;
 import entities.Coin;
 import gameLoop.Main;
-import gamestates.StateMaster;
 import levelHandling.Level;
 import toolbox.ImageProcessing;
 
@@ -16,7 +15,7 @@ public class Player {
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
-    private double xSpeed = 0;
+    public double xSpeed = 0;
     public double ySpeed = 0;
     private static final int cubeSizePixels = 40;
     private static final int playerWidth = 40;
@@ -165,13 +164,13 @@ public class Player {
         if (direction == 'r') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = 2;
-                Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentImage % 6]);
+                Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentEntityImage % 6]);
 //                Player.setCurrentPlayerImage(ResourceMaster.player_walk.getSpriteImages()[Main.currentImage % 6]);
             }
         } else if (direction == 'l') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = -2;
-                Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentImage % 6]));
+                Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[(int) (Math.floor(Main.currentEntityImage / 10f) % 6)]));
             }
         } else if (direction == 'n') {
             xSpeed = 0;
@@ -195,16 +194,6 @@ public class Player {
      */
     public int getCubeSize() {
         return cubeSizePixels;
-    }
-
-    /**
-     *
-     * @param increase - if the boolean is true, a life is added, otherwise
-     *                 one is removed
-     */
-    public void addOrRemoveLives(boolean increase) {
-        if (increase) lives++;
-        else lives --;
     }
 
     /**
@@ -243,7 +232,7 @@ public class Player {
      *
      * @param health - increases the health of the current life by the value of the parameter
      */
-    public void increaseHealth(int health) {
+    public void removeHealth(int health) {
         this.health += health;
     }
 
@@ -271,22 +260,6 @@ public class Player {
      */
     public void changeCoins(int changeValue) {
         coins += changeValue;
-    }
-
-    /**
-     *
-     * @return the width of the player in pixels
-     */
-    public static int getPlayerWidth() {
-        return playerWidth;
-    }
-
-    /**
-     *
-     * @return the height of the player in pixels
-     */
-    public static int getPlayerHeight() {
-        return playerHeight;
     }
 
     /**

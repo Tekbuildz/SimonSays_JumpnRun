@@ -1,6 +1,7 @@
 package gamestates;
 
 import entities.Coin;
+import SimonSays.SimonSays;
 import toolbox.DataSaver;
 import SpriteSheet.ResourceMaster;
 import display.DisplayManager;
@@ -22,7 +23,6 @@ import toolbox.UIConstraints;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +46,11 @@ public class GameState extends State {
     private final int overlayButtonsWidth = (int) (180 * rsf);
     private final int overlayButtonsHeight = (int) (50 * rsf);
 
+    private long timeWithPauses;
+    private long pauseStart;
+    private long mSeconds;
+    private long seconds;
+    private long minutes;
 
     // ----------------- PAUSE MENU OVERLAY -----------------
     private final HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
@@ -73,7 +78,7 @@ public class GameState extends State {
 
     private final TextBox lives = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), (int) (180 * rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5, UIConstraints.UI_RIGHT_BOUND_CONSTRAINT);
     private final TextBox coins = new TextBox(WIDTH - (int) (260 * rsf), HEIGHT - (int) (60 * rsf), (int) (240 * rsf), BasicGUIConstants.MONEY_YELLOW_COLOR, new Font("Calibri", Font.PLAIN, (int) (60 * rsf)), "$ " + Main.player.getCoins(), 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
-
+    private final TextBox time = new TextBox(WIDTH - (int) (180 * rsf), (int) (50 * rsf), (int) (180 * rsf), Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * rsf)), "00:00.000", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
 
     /**
      *
@@ -110,6 +115,8 @@ public class GameState extends State {
         levelFinishedTexts.put("moneyEarned", new TextBox(WIDTH / 2 - (int) (overlayButtonsWidth * 1.5), HEIGHT / 2 - overlayButtonsHeight, overlayButtonsWidth * 3, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
         levelFinishedTexts.put("itemsCollected", new TextBox(WIDTH / 2 - (int) (overlayButtonsWidth * 1.5), HEIGHT / 2, overlayButtonsWidth * 3, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
         levelFinishedTexts.put("timeTaken", new TextBox(WIDTH / 2 - (int) (overlayButtonsWidth * 1.5), HEIGHT / 2 + overlayButtonsHeight, overlayButtonsWidth * 3, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+
+        timeWithPauses = System.currentTimeMillis();
     }
 
     /**
@@ -184,17 +191,28 @@ public class GameState extends State {
             }
         }
 
-        if (PlayerInputs.getKeysReleasedInFrame().contains(KeyEvent.VK_ESCAPE)) {
-            drawPauseMenuOverlay = !drawPauseMenuOverlay;
-        }
+        Level.simonSaysMaster.update();
 
         if (!gameInterrupted) {
+            // updating the timer
+            // preventing pauses from causing any interference with the timer
+            if (pauseStart != 0) {
+                timeWithPauses += System.currentTimeMillis() - pauseStart;
+            }
+            pauseStart = 0;
+            mSeconds = (System.currentTimeMillis() - timeWithPauses) % 1000;
+            seconds = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 1000f)) % 60;
+            minutes = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 60000f)) % 60;
+            time.setText(minutes + ":" + seconds + "." + mSeconds);
+
+
             // updating player
             Main.player.applyGravity();
             Main.player.updatePlayerRectCoords();
 
             coins.setText("$ " + Main.player.getCoins());
             Main.player.checkCoinCollision(Level.getCoins());
+            // checking if the player finished the level
             if (Level.getFinish().intersects(Main.player.getPlayerRect())) {
                 gameInterrupted = true;
                 drawLevelFinishedOverlay = true;
@@ -217,16 +235,24 @@ public class GameState extends State {
                 levelFinishedTexts.get("coinsCollected").setText(   "Coins Collected:           " + totalCoinsCollected + "/" + totalCoinsInLevel);
                 levelFinishedTexts.get("moneyEarned").setText(      "Money earned:              " + totalMoneyEarned + "/" + totalMoneyAvailable);
                 levelFinishedTexts.get("itemsCollected").setText(   "Items Collected:           0 / 0");
-                levelFinishedTexts.get("timeTaken").setText(        "Time elapsed:              ");
+                levelFinishedTexts.get("timeTaken").setText(        "Time elapsed:              " + minutes + ":" + seconds + "." + mSeconds);
             }
 
             // handling player movement and updating player image when moving
             handleMovement();
 
+            for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
+                if (simon.isColliding()) {
+                    gameInterrupted = true;
+                    break;
+                }
+            }
+
             // updating player image when jumping
             if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
                 Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
             }
+
 
             // updating gui
             pauseButton.update();
@@ -239,11 +265,32 @@ public class GameState extends State {
             health.update();
             lives.setText(Main.player.getLives() + "x");
 
+
             // checking death scenario
             if (Main.player.getY() > 2200) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
+
+
+            // checking if the player paused the game
+            if (PlayerInputs.getKeysReleasedInFrame().contains(KeyEvent.VK_ESCAPE)) {
+                drawPauseMenuOverlay = true;
+                gameInterrupted = true;
+            }
+
+
+            // if an event caused the game to interrupt, the time at which the
+            // interruption took place will be taken in order to calculate the
+            // length of the pause
+            if (gameInterrupted) {
+                pauseStart = System.currentTimeMillis();
+            }
+
+            // checking if the player resumed the game
+        } else if (PlayerInputs.getKeysReleasedInFrame().contains(KeyEvent.VK_ESCAPE)) {
+            drawPauseMenuOverlay = false;
+            gameInterrupted = false;
         }
     }
 
@@ -290,6 +337,9 @@ public class GameState extends State {
         if (drawLevelFinishedOverlay) {
             drawLevelFinishedOverlay(g);
         }
+
+        Level.simonSaysMaster.drawSimonSaysOverlay(g);
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
 
@@ -313,8 +363,6 @@ public class GameState extends State {
         }
 
         // drawing the coins
-        // replace later with showing image/animation
-        g.setColor(BasicGUIConstants.MONEY_YELLOW_COLOR);
         for (List<Coin> list:Level.getCoins()) {
             for (Coin coin:list) {
                 if (!coin.isWasCollected()) {
@@ -346,6 +394,17 @@ public class GameState extends State {
                 }
             }
         }
+
+        // drawing the SimonSays
+//        for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
+//            g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
+//            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+//                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+//            } else {
+//                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+//                // g.drawImage();
+//            }
+//        }
     }
 
     /**
@@ -385,6 +444,7 @@ public class GameState extends State {
         lives.draw(g);
 
         coins.draw(g);
+        time.draw(g);
     }
 
     /**
@@ -478,5 +538,11 @@ public class GameState extends State {
                 coin.setWasCollected(false);
             }
         }
+
+        mSeconds = 0;
+        seconds = 0;
+        minutes = 0;
+        pauseStart = 0;
+        timeWithPauses = System.currentTimeMillis();
     }
 }

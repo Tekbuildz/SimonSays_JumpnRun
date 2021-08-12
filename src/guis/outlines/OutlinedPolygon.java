@@ -1,10 +1,11 @@
 package guis.outlines;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class OutlinedPolygon {
 
-    private final Color fillColor;
+    private Color fillColor;
 
     private final Polygon polygon;
     private final Polyline polyline;
@@ -51,4 +52,30 @@ public class OutlinedPolygon {
         polyline.draw(g);
     }
 
+    /**
+     *
+     * returns whether the OutlinedPolygon contains a point or not
+     *
+     * @param p - the point to be checked
+     * @return whether the point is located inside the shape or not
+     */
+    public boolean contains(Point2D p) {
+        return polygon.contains(p);
+    }
+
+    /**
+     *
+     * @param fillColor - the new fillColor of the OutlinedPolygon
+     */
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    /**
+     *
+     * @return the current fillColor of the OutlinedPolygon
+     */
+    public Color getFillColor() {
+        return fillColor;
+    }
 }

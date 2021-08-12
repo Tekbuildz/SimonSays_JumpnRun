@@ -12,20 +12,15 @@ import levelHandling.Level;
 import player.Player;
 import player.PlayerInputs;
 
-import java.awt.*;
-
 public class Main implements Runnable{
 
-    private DisplayManager display;
-    private Level level;
-    private Thread thread;
     private Renderer renderer;
 
     private static final boolean running = true;
 
     public static Player player;
     public static long timer;
-    public static int currentImage;
+    public static int currentEntityImage;
 
     /**
      *
@@ -46,7 +41,7 @@ public class Main implements Runnable{
      * a new thread and setting the current state
      */
     private void setup() {
-        level = new Level("flioLevel");
+        new Level("flioLevel");
         DataLoader.loadPlayerData("player");
         loadAllResources();
 
@@ -54,10 +49,10 @@ public class Main implements Runnable{
 
         renderer = new Renderer(DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
-        display = new DisplayManager();
+        DisplayManager display = new DisplayManager();
         display.createDisplay(renderer);
 
-        thread = new Thread(this);
+        Thread thread = new Thread(this);
         thread.start();
 
         StateMaster.setState(new GameState());
@@ -123,10 +118,10 @@ public class Main implements Runnable{
                 renderer.repaint();
 
             // animation updater
-            if (System.currentTimeMillis() - timer > 20) {
-                timer += 20;
+            if (System.currentTimeMillis() - timer > 40) {
+                timer += 40;
 
-                currentImage++;
+                currentEntityImage++;
             }
         }
     }

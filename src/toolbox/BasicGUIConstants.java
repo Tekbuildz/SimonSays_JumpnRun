@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class BasicGUIConstants {
 
-    private static final double rsf = DisplayManager.getWIDTH() / 1920f;
+    public static final double rsf = DisplayManager.getWIDTH() / 1920f;
 
     // ------------ OTHER COLORS ------------
     public static final Color GUI_OVERLAY_DEFAULT_COLOR = new Color(34, 52, 92);
