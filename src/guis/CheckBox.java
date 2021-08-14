@@ -25,6 +25,17 @@ public class CheckBox {
     private final Line2D.Double crossL1;
     private final Line2D.Double crossL2;
 
+    /**
+     *
+     * basic constructor of a CheckBox
+     *
+     * @param x - the x coordinate of the CheckBox
+     * @param y - the y coordinate of the CheckBox
+     * @param width - the width of the CheckBox
+     * @param height - the height of the CheckBox
+     * @param fillColor - the fillColor of the CheckBox
+     * @param strokeWidth - the thickness of the bounds of the CheckBox
+     */
     public CheckBox(int x, int y, int width, int height, Color fillColor, int strokeWidth) {
         bounds = new Rectangle2D.Double(x, y, width, height);
         this.fillColor = fillColor;
@@ -39,7 +50,12 @@ public class CheckBox {
         this.crossL2 = new Line2D.Double(x + width, y, x, y + height);
     }
 
-    // 1, 172, 14
+    /**
+     *
+     * draws the checkBox and depending on its state also a cross or a tick
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     public void draw(Graphics2D g) {
         // drawing the GUI background
         g.setColor(fillColor);
@@ -63,14 +79,27 @@ public class CheckBox {
        }
     }
 
+    /**
+     *
+     * @return whether the checkBox is TICKED, EMPTY or CROSSED
+     */
     public int getState() {
         return state;
     }
 
+    /**
+     *
+     * @param state - the new state of the checkBox, input preferably using
+     *              the static constants of this class
+     */
     public void setState(int state) {
         this.state = state;
     }
 
+    /**
+     *
+     * @return the rectangle enclosing the checkBox, also used for painting
+     */
     public Rectangle2D.Double getBounds() {
         return bounds;
     }

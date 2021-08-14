@@ -30,32 +30,58 @@ public class SimonSays {
         bounds = new Rectangle2D.Double(x, y, width, height);
     }
 
+    /**
+     *
+     * checks whether the SS collides with the player
+     */
     public void update() {
-        // if the drawOverlay boolean is still true but the player since has moved, the SimonSays cannot be accessed anymore
-//        if (isColliding && !(Main.player.getPlayerRect().intersects(bounds) && Main.player.xSpeed == 0 && !wasPreviouslyUsed)) wasPreviouslyUsed = true;
         isColliding = Main.player.getPlayerRect().intersects(bounds);
     }
 
+    /**
+     *
+     * @return whether the SS was completed
+     */
     public boolean isCompleted() {
         return isCompleted;
     }
 
+    /**
+     *
+     * @param completed - sets whether the SS is completed
+     */
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
 
+    /**
+     *
+     * @return whether the animation of the SS was started
+     */
     public boolean isStarted() {
         return isStarted;
     }
 
+    /**
+     *
+     * @param started - sets whether the animation of the SS is started
+     */
     public void setStarted(boolean started) {
         this.isStarted = started;
     }
 
+    /**
+     *
+     * @return whether the SS is colliding with the player
+     */
     public boolean isColliding() {
         return isColliding;
     }
 
+    /**
+     *
+     * @return the rectangle enclosing the SS in the level
+     */
     public Rectangle2D.Double getBounds() {
         return bounds;
     }

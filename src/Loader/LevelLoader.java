@@ -32,7 +32,7 @@ public class LevelLoader {
      * given by a FileInputStream and then checking for specific XML-Elements
      * <p>
      * Using those elements, the XML parser checks for collision boxes,
-     * the spawn point and also the level with all the cubeIDs stored
+     * SimonSays, the spawn point and the level with all the cubeIDs stored
      *
      *
      * @param fileName - the name of the level to be loaded of the format
