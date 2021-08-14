@@ -192,8 +192,15 @@ public class GameState extends State {
         }
 
         Level.simonSaysMaster.update();
+        for (SimonSays simonSays: Level.simonSaysMaster.getSimonSays()) {
+            if (simonSays.isColliding()) {
+                gameInterrupted = !simonSays.isCompleted();
+                break;
+            }
+        }
 
         if (!gameInterrupted) {
+            // ----------------------------------------------------------------- TIMER
             // updating the timer
             // preventing pauses from causing any interference with the timer
             if (pauseStart != 0) {
@@ -204,8 +211,9 @@ public class GameState extends State {
             seconds = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 1000f)) % 60;
             minutes = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 60000f)) % 60;
             time.setText(minutes + ":" + seconds + "." + mSeconds);
+            // -----------------------------------------------------------------
 
-
+            // ----------------------------------------------------------------- PLAYER
             // updating player
             Main.player.applyGravity();
             Main.player.updatePlayerRectCoords();
@@ -241,45 +249,37 @@ public class GameState extends State {
             // handling player movement and updating player image when moving
             handleMovement();
 
-            for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
-                if (simon.isColliding()) {
-                    gameInterrupted = true;
-                    break;
-                }
-            }
-
             // updating player image when jumping
             if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
                 Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
             }
 
+            // player attributes
+            health.setFillLevel(Main.player.getHealth());
+            health.update();
+            lives.setText(Main.player.getLives() + "x");
+            // -----------------------------------------------------------------
 
+            // ----------------------------------------------------------------- VARIOUS CAUSES FOR INTERRUPTION
             // updating gui
             pauseButton.update();
             if (pauseButton.isButtonWasReleased() && !drawPauseMenuOverlay) {
                 gameInterrupted = true;
                 drawPauseMenuOverlay = true;
             }
-
-            health.setFillLevel(Main.player.getHealth());
-            health.update();
-            lives.setText(Main.player.getLives() + "x");
-
-
             // checking death scenario
             if (Main.player.getY() > 2200) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
-
-
             // checking if the player paused the game
             if (PlayerInputs.getKeysReleasedInFrame().contains(KeyEvent.VK_ESCAPE)) {
                 drawPauseMenuOverlay = true;
                 gameInterrupted = true;
             }
+            // -----------------------------------------------------------------
 
-
+            // ----------------------------------------------------------------- STOPPING TIMER
             // if an event caused the game to interrupt, the time at which the
             // interruption took place will be taken in order to calculate the
             // length of the pause
@@ -369,25 +369,25 @@ public class GameState extends State {
                     if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_5"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_10"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_20"), (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                         }
                     } else {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_5"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_10"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getImageFromMap("coin_20"), (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
                                 break;
                         }
                     }
@@ -544,5 +544,7 @@ public class GameState extends State {
         minutes = 0;
         pauseStart = 0;
         timeWithPauses = System.currentTimeMillis();
+
+        Level.simonSaysMaster.resetSimonSays();
     }
 }

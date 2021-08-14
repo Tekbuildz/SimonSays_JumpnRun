@@ -1,7 +1,7 @@
 package SimonSays;
 
 import display.DisplayManager;
-import gameLoop.Main;
+import guis.CheckBox;
 import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
 import player.PlayerInputs;
@@ -9,7 +9,6 @@ import toolbox.BasicGUIConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SimonSaysMaster {
@@ -22,7 +21,7 @@ public class SimonSaysMaster {
             new Color(63,72,170)
     };
     // stores all the sequences of all the SimonSays of a level
-    private final int[][] sequences;
+    private int[][] sequences;
     private final SimonSays[] simonSays;
     // keeps track which is the current SimonSays, since each of the three have to be treated differently: //SS = SIMON_SAYS!!
     // 1: show sequence, solve sequence, show sequence
@@ -46,7 +45,8 @@ public class SimonSaysMaster {
     private final ArrayList<Integer> playerInputs = new ArrayList<>();
 
     // ------------------------------------------------------------------------- GUI VARIABLES
-    private final TriangularRectangle bgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 12, BasicGUIConstants.BUTTON_TEXT_COLOR, Color.BLACK, 15);
+    private final TriangularRectangle bgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3 - (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() / 6 - (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() + (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() / 3 * 2  + (int) (BasicGUIConstants.rsf * 100), DisplayManager.getHEIGHT() / 10, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 15);
+    private final TriangularRectangle fgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 12, BasicGUIConstants.BUTTON_TEXT_COLOR, Color.BLACK, 15);
     private final TriangularRectangle centerTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 12, DisplayManager.getHEIGHT() / 12 * 5, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 48, Color.GRAY, Color.BLACK, 8);
 
     private final int centerLineWidthHalf = (int) (15 * BasicGUIConstants.rsf);
@@ -73,25 +73,27 @@ public class SimonSaysMaster {
             )
     };
 
+    private final CheckBox[] checkBoxes = new CheckBox[] {
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 4, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 2 - DisplayManager.getHEIGHT() / 16, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 2 + DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15)
+    };
+
     public SimonSaysMaster(SimonSays[] simonSays) {
         sequences = new int[3][0];
         for (int i = 0; i < sequences.length; i++) {
-            sequences[i] = new int[ThreadLocalRandom.current().nextInt(1, 5)];
+            sequences[i] = new int[ThreadLocalRandom.current().nextInt(3, 6)];
             for (int j = 0; j < sequences[i].length; j++) {
                 sequences[i][j] = ThreadLocalRandom.current().nextInt(0, 4);
             }
         }
         this.simonSays = simonSays;
-
-        // testing
-        for (int[] seq:sequences) {
-            System.out.println(Arrays.toString(seq));
-        }
     }
 
     public void update() {
         // if an animation is playing, the counter should constantly increase
         if (isPlaying) {
+
             // executed every second
             if (System.currentTimeMillis() - animationTimer > 1000) {
                 // making a pause every other cycle
@@ -107,6 +109,7 @@ public class SimonSaysMaster {
                 }
             }
         } else {
+            // mouse interaction with SimonSays
             for (int i = 0; i < ops.length; i++) {
                 // whether the player hovers over the specific button or not
                 if (ops[i].contains(PlayerInputs.getMousePos())) {
@@ -130,23 +133,46 @@ public class SimonSaysMaster {
                 }
             }
 
-//            if (playerInputs.size() == sequences[currentSSCounter].length) {
-//                checkSSResult(playerInputs, sequences, currentSSCounter);
-//            }
+            if (currentSSCounter >= 0) {
+                if (playerInputs.size() == sequences[currentSSCounter].length) {
+                    // if the player has reported the correct sequence given, the corresponding CheckBox is ticked
+                    if (checkSSResult(playerInputs, sequences, currentSSCounter)) {
+                        checkBoxes[currentSSCounter].setState(CheckBox.TICKED);
+                    }
+                    // otherwise, all following CheckBoxes are crossed
+                    else {
+                        for (int i = currentSSCounter; i < sequences.length; i++) {
+                            checkBoxes[i].setState(CheckBox.CROSSED);
+                        }
+                        // making all further SimonSays inaccessible once one was wrong
+                        for (SimonSays simonSays:simonSays) {
+                            simonSays.setCompleted(true);
+                        }
+                    }
+
+                    for (SimonSays simonSays: simonSays) {
+                        if (simonSays.isColliding()) {
+                            simonSays.setCompleted(true);
+                            ArrayList<Integer> collectionToRemove = new ArrayList<>(playerInputs);
+                            playerInputs.removeAll(collectionToRemove);
+                        }
+                    }
+                }
+            }
         }
 
         for (SimonSays simonSays: simonSays) {
             simonSays.update();
-            if (!simonSays.isWasPreviouslyUsed() && simonSays.isColliding()) {
+            if (!simonSays.isStarted() && simonSays.isColliding()) {
                 startAnimation();
-                simonSays.setWasPreviouslyUsed(true);
+                simonSays.setStarted(true);
             }
         }
     }
 
     public void drawSimonSaysOverlay(Graphics2D g) {
         for (SimonSays simonSays:simonSays) {
-            if (simonSays.isColliding()) {
+            if (simonSays.isColliding() && !simonSays.isCompleted()) {
                 // darken background
                 g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
                 g.fillRect(0, 0, DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
@@ -160,12 +186,15 @@ public class SimonSaysMaster {
                         }
                     }
                 }
-
                 bgTR.draw(g);
+                fgTR.draw(g);
                 for (OutlinedPolygon op:ops) {
                     op.draw(g);
                 }
                 centerTR.draw(g);
+                for (CheckBox cb:checkBoxes) {
+                    cb.draw(g);
+                }
             }
         }
     }
@@ -181,6 +210,29 @@ public class SimonSaysMaster {
             currentAction = -INITIAL_DELAY_IN_S;
             currentSSCounter++;
             animationTimer = System.currentTimeMillis();
+        }
+    }
+
+    public void resetSimonSays() {
+        currentSSCounter = -1;
+        for (CheckBox cb:checkBoxes) {
+            cb.setState(CheckBox.EMPTY);
+        }
+
+        for (SimonSays simonSays:simonSays) {
+            simonSays.setStarted(false);
+            simonSays.setCompleted(false);
+        }
+        ArrayList<Integer> collectionToRemove = new ArrayList<>(playerInputs);
+        playerInputs.removeAll(collectionToRemove);
+
+        // creating a new sequence
+        sequences = new int[3][0];
+        for (int i = 0; i < sequences.length; i++) {
+            sequences[i] = new int[ThreadLocalRandom.current().nextInt(3, 6)];
+            for (int j = 0; j < sequences[i].length; j++) {
+                sequences[i][j] = ThreadLocalRandom.current().nextInt(0, 4);
+            }
         }
     }
 

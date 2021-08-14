@@ -12,7 +12,8 @@ public class SimonSays {
     // X3X4X
     // is the integer assigned to each button
     private boolean isColliding = false;
-    private boolean wasPreviouslyUsed = false;
+    private boolean isCompleted = false;
+    private boolean isStarted = false;
     private final Rectangle2D.Double bounds;
 
     /**
@@ -31,16 +32,24 @@ public class SimonSays {
 
     public void update() {
         // if the drawOverlay boolean is still true but the player since has moved, the SimonSays cannot be accessed anymore
-        if (isColliding && !(Main.player.getPlayerRect().intersects(bounds) && Main.player.xSpeed == 0 && !wasPreviouslyUsed)) wasPreviouslyUsed = true;
+//        if (isColliding && !(Main.player.getPlayerRect().intersects(bounds) && Main.player.xSpeed == 0 && !wasPreviouslyUsed)) wasPreviouslyUsed = true;
         isColliding = Main.player.getPlayerRect().intersects(bounds);
     }
 
-    public boolean isWasPreviouslyUsed() {
-        return wasPreviouslyUsed;
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    public void setWasPreviouslyUsed(boolean wasPreviouslyUsed) {
-        this.wasPreviouslyUsed = wasPreviouslyUsed;
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(boolean started) {
+        this.isStarted = started;
     }
 
     public boolean isColliding() {

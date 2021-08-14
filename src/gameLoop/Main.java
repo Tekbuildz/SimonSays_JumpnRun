@@ -65,10 +65,13 @@ public class Main implements Runnable{
     public static void loadAllResources() {
         ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage("res\\images\\player_jump.png"));
         ResourceMaster.addImageToMap("player_idle", ImageLoader.loadImage("res\\images\\player_idle.png"));
-        ResourceMaster.addImageToMap("coin_5", ImageLoader.loadImage("res\\images\\coin_5.png"));
-        ResourceMaster.addImageToMap("coin_10", ImageLoader.loadImage("res\\images\\coin_10.png"));
-        ResourceMaster.addImageToMap("coin_20", ImageLoader.loadImage("res\\images\\coin_20.png"));
+//        ResourceMaster.addImageToMap("coin_5", ImageLoader.loadImage("res\\images\\coin_5.png"));
+//        ResourceMaster.addImageToMap("coin_10", ImageLoader.loadImage("res\\images\\coin_10.png"));
+//        ResourceMaster.addImageToMap("coin_20", ImageLoader.loadImage("res\\images\\coin_20.png"));
 
+        ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet("res\\spritesheets\\coin_5_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet("res\\spritesheets\\coin_10_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("coin_20", new SpriteSheet("res\\spritesheets\\coin_20_spritesheet.png", 40, 40));
         ResourceMaster.addSpriteSheetToMap("player_die", new SpriteSheet("res\\spritesheets\\player_die_spritesheet.png", 40, 60));
         ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet("res\\spritesheets\\player_walk_spritesheet.png", 40, 60));
         ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet("res\\spritesheets\\snail_walk_spritesheet.png", 60, 25));

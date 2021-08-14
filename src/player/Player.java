@@ -170,7 +170,7 @@ public class Player {
         } else if (direction == 'l') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = -2;
-                Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[(int) (Math.floor(Main.currentEntityImage / 10f) % 6)]));
+                Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentEntityImage % 6]));
             }
         } else if (direction == 'n') {
             xSpeed = 0;
