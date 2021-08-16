@@ -2,6 +2,8 @@ package Loader;
 
 import entities.Coin;
 import SimonSays.SimonSays;
+import entities.mob.Mob;
+import entities.mob.Snail;
 import levelHandling.Cube;
 
 import javax.xml.namespace.QName;
@@ -13,13 +15,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class LevelLoader {
 
     private static final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
     private static final ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
     private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    private static final ArrayList<Mob> mobs = new ArrayList<>();
     // each level only contains 3 SimonSays-stations
     private static final SimonSays[] simonSays = new SimonSays[3];
     private static Point2D spawnPoint;
@@ -31,7 +33,7 @@ public class LevelLoader {
      * this function uses an XML parser reading the data from a file
      * given by a FileInputStream and then checking for specific XML-Elements
      * <p>
-     * Using those elements, the XML parser checks for collision boxes,
+     * Using those elements, the parser checks for collision boxes, entities
      * SimonSays, the spawn point and the level with all the cubeIDs stored
      *
      *
@@ -134,6 +136,20 @@ public class LevelLoader {
                                                 currentSimonSays++;
                                                 break;
                                         }
+
+                                    case "CREATURE":
+                                        switch (startElement.getAttributeByName(new QName("name")).getValue()) {
+                                            case "snail":
+                                                mobs.add(new Snail(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
+                                                ));
+                                                break;
+
+                                            case "wolf":
+
+                                                break;
+                                        }
                                 }
                             }
                             break;
@@ -203,8 +219,15 @@ public class LevelLoader {
 
     /**
      *
-     * @return a list containing all the SimonSays objects with their
-     *          respective sequence and position
+     * @return an arraylist containing all the mob objects
+     */
+    public static ArrayList<Mob> getMobs() {
+        return mobs;
+    }
+
+    /**
+     *
+     * @return a list containing all the SimonSays objects with their position
      */
     public static SimonSays[] getSimonSays() {
         return simonSays;

@@ -13,7 +13,6 @@ public class SimonSays {
     // is the integer assigned to each button
     private boolean isColliding = false;
     private boolean isCompleted = false;
-    private boolean isStarted = false;
     private final Rectangle2D.Double bounds;
 
     /**
@@ -35,7 +34,7 @@ public class SimonSays {
      * checks whether the SS collides with the player
      */
     public void update() {
-        isColliding = Main.player.getPlayerRect().intersects(bounds);
+        isColliding = Main.player.getPlayerRect().intersects(bounds) && Main.player.xSpeed == 0;
     }
 
     /**
@@ -52,22 +51,6 @@ public class SimonSays {
      */
     public void setCompleted(boolean completed) {
         isCompleted = completed;
-    }
-
-    /**
-     *
-     * @return whether the animation of the SS was started
-     */
-    public boolean isStarted() {
-        return isStarted;
-    }
-
-    /**
-     *
-     * @param started - sets whether the animation of the SS is started
-     */
-    public void setStarted(boolean started) {
-        this.isStarted = started;
     }
 
     /**

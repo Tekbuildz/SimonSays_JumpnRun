@@ -2,6 +2,7 @@ package gamestates;
 
 import entities.Coin;
 import SimonSays.SimonSays;
+import entities.mob.Mob;
 import guis.CheckBox;
 import toolbox.DataSaver;
 import SpriteSheet.ResourceMaster;
@@ -24,6 +25,7 @@ import toolbox.UIConstraints;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
 
@@ -231,7 +233,7 @@ public class GameState extends State {
             // ----------------------------------------------------------------- PLAYER
             // updating player
             Main.player.applyGravity();
-            Main.player.updatePlayerRectCoords();
+            Main.player.update();
 
             coins.setText("$ " + Main.player.getCoins());
             Main.player.checkCoinCollision(Level.getCoins());
@@ -285,6 +287,23 @@ public class GameState extends State {
             health.setFillLevel(Main.player.getHealth());
             health.update();
             lives.setText(Main.player.getLives() + "x");
+            // -----------------------------------------------------------------
+
+            // ----------------------------------------------------------------- MOBS
+            // updating all the mobs and their position
+            // handling collisions between the mobs and the player
+            for (Mob mob: Level.getMobs()) {
+                mob.update();
+
+                if (mob.isShown()) {
+                    if (Main.player.getPlayerRect().intersects(mob.getBounds()) && Main.player.ySpeed > 0) {
+                        mob.hit();
+                    } else if (Main.player.getPlayerRect().intersects(mob.getBounds()) && !(Main.player.ySpeed > 0)){
+                        // make the player take damage
+                        Main.player.removeHealth(25);
+                    }
+                }
+            }
             // -----------------------------------------------------------------
 
             // ----------------------------------------------------------------- VARIOUS CAUSES FOR INTERRUPTION
@@ -346,6 +365,8 @@ public class GameState extends State {
         g.translate(0, HEIGHT);
         drawLevel(g);
         drawPlayer(g);
+
+        drawMobs(g);
         // using the translate function with "-HEIGHT" because the origin is always viewed from the current origin
         // of the current coordinate system which is located at 0, HEIGHT (viewed from the actual screen => not visible)
         // in order to change the coordinate system back from the bottom left to the top left of the screen, the
@@ -423,15 +444,15 @@ public class GameState extends State {
         }
 
         // drawing the SimonSays
-//        for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
-//            g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
-//            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
-//                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
-//            } else {
-//                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
-//                // g.drawImage();
-//            }
-//        }
+        for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
+            g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
+            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+            } else {
+                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+                // g.drawImage();
+            }
+        }
     }
 
     /**
@@ -446,6 +467,16 @@ public class GameState extends State {
             g.drawImage(Player.getCurrentPlayerImage(), DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2, (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
         } else {
             g.drawImage(Player.getCurrentPlayerImage(), (int) Main.player.getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
+        }
+    }
+
+    private void drawMobs(Graphics2D g) {
+        for (Mob mob: Level.getMobs()) {
+            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                mob.draw(g, (int) (mob.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+            } else {
+                mob.draw(g, (int) mob.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+            }
         }
     }
 
@@ -466,6 +497,10 @@ public class GameState extends State {
 
         // health bars and additions
         health.draw(g);
+        if (!(Main.player.getHealth() > 0)) {
+            health.setFillColor(new Color(0, 0, 0, 0));
+            drawDeathOverlay = true;
+        }
         faiOutline.draw(g);
         livesOutline.draw(g);
         lives.draw(g);
@@ -485,7 +520,7 @@ public class GameState extends State {
      * @param g - the graphics object used to paint onto the screen
      */
     private void drawPauseMenuOverlay(Graphics2D g) {
-        // creating a semi-transparent overlay over the entire screen to remove focus on the game and switch it to buttons
+        // creating a semi-transparent overlay over the entire screen to hit focus on the game and switch it to buttons
         g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -559,6 +594,7 @@ public class GameState extends State {
      */
     private void resetLevel() {
         Main.player = new Player(Level.getSpawnLocation(), Main.player.getLives(), Main.player.getBackupCoins());
+        health.setFillColor(BasicGUIConstants.HEALTH_BAR_GREEN_COLOR);
         drawDeathOverlay = false;
         drawPauseMenuOverlay = false;
         drawLevelFinishedOverlay = false;

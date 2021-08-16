@@ -9,7 +9,6 @@ import toolbox.BasicGUIConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SimonSaysMaster {
@@ -99,10 +98,6 @@ public class SimonSaysMaster {
             }
         }
         this.simonSays = simonSays;
-
-        for (int[] seq:sequences) {
-            System.out.println(Arrays.toString(seq));
-        }
     }
 
     /**
@@ -322,7 +317,6 @@ public class SimonSaysMaster {
         }
 
         for (SimonSays simonSays:simonSays) {
-            simonSays.setStarted(false);
             simonSays.setCompleted(false);
         }
         ArrayList<Integer> collectionToRemove = new ArrayList<>(playerInputs);

@@ -64,7 +64,7 @@ public class PlayerInputs implements KeyListener, MouseListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        // Integer.valueOf needed, since otherwise the code would try to remove the object at index i, instead of the object with value i
+        // Integer.valueOf needed, since otherwise the code would try to hit the object at index i, instead of the object with value i
         keysPressedInFrame.remove(Integer.valueOf(e.getKeyCode()));
         keysReleasedInFrame.add(e.getKeyCode());
     }

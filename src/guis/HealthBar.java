@@ -11,7 +11,7 @@ public class HealthBar {
     private final int width;
     private final int height;
     private final int triangularCutoffsize;
-    private final Color fillColor;
+    private Color fillColor;
 
     private Color bgColor;
     private boolean hasBGColor;
@@ -78,6 +78,17 @@ public class HealthBar {
     public void setBGColor(Color bgColor) {
         this.hasBGColor = true;
         bg = new TriangularRectangle(x, y, width, height, triangularCutoffsize, bgColor);
+    }
+
+    /**
+     *
+     * changes the fillColor of the health bar
+     * can be used to make the health bar turn red when reaching 0 health
+     *
+     * @param fillColor - the new color which fills the health bar
+     */
+    public void setFillColor(Color fillColor) {
+        this.fillColor = fillColor;
     }
 
     /**

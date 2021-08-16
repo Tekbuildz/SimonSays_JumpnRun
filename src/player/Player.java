@@ -15,6 +15,9 @@ public class Player {
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
+    private final int playerDamageCooldownMS = 750;
+    private long systemTimeOfDamage;
+    private boolean isVulnerable;
     public double xSpeed = 0;
     public double ySpeed = 0;
     private static final int cubeSizePixels = 40;
@@ -42,7 +45,7 @@ public class Player {
      */
     public Player(Point p, int lives, int coins) {
         playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
-        health = 75;
+        health = 100;
         this.lives = lives;
         this.coins = coins;
         this.backupCoins = coins;
@@ -165,7 +168,6 @@ public class Player {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
                 xSpeed = 2;
                 Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentEntityImage % 6]);
-//                Player.setCurrentPlayerImage(ResourceMaster.player_walk.getSpriteImages()[Main.currentImage % 6]);
             }
         } else if (direction == 'l') {
             if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
@@ -184,8 +186,10 @@ public class Player {
      * since there is no Rectangle2D.Double.setX() function and therefore
      * the entire rectangle has to be set again
      */
-    public void updatePlayerRectCoords() {
-        playerRect.setRect(playerRect.getX() + xSpeed, playerRect.getY() + ySpeed, playerWidth, playerHeight);
+    public void update() {
+        playerRect.x += xSpeed;
+        playerRect.y += ySpeed;
+        isVulnerable = (System.currentTimeMillis() - systemTimeOfDamage) > playerDamageCooldownMS;
     }
 
     /**
@@ -233,7 +237,10 @@ public class Player {
      * @param health - increases the health of the current life by the value of the parameter
      */
     public void removeHealth(int health) {
-        this.health += health;
+        if (isVulnerable) {
+            this.health -= health;
+            systemTimeOfDamage = System.currentTimeMillis();
+        }
     }
 
     /**
