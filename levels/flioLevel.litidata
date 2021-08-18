@@ -567,7 +567,7 @@
     <object id="89" name="finish" type="TRIGGER" x="3920" y="1480" width="40" height="120"/>
     <object id="90" name="snail" type="CREATURE" x="2280" y="1480" width="40" height="40"/>
     <object id="91" name="wolf" type="CREATURE" x="2800" y="1480" width="40" height="40"/>
-    <object id="92" name="screw" type="PROP" x="2040" y="1840" width="40" height="40">
+    <object id="92" name="item" type="PROP" x="2040" y="1840" width="40" height="40">
      <properties>
       <property name="addShadow" type="bool" value="true"/>
       <property name="collision" type="bool" value="true"/>

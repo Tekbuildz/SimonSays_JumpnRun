@@ -35,6 +35,11 @@ public class DataSaver {
             rootElement.appendChild(coins);
             coins.setAttribute("amount", String.valueOf(Main.player.getCoins()));
 
+            // items
+            Element items = document.createElement("items");
+            rootElement.appendChild(items);
+            items.setAttribute("amount", String.valueOf(Main.player.getNumberOfItemsCollected()));
+
             // lives
             Element lives = document.createElement("lives");
             rootElement.appendChild(lives);

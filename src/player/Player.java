@@ -2,6 +2,7 @@ package player;
 
 import SpriteSheet.ResourceMaster;
 import entities.Coin;
+import entities.Item;
 import gameLoop.Main;
 import levelHandling.Level;
 import toolbox.ImageProcessing;
@@ -16,6 +17,7 @@ public class Player {
 
     // player statistics
     private int coins;
+    private int numberOfItemsCollected;
     private HashMap<String, Integer> entityKills;
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
@@ -63,6 +65,7 @@ public class Player {
         this.coins = coins;
         this.entityKills = entityKills;
         this.backupCoins = coins;
+        this.numberOfItemsCollected = 0;
 
         isDeathAnimPlaying = false;
         wasDeathAnimPlayed = false;
@@ -109,12 +112,30 @@ public class Player {
     public void checkCoinCollision(ArrayList<ArrayList<Coin>> coins) {
         for (ArrayList<Coin> list:coins) {
             for (Coin coin:list) {
-                if (playerRect.intersects(coin.getCollisionBox())) {
+                if (playerRect.intersects(coin.getBounds())) {
                     if (!coin.isWasCollected()) {
                         this.coins += coin.getValue();
                     }
                     coin.setWasCollected(true);
                 }
+            }
+        }
+    }
+
+    /**
+     *
+     * checking if the player collides with any item and if so, removes it
+     * and adds it to the player's numberOfItemsCollected
+     *
+     * @param items - the ArrayList containing all the item objects
+     */
+    public void checkItemCollision(ArrayList<Item> items) {
+        for (Item item:items) {
+            if (playerRect.intersects(item.getBounds())) {
+                if (!item.isWasCollected()) {
+                    this.numberOfItemsCollected++;
+                }
+                item.setWasCollected(true);
             }
         }
     }
@@ -328,6 +349,14 @@ public class Player {
      */
     public void addEntityKill(String entity) {
         entityKills.put(entity, entityKills.get(entity) + 1);
+    }
+
+    /**
+     *
+     * @return the number of items the player collected in the level
+     */
+    public int getNumberOfItemsCollected() {
+        return numberOfItemsCollected;
     }
 
     /**

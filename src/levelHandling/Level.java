@@ -3,6 +3,7 @@ package levelHandling;
 import Loader.LevelLoader;
 import SimonSays.SimonSaysMaster;
 import entities.Coin;
+import entities.Item;
 import entities.mob.Mob;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class Level {
     private static ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
     private static ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
     private static ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    private static ArrayList<Item> items = new ArrayList<>();
     private static ArrayList<Mob> mobs = new ArrayList<>();
     public static SimonSaysMaster simonSaysMaster;
     private static Point2D spawnPoint;
@@ -34,6 +36,7 @@ public class Level {
         levelCubes = LevelLoader.getLevelCubes();
         collisionBoxes = LevelLoader.getCollisionBoxes();
         coins = LevelLoader.getCoins();
+        items = LevelLoader.getItems();
         mobs = LevelLoader.getMobs();
         simonSaysMaster = new SimonSaysMaster(LevelLoader.getSimonSays());
         spawnPoint = LevelLoader.getSpawnPoint();
@@ -63,6 +66,14 @@ public class Level {
      */
     public static ArrayList<ArrayList<Coin>> getCoins() {
         return coins;
+    }
+
+    /**
+     *
+     * @return an arraylist containing all the items with their bounds
+     */
+    public static ArrayList<Item> getItems() {
+        return items;
     }
 
     /**

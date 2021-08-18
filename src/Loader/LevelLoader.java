@@ -2,6 +2,7 @@ package Loader;
 
 import entities.Coin;
 import SimonSays.SimonSays;
+import entities.Item;
 import entities.mob.Mob;
 import entities.mob.Snail;
 import levelHandling.Cube;
@@ -15,12 +16,14 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LevelLoader {
 
     private static final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
     private static final ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
     private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    private static final ArrayList<Item> items = new ArrayList<>();
     private static final ArrayList<Mob> mobs = new ArrayList<>();
     // each level only contains 3 SimonSays-stations
     private static final SimonSays[] simonSays = new SimonSays[3];
@@ -113,6 +116,15 @@ public class LevelLoader {
                                                             20)
                                                 );
                                                 break;
+
+                                            case "item":
+                                                items.add(new Item(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("width")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("height")).getValue()),
+                                                        ThreadLocalRandom.current().nextInt(0, 3)
+                                                ));
                                         }
                                         break;
 
@@ -215,6 +227,14 @@ public class LevelLoader {
      */
     public static ArrayList<ArrayList<Coin>> getCoins() {
         return coins;
+    }
+
+    /**
+     *
+     * @return an arraylist containing all the items with their bounds
+     */
+    public static ArrayList<Item> getItems() {
+        return items;
     }
 
     /**

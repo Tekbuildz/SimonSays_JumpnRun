@@ -2,6 +2,7 @@ package gamestates;
 
 import entities.Coin;
 import SimonSays.SimonSays;
+import entities.Item;
 import entities.mob.Mob;
 import guis.CheckBox;
 import toolbox.DataSaver;
@@ -28,9 +29,12 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameState extends State {
 
+
+    private Image[] itemImages = new Image[3];
 
     private boolean drawPauseMenuOverlay = false;
     private boolean drawDeathOverlay = false;
@@ -89,6 +93,11 @@ public class GameState extends State {
      * them a default font
      */
     public GameState() {
+        // adding images to image-array to make randomizing the image displayed as the item easier
+        itemImages[0] = ResourceMaster.getImageFromMap("led");
+        itemImages[1] = ResourceMaster.getImageFromMap("pcb");
+        itemImages[2] = ResourceMaster.getImageFromMap("screw");
+
         pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
 
         // ----------------- PAUSE MENU OVERLAY -----------------
@@ -244,6 +253,7 @@ public class GameState extends State {
 
             coins.setText("$ " + Main.player.getCoins());
             Main.player.checkCoinCollision(Level.getCoins());
+            Main.player.checkItemCollision(Level.getItems());
             // checking if the player finished the level
             if (Level.getFinish().intersects(Main.player.getPlayerRect())) {
                 gameInterrupted = true;
@@ -273,7 +283,7 @@ public class GameState extends State {
 
                 levelFinishedValues.get("coinsCollected").setText(totalCoinsCollected + " / " + totalCoinsInLevel);
                 levelFinishedValues.get("moneyEarned").setText(totalMoneyEarned + " / " + totalMoneyAvailable);
-                levelFinishedValues.get("itemsCollected").setText("0 / 0");
+                levelFinishedValues.get("itemsCollected").setText(Main.player.getNumberOfItemsCollected() + " / " + Level.getItems().size());
                 levelFinishedValues.get("simonSaysCorrect").setText(ssCorrect + " / " + Level.simonSaysMaster.checkBoxes.length);
                 if (seconds < 10) {
                     levelFinishedValues.get("timeTaken").setText(minutes + ":0" + seconds + "." + mSeconds);
@@ -397,7 +407,7 @@ public class GameState extends State {
 
     /**
      *
-     * drawing all the level-rectangles and all the coins
+     * drawing all the level-rectangles, all the coins, items and SimonSays
      *
      * @param g - the graphics object used to paint onto the screen
      */
@@ -421,28 +431,39 @@ public class GameState extends State {
                     if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getCollisionBox().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     } else {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getCollisionBox().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getCollisionBox().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     }
+                }
+            }
+        }
+
+        // drawing the items
+        for (Item item:Level.getItems()) {
+            if (!item.isWasCollected()) {
+                if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
+                } else {
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) item.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
                 }
             }
         }
@@ -620,6 +641,10 @@ public class GameState extends State {
         for (Mob mob:Level.getMobs()) {
             mob.resetCollisions();
             mob.resetBounds();
+        }
+
+        for (Item item:Level.getItems()) {
+            item.setWasCollected(false);
         }
 
         mSeconds = 0;

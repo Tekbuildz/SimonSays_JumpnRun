@@ -4,7 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Coin {
 
-    private Rectangle2D.Double collisionBox;
+    private final Rectangle2D.Double bounds;
     private boolean wasCollected = false;
     private final int value;
 
@@ -34,7 +34,7 @@ public class Coin {
      * @param value - how much the coin is worth
      */
     public Coin(Rectangle2D.Double collisionBox, int value) {
-        this.collisionBox = collisionBox;
+        this.bounds = collisionBox;
         this.value = value;
     }
 
@@ -42,8 +42,8 @@ public class Coin {
      *
      * @return the hitbox of the coin
      */
-    public Rectangle2D.Double getCollisionBox() {
-        return collisionBox;
+    public Rectangle2D.Double getBounds() {
+        return bounds;
     }
 
     /**

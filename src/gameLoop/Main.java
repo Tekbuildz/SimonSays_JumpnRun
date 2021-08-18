@@ -65,6 +65,9 @@ public class Main implements Runnable{
     public static void loadAllResources() {
         ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage("res\\images\\player_jump.png"));
         ResourceMaster.addImageToMap("player_idle", ImageLoader.loadImage("res\\images\\player_idle.png"));
+        ResourceMaster.addImageToMap("led", ImageLoader.loadImage("res\\images\\item_led.png"));
+        ResourceMaster.addImageToMap("pcb", ImageLoader.loadImage("res\\images\\item_pcb.png"));
+        ResourceMaster.addImageToMap("screw", ImageLoader.loadImage("res\\images\\item_screw.png"));
 
         ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet("res\\spritesheets\\coin_5_spritesheet.png", 40, 40));
         ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet("res\\spritesheets\\coin_10_spritesheet.png", 40, 40));
