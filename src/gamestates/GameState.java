@@ -231,6 +231,13 @@ public class GameState extends State {
             // -----------------------------------------------------------------
 
             // ----------------------------------------------------------------- PLAYER
+            // handling player movement and updating player image when moving
+            handleMovement();
+
+            // updating player image when jumping
+            if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
+                Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
+            }
             // updating player
             Main.player.applyGravity();
             Main.player.update();
@@ -275,17 +282,7 @@ public class GameState extends State {
                 }
             }
 
-            // handling player movement and updating player image when moving
-            handleMovement();
-
-            // updating player image when jumping
-            if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
-                Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
-            }
-
             // player attributes
-            health.setFillLevel(Main.player.getHealth());
-            health.update();
             lives.setText(Main.player.getLives() + "x");
             // -----------------------------------------------------------------
 
@@ -301,6 +298,8 @@ public class GameState extends State {
                     } else if (Main.player.getPlayerRect().intersects(mob.getBounds()) && !(Main.player.ySpeed > 0)){
                         // make the player take damage
                         Main.player.removeHealth(25);
+                        health.setFillLevel(Main.player.getHealth());
+                        health.update();
                     }
                 }
             }
@@ -494,12 +493,17 @@ public class GameState extends State {
 
         // buttons
         pauseButton.draw(g);
-
         // health bars and additions
         health.draw(g);
         if (!(Main.player.getHealth() > 0)) {
             health.setFillColor(new Color(0, 0, 0, 0));
-            drawDeathOverlay = true;
+            if (!Main.player.isDeathAnimPlaying && !Main.player.wasDeathAnimPlayed) {
+                Main.player.startDeathAnim();
+            }
+            else if (!Main.player.isDeathAnimPlaying) {
+                drawDeathOverlay = true;
+                gameInterrupted = true;
+            }
         }
         faiOutline.draw(g);
         livesOutline.draw(g);
@@ -604,6 +608,10 @@ public class GameState extends State {
             for (Coin coin:list) {
                 coin.setWasCollected(false);
             }
+        }
+
+        for (Mob mob:Level.getMobs()) {
+            mob.resetShown();
         }
 
         mSeconds = 0;

@@ -104,6 +104,11 @@ public class Snail extends Mob{
         return show;
     }
 
+    @Override
+    public void resetShown() {
+        show = true;
+    }
+
     // no need for vertical collisions since mob only walks from side to side in trench
     // hence y value never has to be changed
 

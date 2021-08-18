@@ -30,10 +30,18 @@ public class Player {
     private int health;
     private int lives;
     private int coins;
+
     private final int backupCoins;
 
     private static Image currentPlayerImage;
 
+    // death animation vars
+    public boolean isDeathAnimPlaying;
+    public boolean wasDeathAnimPlayed;
+    private long deathAnimTimeOfAction;
+    private int currentDeathAnimSprite;
+    // the amount of time in milliseconds which it takes between each sprite of the death animation
+    private static final int deathAnimActionGap = 100;
 
     /**
      *
@@ -49,6 +57,10 @@ public class Player {
         this.lives = lives;
         this.coins = coins;
         this.backupCoins = coins;
+
+        isDeathAnimPlaying = false;
+        wasDeathAnimPlayed = false;
+        currentDeathAnimSprite = 0;
     }
 
     /**
@@ -187,9 +199,25 @@ public class Player {
      * the entire rectangle has to be set again
      */
     public void update() {
-        playerRect.x += xSpeed;
-        playerRect.y += ySpeed;
-        isVulnerable = (System.currentTimeMillis() - systemTimeOfDamage) > playerDamageCooldownMS;
+        //System.out.println(isDeathAnimPlaying);
+        if (!isDeathAnimPlaying) {
+            playerRect.x += xSpeed;
+            playerRect.y += ySpeed;
+            isVulnerable = (System.currentTimeMillis() - systemTimeOfDamage) > playerDamageCooldownMS;
+        }
+        else {
+            if (System.currentTimeMillis() - deathAnimTimeOfAction >= deathAnimActionGap) {
+                //deathAnimTimer += deathAnimActionGap + 10;
+                deathAnimTimeOfAction = System.currentTimeMillis();
+                currentDeathAnimSprite++;
+            }
+            if (ResourceMaster.getSpriteSheetFromMap("player_die").getSpriteImages().length != currentDeathAnimSprite) {
+                Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_die").getSpriteImages()[currentDeathAnimSprite]);
+            } else {
+                isDeathAnimPlaying = false;
+                wasDeathAnimPlayed = true;
+            }
+        }
     }
 
     /**
@@ -291,5 +319,14 @@ public class Player {
      */
     public static void setCurrentPlayerImage(Image currentPlayerImage) {
         Player.currentPlayerImage = currentPlayerImage;
+    }
+
+    /**
+     *
+     * starts the death animation if the player died from an enemy
+     */
+    public void startDeathAnim() {
+        isDeathAnimPlaying = true;
+        deathAnimTimeOfAction = System.currentTimeMillis();
     }
 }

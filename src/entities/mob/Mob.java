@@ -41,4 +41,10 @@ public abstract class Mob {
      * @return whether the mob has died or not
      */
     public abstract boolean isShown();
+
+    /**
+     *
+     * resets the variable show of each mob
+     */
+    public abstract void resetShown();
 }
