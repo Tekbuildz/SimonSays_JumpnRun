@@ -3,6 +3,7 @@ package toolbox;
 import gameLoop.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import player.Player;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,8 +43,8 @@ public class DataSaver {
             // entity kills
             Element entityKills = document.createElement("entity_kills");
             rootElement.appendChild(entityKills);
-            entityKills.setAttribute("dog", "27");
-            entityKills.setAttribute("cat", "23");
+            entityKills.setAttribute("snail", String.valueOf(Main.player.getEntityKills().get("snail")));
+            entityKills.setAttribute("wolf", String.valueOf(Main.player.getEntityKills().get("wolf")));
 
             // writing the data in an XML file
             FileOutputStream fileOutputStream = new FileOutputStream("data/player.xml");

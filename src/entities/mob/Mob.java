@@ -5,6 +5,8 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class Mob {
 
+    public static final float gravityAccel = 0.1f;
+
     /**
      *
      * updates the direction of movement of the mob and checks for collisions
@@ -25,6 +27,12 @@ public abstract class Mob {
 
     /**
      *
+     * @return the type of the mob, e.g. snail, wolf
+     */
+    public abstract String getType();
+
+    /**
+     *
      * @return the bounds representing the hitbox of the mob
      */
     public abstract Rectangle2D.Double getBounds();
@@ -33,18 +41,25 @@ public abstract class Mob {
      *
      * removes the mob by changing a variable in order to prevent it from
      * rendering on screen and colliding with the player
+     * @return whether the mob was killed during this hit or not
      */
-    public abstract void hit();
+    public abstract boolean hit();
 
     /**
      *
-     * @return whether the mob has died or not
+     * resets the variable hasCollisions of each mob
      */
-    public abstract boolean isShown();
+    public abstract void resetCollisions();
 
     /**
      *
-     * resets the variable show of each mob
+     * resets the bounds of the mob to its original bounds
      */
-    public abstract void resetShown();
+    public abstract void resetBounds();
+
+    /**
+     *
+     * @return whether the mob has collisions or not (no collisions when dead)
+     */
+    public abstract boolean hasCollisions();
 }

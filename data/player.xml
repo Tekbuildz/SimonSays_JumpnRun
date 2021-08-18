@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<player_stats>
+    <coins amount="1360"/>
+    <lives amount="1"/>
+    <entity_kills snail="0" wolf="0"/>
+</player_stats>

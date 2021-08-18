@@ -45,7 +45,7 @@ public class Main implements Runnable{
         new Level("flioLevel");
         DataLoader.loadPlayerData("player");
 
-        player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins());
+        player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins(), DataLoader.getEntityKills());
 
         renderer = new Renderer(DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 

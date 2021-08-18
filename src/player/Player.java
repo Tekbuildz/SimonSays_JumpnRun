@@ -10,8 +10,13 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player {
+
+    // player statistics
+    private int coins;
+    private HashMap<String, Integer> entityKills;
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
     private final float gravityAccel = 0.1f;
@@ -20,6 +25,7 @@ public class Player {
     private boolean isVulnerable;
     public double xSpeed = 0;
     public double ySpeed = 0;
+    public final double jumpYSpeed = -3.5f;
     private static final int cubeSizePixels = 40;
     private static final int playerWidth = 40;
     private static final int playerHeight = 60;
@@ -29,7 +35,6 @@ public class Player {
     // if the health reaches 0, a life is removed from the players total number of lives
     private int health;
     private int lives;
-    private int coins;
 
     private final int backupCoins;
 
@@ -51,11 +56,12 @@ public class Player {
      *
      * @param p - the starting point of the player in the level
      */
-    public Player(Point p, int lives, int coins) {
+     public Player(Point p, int lives, int coins, HashMap<String, Integer> entityKills) {
         playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
         health = 100;
         this.lives = lives;
         this.coins = coins;
+        this.entityKills = entityKills;
         this.backupCoins = coins;
 
         isDeathAnimPlaying = false;
@@ -89,7 +95,7 @@ public class Player {
         // if statement checks if the velocity is 0 which is the case if the player is either colliding with the ceiling or the floor
         // checking the vertical collision with a positive velocity to eliminate the possibility for the player to jump when colliding with the ceiling
         if (ySpeed == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
-            ySpeed = -3.5f;
+            ySpeed = jumpYSpeed;
         }
     }
 
@@ -195,11 +201,9 @@ public class Player {
     /**
      *
      * updating the location of the player bounding box using the change-values
-     * since there is no Rectangle2D.Double.setX() function and therefore
-     * the entire rectangle has to be set again
+     * updating the death animation, if the player died
      */
     public void update() {
-        //System.out.println(isDeathAnimPlaying);
         if (!isDeathAnimPlaying) {
             playerRect.x += xSpeed;
             playerRect.y += ySpeed;
@@ -207,7 +211,6 @@ public class Player {
         }
         else {
             if (System.currentTimeMillis() - deathAnimTimeOfAction >= deathAnimActionGap) {
-                //deathAnimTimer += deathAnimActionGap + 10;
                 deathAnimTimeOfAction = System.currentTimeMillis();
                 currentDeathAnimSprite++;
             }
@@ -289,12 +292,10 @@ public class Player {
 
     /**
      *
-     * @param changeValue - the amount by which the number of coins of the
-     *                    player is changed (could be positive, e.g. receiving
-     *                    a reward; could be negative, e.g. paying for sth.)
+     * @return the amount of each entity the player has killed in total
      */
-    public void changeCoins(int changeValue) {
-        coins += changeValue;
+    public HashMap<String, Integer> getEntityKills() {
+        return entityKills;
     }
 
     /**
@@ -319,6 +320,14 @@ public class Player {
      */
     public static void setCurrentPlayerImage(Image currentPlayerImage) {
         Player.currentPlayerImage = currentPlayerImage;
+    }
+
+    /**
+     *
+     * @param entity - the entity type of which another one was killed
+     */
+    public void addEntityKill(String entity) {
+        entityKills.put(entity, entityKills.get(entity) + 1);
     }
 
     /**

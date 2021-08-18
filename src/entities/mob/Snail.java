@@ -13,11 +13,13 @@ import java.util.ArrayList;
 public class Snail extends Mob{
 
     private int health = 100;
-    private Rectangle2D.Double bounds;
-    private float speed = 0.3f;
+    private final Rectangle2D.Double bounds;
+    private final Rectangle2D.Double originalBounds;
+    private float xSpeed = 0.3f;
+    private float ySpeed = 0;
     private final Image[] sprites = ResourceMaster.getSpriteSheetFromMap("snail_walk").getSpriteImages();
 
-    private boolean show = true;
+    private boolean hasCollisions = true;
 
     /**
      *
@@ -36,27 +38,36 @@ public class Snail extends Mob{
         // it would float in the air if the gap between a tile-size of 40 - its height
         // wouldn't be subtracted
         this.bounds = new Rectangle2D.Double(x, y + 40 - height, width, height);
+        this.originalBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    }
+
+    @Override
+    public String getType() {
+        return "snail";
     }
 
     @Override
     public void update() {
-        if (show) {
+        if (hasCollisions) {
             if (!hasHorizontalCollision(Level.getCollisionBoxes())) {
-                bounds.x += speed;
+                bounds.x += xSpeed;
             } else {
-                speed = -speed;
+                xSpeed = -xSpeed;
             }
+        } else {
+            ySpeed += Mob.gravityAccel;
+            // making the snail fall out of the screen in a parabola shape
+            bounds.x += 3 * xSpeed;
+            bounds.y += ySpeed;
         }
     }
 
     @Override
     public void draw(Graphics2D g, int x, int y) {
-        if (show) {
-            if (speed > 0) {
-                g.drawImage(sprites[Main.currentEntityImage % 8], x, y, null);
-            } else {
-                g.drawImage(ImageProcessing.flipImageHorizontally((BufferedImage) sprites[Main.currentEntityImage % 8]), x, y, null);
-            }
+        if (xSpeed > 0) {
+            g.drawImage(sprites[Main.currentEntityImage % 8], x, y, null);
+        } else {
+            g.drawImage(ImageProcessing.flipImageHorizontally((BufferedImage) sprites[Main.currentEntityImage % 8]), x, y, null);
         }
     }
 
@@ -73,10 +84,10 @@ public class Snail extends Mob{
     private boolean hasHorizontalCollision(ArrayList<Rectangle2D> collisionBoxes) {
         boolean doesIntersect = false;
         Rectangle2D movedRect = bounds.getBounds2D();
-        if (speed > 0) {
+        if (xSpeed > 0) {
             movedRect.setRect(movedRect.getX() + 2, movedRect.getY(), movedRect.getWidth(), movedRect.getHeight());
         }
-        else if (speed < 0) {
+        else if (xSpeed < 0) {
             movedRect.setRect(movedRect.getX() - 2, movedRect.getY(), movedRect.getWidth(), movedRect.getHeight());
         }
         for (Rectangle2D collisionBox:collisionBoxes) {
@@ -92,21 +103,30 @@ public class Snail extends Mob{
     }
 
     @Override
-    public void hit() {
+    public boolean hit() {
         health -= 100;
         if (health <= 0) {
-            show = false;
+            hasCollisions = false;
+            ySpeed = -4f;
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public boolean isShown() {
-        return show;
+    public void resetCollisions() {
+        hasCollisions = true;
     }
 
     @Override
-    public void resetShown() {
-        show = true;
+    public boolean hasCollisions() {
+        return hasCollisions;
+    }
+
+    @Override
+    public void resetBounds() {
+        this.bounds.setRect(originalBounds.getBounds2D());
     }
 
     // no need for vertical collisions since mob only walks from side to side in trench

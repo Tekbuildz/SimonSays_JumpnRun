@@ -292,12 +292,17 @@ public class GameState extends State {
             for (Mob mob: Level.getMobs()) {
                 mob.update();
 
-                if (mob.isShown()) {
+                if (mob.hasCollisions()) {
                     if (Main.player.getPlayerRect().intersects(mob.getBounds()) && Main.player.ySpeed > 0) {
-                        mob.hit();
+                        boolean entityWasKilled = mob.hit();
+                        if (entityWasKilled) {
+                            Main.player.addEntityKill(mob.getType());
+                        }
+                        Main.player.ySpeed = Main.player.jumpYSpeed;
                     } else if (Main.player.getPlayerRect().intersects(mob.getBounds()) && !(Main.player.ySpeed > 0)){
                         // make the player take damage
                         Main.player.removeHealth(25);
+
                         health.setFillLevel(Main.player.getHealth());
                         health.update();
                     }
@@ -597,8 +602,10 @@ public class GameState extends State {
      * movement
      */
     private void resetLevel() {
-        Main.player = new Player(Level.getSpawnLocation(), Main.player.getLives(), Main.player.getBackupCoins());
+        Main.player = new Player(Level.getSpawnLocation(), Main.player.getLives(), Main.player.getBackupCoins(), Main.player.getEntityKills());
         health.setFillColor(BasicGUIConstants.HEALTH_BAR_GREEN_COLOR);
+        health.setFillLevel(Main.player.getHealth());
+        health.update();
         drawDeathOverlay = false;
         drawPauseMenuOverlay = false;
         drawLevelFinishedOverlay = false;
@@ -611,7 +618,8 @@ public class GameState extends State {
         }
 
         for (Mob mob:Level.getMobs()) {
-            mob.resetShown();
+            mob.resetCollisions();
+            mob.resetBounds();
         }
 
         mSeconds = 0;

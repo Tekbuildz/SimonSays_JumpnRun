@@ -11,13 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class DataLoader {
 
     private static int coins = 0;
     private static int lives = 0;
-    private static Map<String, Integer> entityKills;
+    private static HashMap<String, Integer> entityKills;
 
     /**
      *
@@ -89,7 +88,7 @@ public class DataLoader {
      * @return how many entities of each type the player had killed when
      *          last saved to disc
      */
-    public static Map<String, Integer> getEntityKills() {
+    public static HashMap<String, Integer> getEntityKills() {
         return entityKills;
     }
 }
