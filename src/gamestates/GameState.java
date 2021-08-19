@@ -41,6 +41,7 @@ public class GameState extends State {
     private boolean drawLevelFinishedOverlay = false;
 
     private boolean gameInterrupted = false;
+    private boolean saveTimeForLevel = false;
 
     // not having to stretch WIDTH and HEIGHT since they contain the size of the current display and are not hard-coded
     private final int WIDTH = DisplayManager.getWIDTH();
@@ -56,6 +57,7 @@ public class GameState extends State {
     private long mSeconds;
     private long seconds;
     private long minutes;
+    private long totalTime;
 
     // ----------------- PAUSE MENU OVERLAY -----------------
     private final HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
@@ -124,19 +126,22 @@ public class GameState extends State {
         levelFinishedTexts.put("wellDone", new TextBox(WIDTH / 2 - overlayButtonsWidth * 2, HEIGHT / 2 - (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth * 4, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, (int) (50 * rsf)), "Well Done!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
 
         int endTextX = WIDTH / 2 - (int) (overlayButtonsWidth * 1.5);
+        int endTextY = HEIGHT / 2 - 20;
         int endValuesX = WIDTH / 2 + overlayButtonsWidth / 2;
         int width = overlayButtonsWidth * 3;
-        levelFinishedTexts.put("coinsCollected", new TextBox(endTextX, HEIGHT / 2 - overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Coins collected:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedTexts.put("moneyEarned", new TextBox(endTextX, HEIGHT / 2 - overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Money earned:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedTexts.put("itemsCollected", new TextBox(endTextX, HEIGHT / 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Items collected:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedTexts.put("simonSaysCorrect", new TextBox(endTextX, HEIGHT / 2 + overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Simon Says correct:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedTexts.put("timeTaken", new TextBox(endTextX, HEIGHT / 2 + overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Time elapsed:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("coinsCollected", new TextBox(endTextX, endTextY - overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Coins collected:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("moneyEarned", new TextBox(endTextX, endTextY - overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Money earned:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("itemsCollected", new TextBox(endTextX, endTextY, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Items collected:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("simonSaysCorrect", new TextBox(endTextX, endTextY + overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Simon Says correct:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("enemiesKilled", new TextBox(endTextX, endTextY + overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Enemies killed:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("timeTaken", new TextBox(endTextX, endTextY + overlayButtonsHeight * 3, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Time elapsed:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
 
-        levelFinishedValues.put("coinsCollected", new TextBox(endValuesX, HEIGHT / 2 - overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedValues.put("moneyEarned", new TextBox(endValuesX, HEIGHT / 2 - overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedValues.put("itemsCollected", new TextBox(endValuesX, HEIGHT / 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedValues.put("simonSaysCorrect", new TextBox(endValuesX, HEIGHT / 2 + overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
-        levelFinishedValues.put("timeTaken", new TextBox(endValuesX, HEIGHT / 2 + overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("coinsCollected", new TextBox(endValuesX, endTextY - overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("moneyEarned", new TextBox(endValuesX, endTextY - overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("itemsCollected", new TextBox(endValuesX, endTextY, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("simonSaysCorrect", new TextBox(endValuesX, endTextY + overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("enemiesKilled", new TextBox(endValuesX, endTextY + overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
+        levelFinishedValues.put("timeTaken", new TextBox(endValuesX, endTextY + overlayButtonsHeight * 3, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
 
         timeWithPauses = System.currentTimeMillis();
     }
@@ -204,7 +209,11 @@ public class GameState extends State {
                             resetLevel();
                             break;
                         case "continueButton":
-                            DataSaver.saveData();
+                            if (saveTimeForLevel) {
+                                DataSaver.saveData(Level.level, totalTime);
+                            } else {
+                                DataSaver.saveData(Level.level, 0);
+                            }
                             // StateMaster.setState(new MainMenuState());
                             System.exit(0);
                             break;
@@ -232,6 +241,7 @@ public class GameState extends State {
             mSeconds = (System.currentTimeMillis() - timeWithPauses) % 1000;
             seconds = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 1000f)) % 60;
             minutes = (long) (Math.floor((System.currentTimeMillis() - timeWithPauses) / 60000f)) % 60;
+            totalTime = System.currentTimeMillis() - timeWithPauses;
             if (seconds < 10) {
                 time.setText(minutes + ":0" + seconds + "." + mSeconds);
             } else {
@@ -263,6 +273,8 @@ public class GameState extends State {
                 int totalCoinsCollected = 0;
                 int totalMoneyEarned = 0;
                 int totalMoneyAvailable = 0;
+                int totalEnemiesKilled = 0;
+                int totalEnemiesInLevel = 0;
                 for (ArrayList<Coin> list:Level.getCoins()) {
                     totalCoinsInLevel += list.size();
                     for (Coin coin:list) {
@@ -272,6 +284,13 @@ public class GameState extends State {
                             totalMoneyEarned += coin.getValue();
                         }
                     }
+                }
+
+                for (Mob mob:Level.getMobs()) {
+                    if (!mob.hasCollisions()) {
+                        totalEnemiesKilled++;
+                    }
+                    totalEnemiesInLevel++;
                 }
 
                 int ssCorrect = 0;
@@ -285,10 +304,16 @@ public class GameState extends State {
                 levelFinishedValues.get("moneyEarned").setText(totalMoneyEarned + " / " + totalMoneyAvailable);
                 levelFinishedValues.get("itemsCollected").setText(Main.player.getNumberOfItemsCollected() + " / " + Level.getItems().size());
                 levelFinishedValues.get("simonSaysCorrect").setText(ssCorrect + " / " + Level.simonSaysMaster.checkBoxes.length);
+                levelFinishedValues.get("enemiesKilled").setText(totalEnemiesKilled + " / " + totalEnemiesInLevel);
                 if (seconds < 10) {
                     levelFinishedValues.get("timeTaken").setText(minutes + ":0" + seconds + "." + mSeconds);
                 } else {
                     levelFinishedValues.get("timeTaken").setText(minutes + ":" + seconds + "." + mSeconds);
+                }
+
+                // only if all the items etc. were collected, the time for the level is saved
+                if (totalCoinsCollected == totalCoinsInLevel && Main.player.getNumberOfItemsCollected() == Level.getItems().size() && ssCorrect == Level.simonSaysMaster.checkBoxes.length && totalEnemiesKilled == totalEnemiesInLevel) {
+                    saveTimeForLevel = true;
                 }
             }
 

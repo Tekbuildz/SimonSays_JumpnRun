@@ -21,6 +21,7 @@ public class Level {
     public static SimonSaysMaster simonSaysMaster;
     private static Point2D spawnPoint;
     private static Rectangle2D finish;
+    public static int level;
 
     /**
      *
@@ -31,6 +32,15 @@ public class Level {
      * @param levelName - the name of the level to be loaded
      */
     public Level(String levelName) {
+        // checking if the levelName only consists of digits and not letters
+        char[] levelNameChars = levelName.toCharArray();
+        for (char c:levelNameChars) {
+            if (!Character.isDigit(c)) {
+                System.err.println("The levelName contains letters and not only digits");
+                System.exit(-1);
+            }
+        }
+        level = Integer.parseInt(levelName);
         // loading the level and its details
         LevelLoader.loadLevelData("levels/" + levelName + ".litidata"); // replace this line with LevelLoader.loadLevelData("levels/" + levelName + ".litidata");
         levelCubes = LevelLoader.getLevelCubes();
