@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -16,7 +17,8 @@ public class DataLoader {
 
     private static int coins = 0;
     private static int lives = 0;
-    private static HashMap<String, Integer> entityKills;
+    private static final HashMap<String, Integer> entityKills = new HashMap<>();
+    private static final ArrayList<Long> levelTimes = new ArrayList<>();
 
     /**
      *
@@ -25,7 +27,6 @@ public class DataLoader {
      * @param fileName - the name of the XML file to be read from
      */
     public static void loadPlayerData(String fileName)  {
-        entityKills = new HashMap<>();
 
         FileInputStream fileInputStream;
         try {
@@ -54,6 +55,13 @@ public class DataLoader {
                             while (entities.hasNext()) {
                                 Attribute entity = entities.next();
                                 entityKills.put(entity.getName().getLocalPart(), Integer.parseInt(entity.getValue()));
+                            }
+                            break;
+
+                        case "level_data":
+                            Iterator<Attribute> iterator = startElement.getAttributes();
+                            while (iterator.hasNext()) {
+                                levelTimes.add(Long.parseLong(iterator.next().getValue()));
                             }
                             break;
                     }
@@ -90,5 +98,13 @@ public class DataLoader {
      */
     public static HashMap<String, Integer> getEntityKills() {
         return entityKills;
+    }
+
+    /**
+     *
+     * @return an arraylist containing all current fastest times
+     */
+    public static ArrayList<Long> getLevelTimes() {
+        return levelTimes;
     }
 }

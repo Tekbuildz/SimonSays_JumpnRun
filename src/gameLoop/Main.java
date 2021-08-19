@@ -42,7 +42,7 @@ public class Main implements Runnable{
      */
     private void setup() {
         loadAllResources();
-        new Level("flioLevel");
+        new Level("1");
         DataLoader.loadPlayerData("player");
 
         player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins(), DataLoader.getEntityKills());
