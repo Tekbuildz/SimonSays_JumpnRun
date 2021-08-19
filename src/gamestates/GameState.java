@@ -472,9 +472,11 @@ public class GameState extends State {
         for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
             g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
             if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
-                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+//                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
             } else {
-                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+//                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
                 // g.drawImage();
             }
         }
@@ -495,6 +497,12 @@ public class GameState extends State {
         }
     }
 
+    /**
+     *
+     * drawing the mobs to the screen
+     *
+     * @param g - the graphics object used to paint onto the screen
+     */
     private void drawMobs(Graphics2D g) {
         for (Mob mob: Level.getMobs()) {
             if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
