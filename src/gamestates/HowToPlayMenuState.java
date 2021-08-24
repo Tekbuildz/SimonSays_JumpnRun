@@ -2,7 +2,7 @@ package gamestates;
 
 import java.awt.*;
 
-public class StatisticsMenuState extends State{
+public class HowToPlayMenuState extends State{
     @Override
     public void update() {
 

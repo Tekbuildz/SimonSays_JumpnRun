@@ -10,40 +10,27 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Snail extends Mob{
+public class Wolf extends Mob{
 
-    private int health = 100;
+    private int health = 200;
     private final Rectangle2D.Double bounds;
     private final Rectangle2D.Double originalBounds;
-    private float xSpeed = 0.3f;
+    private float xSpeed = 0.5f;
     private float ySpeed = 0;
-    private final Image[] sprites = ResourceMaster.getSpriteSheetFromMap("snail_walk").getSpriteImages();
+    private final Image[] sprites = ResourceMaster.getSpriteSheetFromMap("wolf_walk").getSpriteImages();
 
     private boolean hasCollisions = true;
 
-    /**
-     *
-     * basic constructor of a snail, extends to the Mob class
-     * width and height of the snail are predefined to 60 and 24 respectively
-     *
-     * @param x - the initial x coordinate of the snail
-     * @param y - the initial y coordinate of the snail
-     */
-    public Snail(int x, int y) {
-        int width = 60;
-        // using 24 even though the sprite sheet has a height of 25 to make
-        // the animation look like the snail is digging itself into the ground
-        int height = 24;
-        // since when creating the snail object, it is placed at the height of a tile
-        // it would float in the air if the gap between a tile-size of 40 - its height
-        // wouldn't be subtracted
+    public Wolf(int x, int y) {
+        int width = 80;
+        int height = 44;
         this.bounds = new Rectangle2D.Double(x, y + 40 - height, width, height);
         this.originalBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
     }
 
     @Override
     public String getType() {
-        return "snail";
+        return "wolf";
     }
 
     @Override
@@ -56,7 +43,7 @@ public class Snail extends Mob{
             }
         } else {
             ySpeed += Mob.gravityAccel;
-            // making the snail fall out of the screen in a parabola shape
+            // making the wolf fall out of the screen in a parabola shape
             bounds.x += 3 * xSpeed;
             bounds.y += ySpeed;
         }
@@ -65,9 +52,9 @@ public class Snail extends Mob{
     @Override
     public void draw(Graphics2D g, int x, int y) {
         if (xSpeed > 0) {
-            g.drawImage(sprites[Main.currentEntityImage % 8], x, y, null);
+            g.drawImage(sprites[(Main.currentEntityImage / 2) % 8], x, y, null);
         } else {
-            g.drawImage(ImageProcessing.flipImageHorizontally((BufferedImage) sprites[Main.currentEntityImage % 8]), x, y, null);
+            g.drawImage(ImageProcessing.flipImageHorizontally((BufferedImage) sprites[(Main.currentEntityImage / 2) % 8]), x, y, null);
         }
     }
 
@@ -128,4 +115,9 @@ public class Snail extends Mob{
     public void resetBounds() {
         this.bounds.setRect(originalBounds.getBounds2D());
     }
+
+    // no need for vertical collisions since mob only walks from side to side in trench
+
+
+    // potentially add small health-bar above mob
 }

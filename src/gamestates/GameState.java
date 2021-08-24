@@ -172,9 +172,7 @@ public class GameState extends State {
                             break;
 
                         case "exitGameButton":
-                            // replace this later by going back to main menu screen
-                            // StateMaster.setState(new MainMenuState());
-                            System.exit(0);
+                            StateMaster.setState(new LevelSelectionMenuState());
                             break;
                     }
                 }
@@ -191,9 +189,7 @@ public class GameState extends State {
                             break;
                         case "exitGameDeathButton":
                             resetLevel();
-                            // replace this later by going back to main menu screen
-                            // StateMaster.setState(new MainMenuState());
-                            System.exit(0);
+                            StateMaster.setState(new MainMenuState());
                             break;
                     }
                 }
@@ -336,7 +332,11 @@ public class GameState extends State {
                         Main.player.ySpeed = Main.player.jumpYSpeed;
                     } else if (Main.player.getPlayerRect().intersects(mob.getBounds()) && !(Main.player.ySpeed > 0)){
                         // make the player take damage
-                        Main.player.removeHealth(25);
+                        if (mob.getType().equals("snail")) {
+                            Main.player.removeHealth(25);
+                        } else if (mob.getType().equals("wolf")) {
+                            Main.player.removeHealth(40);
+                        }
 
                         health.setFillLevel(Main.player.getHealth());
                         health.update();
@@ -498,12 +498,9 @@ public class GameState extends State {
             g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
             if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
                 g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
-//                g.fill(new Rectangle2D.Double((int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
             } else {
                 g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
-//                g.fill(new Rectangle2D.Double((int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), simon.getBounds().getWidth(), simon.getBounds().getHeight()));
-                // g.drawImage();
-            }
+           }
         }
     }
 

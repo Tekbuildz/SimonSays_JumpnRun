@@ -12,6 +12,8 @@ public abstract class State {
 
     /**
      *
+     * painting every object to the screen
+     *
      * @param g - the graphics object used to paint onto the screen
      */
     public abstract void render(Graphics2D g);

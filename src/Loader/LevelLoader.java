@@ -5,6 +5,7 @@ import SimonSays.SimonSays;
 import entities.Item;
 import entities.mob.Mob;
 import entities.mob.Snail;
+import entities.mob.Wolf;
 import levelHandling.Cube;
 
 import javax.xml.namespace.QName;
@@ -159,7 +160,10 @@ public class LevelLoader {
                                                 break;
 
                                             case "wolf":
-
+                                                mobs.add(new Wolf(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
+                                                ));
                                                 break;
                                         }
                                 }

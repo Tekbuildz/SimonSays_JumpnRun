@@ -7,6 +7,7 @@ import SpriteSheet.SpriteSheet;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.GameState;
+import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import levelHandling.Level;
 import player.Player;
@@ -55,7 +56,7 @@ public class Main implements Runnable{
         Thread thread = new Thread(this);
         thread.start();
 
-        StateMaster.setState(new GameState());
+        StateMaster.setState(new MainMenuState());
     }
 
     /**
@@ -63,6 +64,9 @@ public class Main implements Runnable{
      * loads all sprite sheets and images required for the game to a map
      */
     public static void loadAllResources() {
+        ResourceMaster.addImageToMap("title_screen_background", ImageLoader.loadImage("res\\images\\titleScreenBackground.png"));
+
+        // ------------------------------------------------------------------------------------------------------------- IMAGES FOR GAMESTATE
         ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage("res\\images\\player_jump.png"));
         ResourceMaster.addImageToMap("player_idle", ImageLoader.loadImage("res\\images\\player_idle.png"));
         ResourceMaster.addImageToMap("led", ImageLoader.loadImage("res\\images\\item_led.png"));
@@ -76,7 +80,9 @@ public class Main implements Runnable{
         ResourceMaster.addSpriteSheetToMap("player_die", new SpriteSheet("res\\spritesheets\\player_die_spritesheet.png", 40, 60));
         ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet("res\\spritesheets\\player_walk_spritesheet.png", 40, 60));
         ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet("res\\spritesheets\\snail_walk_spritesheet.png", 60, 25));
+        ResourceMaster.addSpriteSheetToMap("wolf_walk", new SpriteSheet("res\\spritesheets\\wolf_walk_spritesheet.png", 80, 44));
         ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet("res\\spritesheets\\dirt_gras.png", 40, 40));
+        // -------------------------------------------------------------------------------------------------------------
     }
 
     /**
