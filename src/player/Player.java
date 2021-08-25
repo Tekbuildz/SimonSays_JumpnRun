@@ -1,5 +1,6 @@
 package player;
 
+import Loader.DataLoader;
 import SpriteSheet.ResourceMaster;
 import entities.Coin;
 import entities.Item;
@@ -65,7 +66,7 @@ public class Player {
         this.coins = coins;
         this.entityKills = entityKills;
         this.backupCoins = coins;
-        this.numberOfItemsCollected = 0;
+        this.numberOfItemsCollected = DataLoader.getItems();
 
         isDeathAnimPlaying = false;
         wasDeathAnimPlayed = false;

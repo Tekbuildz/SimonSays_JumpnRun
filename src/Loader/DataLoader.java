@@ -16,6 +16,7 @@ import java.util.Iterator;
 public class DataLoader {
 
     private static int coins = 0;
+    private static int items = 0;
     private static int lives = 0;
     private static final HashMap<String, Integer> entityKills = new HashMap<>();
     private static final ArrayList<Long> levelTimes = new ArrayList<>();
@@ -43,6 +44,11 @@ public class DataLoader {
                         case "coins":
                             Attribute coinAmount = startElement.getAttributeByName(new QName("amount"));
                             coins = Integer.parseInt(coinAmount.getValue());
+                            break;
+
+                        case "items":
+                            Attribute itemAmount = startElement.getAttributeByName(new QName("amount"));
+                            items = Integer.parseInt(itemAmount.getValue());
                             break;
 
                         case "lives":
@@ -81,6 +87,14 @@ public class DataLoader {
      */
     public static int getCoins() {
         return coins;
+    }
+
+    /**
+     *
+     * @return how many items the player had when last saved to disc
+     */
+    public static int getItems() {
+        return items;
     }
 
     /**

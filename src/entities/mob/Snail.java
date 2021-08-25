@@ -125,6 +125,11 @@ public class Snail extends Mob{
     }
 
     @Override
+    public void resetHealth() {
+        health = 100;
+    }
+
+    @Override
     public void resetBounds() {
         this.bounds.setRect(originalBounds.getBounds2D());
     }

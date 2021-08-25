@@ -1,5 +1,6 @@
 package gamestates;
 
+import Loader.DataLoader;
 import entities.Coin;
 import SimonSays.SimonSays;
 import entities.Item;
@@ -26,10 +27,8 @@ import toolbox.UIConstraints;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameState extends State {
 
@@ -210,8 +209,8 @@ public class GameState extends State {
                             } else {
                                 DataSaver.saveData(Level.level, 0);
                             }
-                            // StateMaster.setState(new MainMenuState());
-                            System.exit(0);
+                            DataLoader.loadPlayerData("player");
+                            StateMaster.setState(new LevelSelectionMenuState());
                             break;
                     }
                 }

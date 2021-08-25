@@ -112,6 +112,11 @@ public class Wolf extends Mob{
     }
 
     @Override
+    public void resetHealth() {
+        health = 200;
+    }
+
+    @Override
     public void resetBounds() {
         this.bounds.setRect(originalBounds.getBounds2D());
     }

@@ -59,6 +59,12 @@ public abstract class Mob {
 
     /**
      *
+     * resets the health of the mob
+     */
+    public abstract void resetHealth();
+
+    /**
+     *
      * @return whether the mob has collisions or not (no collisions when dead)
      */
     public abstract boolean hasCollisions();
