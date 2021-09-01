@@ -22,4 +22,6 @@ public class BasicGUIConstants {
 
     // ------------ FONTS ------------
     public static final Font DEFAULT_BUTTON_FONT = new Font("Calibri", Font.PLAIN, (int) (30 * rsf));
+    public static final Font TITLE_FONT = new Font("Calibri", Font.BOLD, (int) (50 * rsf));
+    public static final Font DEFAULT_TEXT_FONT = new Font("Calibri", Font.BOLD, (int) (30 * rsf));
 }

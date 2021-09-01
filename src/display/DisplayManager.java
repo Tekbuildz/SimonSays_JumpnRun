@@ -31,6 +31,7 @@ public class DisplayManager extends JPanel {
         PlayerInputs pi = new PlayerInputs();
         frame.addKeyListener(pi);
         frame.addMouseListener(pi);
+        frame.addMouseWheelListener(pi);
     }
 
     /**

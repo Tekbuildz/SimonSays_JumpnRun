@@ -11,7 +11,8 @@ import static org.apache.commons.text.WordUtils.wrap;
 public class TextBox {
 
     private final int x;
-    private final int y;
+    private int y;
+    private int originalYPos;
     private final int totalWidth;
     private final Color textColor;
     private final Font font;
@@ -49,6 +50,7 @@ public class TextBox {
     public TextBox(int x, int y, int widthInPixels, Color textColor, Font textFont, String text, int verticalPixelsBetweenLines, int uiConstraint) {
         this.x = x;
         this.y = y;
+        this.originalYPos = y;
         this.totalWidth = widthInPixels;
         this.textColor = textColor;
         this.font = textFont;
@@ -130,6 +132,17 @@ public class TextBox {
 
     /**
      *
+     * changes the y coordinate depending on the shift of the text
+     * mostly used to create scrollable text
+     *
+     * @param y - new yShift of the text
+     */
+    public void setYShift(int y) {
+        this.y = originalYPos + y;
+    }
+
+    /**
+     *
      * draws the TextBox to the screen
      * using the individual lines split using regex, each is displayed on the
      * screen as a separate line with the font and textColor specified in
@@ -192,5 +205,26 @@ public class TextBox {
     private int getRightBoundOffset(String text, Font font, int totalWidth) {
         int lineWidth = getTextMaxWidth(text, font);
         return totalWidth - lineWidth;
+    }
+
+    /**
+     *
+     * calculates the height of the entire text
+     * using the height of a single line, the number of lines and the number
+     * of pixels between each line, the function calculates the height of the
+     * rectangle enclosing the TextBox
+     *
+     * @return the height of rectangle enclosing the TextBox
+     */
+    public int getTextHeight() {
+        return (textMaxHeight + verticalPixelsBetweenLines) * lines.length;
+    }
+
+    /**
+     *
+     * @return the original position of the TextBox
+     */
+    public int getOriginalYPos() {
+        return originalYPos;
     }
 }

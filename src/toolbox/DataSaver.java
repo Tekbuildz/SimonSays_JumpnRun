@@ -45,7 +45,7 @@ public class DataSaver {
             // items
             Element items = document.createElement("items");
             playerStats.appendChild(items);
-            items.setAttribute("amount", String.valueOf(Main.player.getNumberOfItemsCollected()));
+            items.setAttribute("amount", String.valueOf(DataLoader.getItems() + Main.player.getNumberOfItemsCollected()));
 
             // lives
             Element lives = document.createElement("lives");

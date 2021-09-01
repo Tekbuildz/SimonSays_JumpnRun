@@ -79,7 +79,7 @@ public class LevelSelectionMenuState extends State{
         levelPBsBackground.put("level_2", new TriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR));
         levelPBsBackground.put("level_3", new TriangularRectangle(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR));
 
-        levelPBs.put("level_1", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calbri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
+        levelPBs.put("level_1", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
         levelPBs.put("level_2", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
         levelPBs.put("level_3", new TextBox(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
 
@@ -89,6 +89,7 @@ public class LevelSelectionMenuState extends State{
                 long minutes = (DataLoader.getLevelTimes().get(i) / 60000) % 60;
                 long seconds = (DataLoader.getLevelTimes().get(i) / 1000) % 60;
                 long mSeconds = DataLoader.getLevelTimes().get(i) % 1000;
+                //System.out.println((i + 1));
                 levelPBs.get("level_" + (i + 1)).setText(minutes + ":" + seconds + "." + mSeconds);
             }
         }

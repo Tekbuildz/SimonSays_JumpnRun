@@ -1,18 +1,15 @@
 package player;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class PlayerInputs implements KeyListener, MouseListener {
+public class PlayerInputs implements KeyListener, MouseListener, MouseWheelListener {
 
     private static final ArrayList<Integer> keysPressedInFrame = new ArrayList<>();
     private static final ArrayList<Integer> keysReleasedInFrame = new ArrayList<>();
     private static final ArrayList<Integer> mouseButtonsReleasedInFrame = new ArrayList<>();
+    private static double mouseWheelMovedInFrame = 0;
     private static final Point mousePos = new Point();
     private static boolean mousePressed = false;
 
@@ -175,5 +172,23 @@ public class PlayerInputs implements KeyListener, MouseListener {
      */
     public static boolean isMousePressed() {
         return mousePressed;
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        // using getPreciseWheelRotation() to receive value as a double and make
+        // scrolling using the touchpad much smoother
+        mouseWheelMovedInFrame = e.getPreciseWheelRotation();
+    }
+
+    /**
+     *
+     * @return the number of "clicks" the mouse wheel was rotated in this
+     *          frame
+     */
+    public static double getMouseWheelMovedInFrame() {
+        double value = mouseWheelMovedInFrame;
+        mouseWheelMovedInFrame = 0;
+        return value;
     }
 }

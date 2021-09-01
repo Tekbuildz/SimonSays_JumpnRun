@@ -14,13 +14,13 @@ import java.util.Objects;
 
 public class MainMenuState extends State {
 
-    private final int buttonWidth = (int) (250 * BasicGUIConstants.rsf);
-    private final int buttonHeight = (int) (60 * BasicGUIConstants.rsf);
-    private final int buttonCutoffSize = (int) (10 * BasicGUIConstants.rsf);
     private final TextBox title = new TextBox(0, (int) (250 * BasicGUIConstants.rsf), DisplayManager.getWIDTH(), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
-    private HashMap<String, Button> buttons = new HashMap<>();
+    private final HashMap<String, Button> buttons = new HashMap<>();
 
     public MainMenuState() {
+        int buttonWidth = (int) (250 * BasicGUIConstants.rsf);
+        int buttonHeight = (int) (60 * BasicGUIConstants.rsf);
+        int buttonCutoffSize = (int) (10 * BasicGUIConstants.rsf);
         buttons.put("playButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 11, buttonWidth, buttonHeight, buttonCutoffSize, "Play"));
         buttons.put("statisticsButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 5, buttonWidth, buttonHeight, buttonCutoffSize, "Statistics"));
         buttons.put("howToPlayButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 + buttonHeight / 4, buttonWidth, buttonHeight, buttonCutoffSize, "How To Play"));

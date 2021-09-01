@@ -18,8 +18,8 @@ public class DataLoader {
     private static int coins = 0;
     private static int items = 0;
     private static int lives = 0;
-    private static final HashMap<String, Integer> entityKills = new HashMap<>();
-    private static final ArrayList<Long> levelTimes = new ArrayList<>();
+    private static HashMap<String, Integer> entityKills = new HashMap<>();
+    private static ArrayList<Long> levelTimes = new ArrayList<>();
 
     /**
      *
@@ -28,6 +28,8 @@ public class DataLoader {
      * @param fileName - the name of the XML file to be read from
      */
     public static void loadPlayerData(String fileName)  {
+        entityKills = new HashMap<>();
+        levelTimes = new ArrayList<>();
 
         FileInputStream fileInputStream;
         try {

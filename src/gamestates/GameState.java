@@ -32,7 +32,6 @@ import java.util.List;
 
 public class GameState extends State {
 
-
     private Image[] itemImages = new Image[3];
 
     private boolean drawPauseMenuOverlay = false;
@@ -46,11 +45,15 @@ public class GameState extends State {
     private final int WIDTH = DisplayManager.getWIDTH();
     private final int HEIGHT = DisplayManager.getHEIGHT();
 
+    private boolean movementLeftBoundThreshold;
+    private boolean movementRightBoundThreshold;
+
     // rsf = resolutionStretchFactor (converting the points from 1920x1080 screen to the resolution of the current main screen
     private final double rsf = WIDTH / 1920f;
     private final int overlayButtonsWidth = (int) (180 * rsf);
     private final int overlayButtonsHeight = (int) (50 * rsf);
 
+    // ----------------- TIMER -------------------
     private long timeWithPauses;
     private long pauseStart;
     private long mSeconds;
@@ -171,6 +174,7 @@ public class GameState extends State {
                             break;
 
                         case "exitGameButton":
+                            resetLevel();
                             StateMaster.setState(new LevelSelectionMenuState());
                             break;
                     }
@@ -210,6 +214,7 @@ public class GameState extends State {
                                 DataSaver.saveData(Level.level, 0);
                             }
                             DataLoader.loadPlayerData("player");
+                            resetLevel();
                             StateMaster.setState(new LevelSelectionMenuState());
                             break;
                     }
@@ -259,6 +264,9 @@ public class GameState extends State {
             coins.setText("$ " + Main.player.getCoins());
             Main.player.checkCoinCollision(Level.getCoins());
             Main.player.checkItemCollision(Level.getItems());
+
+            movementLeftBoundThreshold = Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2) && Main.player.getX() < (float) (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2);
+            movementRightBoundThreshold = Main.player.getX() >= (float) (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2);
             // checking if the player finished the level
             if (Level.getFinish().intersects(Main.player.getPlayerRect())) {
                 gameInterrupted = true;
@@ -387,10 +395,10 @@ public class GameState extends State {
         // clearing any previous movement
         Main.player.move('n');
         // moving upon key press accordingly
-        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_A)) {
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_A) || PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_LEFT)) {
             Main.player.move('l');
         }
-        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_D)) {
+        if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_D) || PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_RIGHT)) {
             Main.player.move('r');
         }
         if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_SPACE)) {
@@ -400,6 +408,7 @@ public class GameState extends State {
 
     @Override
     public void render(Graphics2D g) {
+        g.drawImage(ResourceMaster.getImageFromMap("game_background"), 0, 0, null);
         g.translate(0, HEIGHT);
         drawLevel(g);
         drawPlayer(g);
@@ -439,9 +448,15 @@ public class GameState extends State {
         // drawing the level rectangles
         for (List<Cube> list:Level.getLevelCubes()) {
             for (Cube cube:list) {
+                if (cube.getCubeID() == -1) {
+                    continue;
+                }
                 // simulating player movement by shifting the level to the side and keeping the player centered
-                if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                if (movementLeftBoundThreshold) {
                     g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE() - ((int) Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                // continue player movement when level reached the end
+                } else if (movementRightBoundThreshold) {
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) ((cube.getX() - (Level.getLevelCubes().get(0).size() - 48)) * cube.getPixelSIZE()), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 } else {
                     g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 }
@@ -452,7 +467,7 @@ public class GameState extends State {
         for (List<Coin> list:Level.getCoins()) {
             for (Coin coin:list) {
                 if (!coin.isWasCollected()) {
-                    if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                    if (movementLeftBoundThreshold) {
                         switch (coin.getValue()) {
                             case 5:
                                 g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
@@ -462,6 +477,18 @@ public class GameState extends State {
                                 break;
                             case 20:
                                 g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                break;
+                        }
+                    } else if (movementRightBoundThreshold) {
+                        switch (coin.getValue()) {
+                            case 5:
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                break;
+                            case 10:
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                break;
+                            case 20:
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     } else {
@@ -484,8 +511,10 @@ public class GameState extends State {
         // drawing the items
         for (Item item:Level.getItems()) {
             if (!item.isWasCollected()) {
-                if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+                if (movementLeftBoundThreshold) {
                     g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
+                } else if (movementRightBoundThreshold) {
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
                 } else {
                     g.drawImage(itemImages[item.getImageArrayIndex()], (int) item.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
                 }
@@ -495,8 +524,10 @@ public class GameState extends State {
         // drawing the SimonSays
         for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
             g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
-            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+            if (movementLeftBoundThreshold) {
                 g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+            } else if (movementRightBoundThreshold) {
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
             } else {
                 g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
            }
@@ -511,8 +542,10 @@ public class GameState extends State {
      */
     private void drawPlayer(Graphics2D g) {
         // simulating player movement by shifting the level to the side and keeping the player centered
-        if (Main.player.getX() >= (float) (DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2)){
+        if (movementLeftBoundThreshold){
             g.drawImage(Player.getCurrentPlayerImage(), DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2, (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
+        } else if (movementRightBoundThreshold) {
+            g.drawImage(Player.getCurrentPlayerImage(), (int) (Main.player.getX() - (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH())), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
         } else {
             g.drawImage(Player.getCurrentPlayerImage(), (int) Main.player.getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
         }
@@ -526,8 +559,10 @@ public class GameState extends State {
      */
     private void drawMobs(Graphics2D g) {
         for (Mob mob: Level.getMobs()) {
-            if (Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2)) {
+            if (movementLeftBoundThreshold) {
                 mob.draw(g, (int) (mob.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+            } else if (movementRightBoundThreshold) {
+                mob.draw(g, (int) (mob.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
             } else {
                 mob.draw(g, (int) mob.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
             }
@@ -670,6 +705,7 @@ public class GameState extends State {
         for (Mob mob:Level.getMobs()) {
             mob.resetCollisions();
             mob.resetBounds();
+            mob.resetHealth();
         }
 
         for (Item item:Level.getItems()) {

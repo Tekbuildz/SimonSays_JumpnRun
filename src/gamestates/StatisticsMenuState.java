@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class StatisticsMenuState extends State{
 
-    private OutlinedPolygon backgroundPoly = new OutlinedPolygon(
+    private final OutlinedPolygon backgroundPoly = new OutlinedPolygon(
             new int[] {DisplayManager.getWIDTH() / 8, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8},
             new int[] {-100, -100, DisplayManager.getHEIGHT() + 100, DisplayManager.getHEIGHT() + 100},
             4,

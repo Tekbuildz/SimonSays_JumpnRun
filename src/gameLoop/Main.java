@@ -6,7 +6,6 @@ import SpriteSheet.ResourceMaster;
 import SpriteSheet.SpriteSheet;
 import display.DisplayManager;
 import display.Renderer;
-import gamestates.GameState;
 import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import levelHandling.Level;
@@ -73,6 +72,7 @@ public class Main implements Runnable{
         ResourceMaster.addImageToMap("pcb", ImageLoader.loadImage("res\\images\\item_pcb.png"));
         ResourceMaster.addImageToMap("screw", ImageLoader.loadImage("res\\images\\item_screw.png"));
         ResourceMaster.addImageToMap("simon_says", ImageLoader.loadImage("res\\images\\simon_says.png"));
+        ResourceMaster.addImageToMap("game_background", ImageLoader.loadImage("res\\images\\game_background.png"));
 
         ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet("res\\spritesheets\\coin_5_spritesheet.png", 40, 40));
         ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet("res\\spritesheets\\coin_10_spritesheet.png", 40, 40));
@@ -81,7 +81,7 @@ public class Main implements Runnable{
         ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet("res\\spritesheets\\player_walk_spritesheet.png", 40, 60));
         ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet("res\\spritesheets\\snail_walk_spritesheet.png", 60, 25));
         ResourceMaster.addSpriteSheetToMap("wolf_walk", new SpriteSheet("res\\spritesheets\\wolf_walk_spritesheet.png", 80, 44));
-        ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet("res\\spritesheets\\dirt_gras.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet("res\\spritesheets\\blocktiles.png", 40, 40));
         // -------------------------------------------------------------------------------------------------------------
     }
 

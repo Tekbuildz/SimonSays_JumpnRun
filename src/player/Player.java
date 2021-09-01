@@ -66,7 +66,7 @@ public class Player {
         this.coins = coins;
         this.entityKills = entityKills;
         this.backupCoins = coins;
-        this.numberOfItemsCollected = DataLoader.getItems();
+        this.numberOfItemsCollected = 0;
 
         isDeathAnimPlaying = false;
         wasDeathAnimPlayed = false;
