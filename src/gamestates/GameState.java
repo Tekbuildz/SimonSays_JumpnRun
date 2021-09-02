@@ -511,12 +511,13 @@ public class GameState extends State {
         // drawing the items
         for (Item item:Level.getItems()) {
             if (!item.isWasCollected()) {
+                int itemYPos = (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY() + Math.sin(Main.currentEntityImage / 8f) * 10);
                 if (movementLeftBoundThreshold) {
-                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), itemYPos, null);
                 } else if (movementRightBoundThreshold) {
-                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), itemYPos, null);
                 } else {
-                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) item.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY()), null);
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) item.getBounds().getX(), itemYPos, null);
                 }
             }
         }
