@@ -1,5 +1,6 @@
 package entities.mob;
 
+import Loader.LevelLoader;
 import SpriteSheet.ResourceMaster;
 import gameLoop.Main;
 import levelHandling.Level;
@@ -47,9 +48,9 @@ public class Snail extends Mob{
     }
 
     @Override
-    public void update() {
+    public void update(ArrayList<Rectangle2D> collisionBoxes) {
         if (hasCollisions) {
-            if (!hasHorizontalCollision(Level.getCollisionBoxes())) {
+            if (!hasHorizontalCollision(collisionBoxes)) {
                 bounds.x += xSpeed;
             } else {
                 xSpeed = -xSpeed;

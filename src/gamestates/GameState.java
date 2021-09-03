@@ -32,7 +32,9 @@ import java.util.List;
 
 public class GameState extends State {
 
-    private Image[] itemImages = new Image[3];
+    private final Level level;
+    private Player player;
+    private final Image[] itemImages = new Image[3];
 
     private boolean drawPauseMenuOverlay = false;
     private boolean drawDeathOverlay = false;
@@ -87,7 +89,7 @@ public class GameState extends State {
     private final OutlinedEllipse livesOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (60 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f);
 
     private final TextBox lives = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), (int) (180 * rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5, UIConstraints.UI_RIGHT_BOUND_CONSTRAINT);
-    private final TextBox coins = new TextBox(WIDTH - (int) (260 * rsf), HEIGHT - (int) (60 * rsf), (int) (240 * rsf), BasicGUIConstants.MONEY_YELLOW_COLOR, new Font("Calibri", Font.PLAIN, (int) (60 * rsf)), "$ " + Main.player.getCoins(), 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
+    private final TextBox coins = new TextBox(WIDTH - (int) (260 * rsf), HEIGHT - (int) (60 * rsf), (int) (240 * rsf), BasicGUIConstants.MONEY_YELLOW_COLOR, new Font("Calibri", Font.PLAIN, (int) (60 * rsf)), "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
     private final TextBox time = new TextBox(WIDTH - (int) (180 * rsf), (int) (50 * rsf), (int) (180 * rsf), Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * rsf)), "00:00.000", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
 
     /**
@@ -96,7 +98,11 @@ public class GameState extends State {
      * creating and adding buttons of this state to an ArrayList and giving
      * them a default font
      */
-    public GameState() {
+    public GameState(Level level) {
+        this.level = level;
+        player = new Player(level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins(), DataLoader.getEntityKills(), level.getLevelLoader());
+        coins.setText("$ " + player.getCoins());
+
         // adding images to image-array to make randomizing the image displayed as the item easier
         itemImages[0] = ResourceMaster.getImageFromMap("led");
         itemImages[1] = ResourceMaster.getImageFromMap("pcb");
@@ -209,9 +215,9 @@ public class GameState extends State {
                             break;
                         case "continueButton":
                             if (saveTimeForLevel) {
-                                DataSaver.saveData(Level.level, totalTime);
+                                DataSaver.saveData(level.level, totalTime, player);
                             } else {
-                                DataSaver.saveData(Level.level, 0);
+                                DataSaver.saveData(level.level, 0, player);
                             }
                             DataLoader.loadPlayerData("player");
                             resetLevel();
@@ -222,8 +228,8 @@ public class GameState extends State {
             }
         }
 
-        Level.simonSaysMaster.update();
-        for (SimonSays simonSays: Level.simonSaysMaster.getSimonSays()) {
+        level.getSimonSaysMaster().update(player);
+        for (SimonSays simonSays: level.getSimonSaysMaster().getSimonSays()) {
             if (simonSays.isColliding()) {
                 gameInterrupted = !simonSays.isCompleted();
                 break;
@@ -254,21 +260,21 @@ public class GameState extends State {
             handleMovement();
 
             // updating player image when jumping
-            if (!Main.player.hasVerticalCollision(Level.getCollisionBoxes(), Main.player.ySpeed + 1)) {
+            if (!player.hasVerticalCollision(level.getCollisionBoxes(), player.ySpeed + 1)) {
                 Player.setCurrentPlayerImage(ResourceMaster.getImageFromMap("player_jump"));
             }
             // updating player
-            Main.player.applyGravity();
-            Main.player.update();
+            player.applyGravity();
+            player.update();
 
-            coins.setText("$ " + Main.player.getCoins());
-            Main.player.checkCoinCollision(Level.getCoins());
-            Main.player.checkItemCollision(Level.getItems());
+            coins.setText("$ " + player.getCoins());
+            player.checkCoinCollision(level.getCoins());
+            player.checkItemCollision(level.getItems());
 
-            movementLeftBoundThreshold = Main.player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2) && Main.player.getX() < (float) (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2);
-            movementRightBoundThreshold = Main.player.getX() >= (float) (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH() / 2 + Main.player.getCubeSize() / 2);
+            movementLeftBoundThreshold = player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2) && player.getX() < (float) (level.getLevelCubes().get(0).size() * player.getCubeSize() - DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2);
+            movementRightBoundThreshold = player.getX() >= (float) (level.getLevelCubes().get(0).size() * player.getCubeSize() - DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2);
             // checking if the player finished the level
-            if (Level.getFinish().intersects(Main.player.getPlayerRect())) {
+            if (level.getFinish().intersects(player.getPlayerRect())) {
                 gameInterrupted = true;
                 drawLevelFinishedOverlay = true;
 
@@ -278,7 +284,7 @@ public class GameState extends State {
                 int totalMoneyAvailable = 0;
                 int totalEnemiesKilled = 0;
                 int totalEnemiesInLevel = 0;
-                for (ArrayList<Coin> list:Level.getCoins()) {
+                for (ArrayList<Coin> list:level.getCoins()) {
                     totalCoinsInLevel += list.size();
                     for (Coin coin:list) {
                         totalMoneyAvailable += coin.getValue();
@@ -289,7 +295,7 @@ public class GameState extends State {
                     }
                 }
 
-                for (Mob mob:Level.getMobs()) {
+                for (Mob mob:level.getMobs()) {
                     if (!mob.hasCollisions()) {
                         totalEnemiesKilled++;
                     }
@@ -297,7 +303,7 @@ public class GameState extends State {
                 }
 
                 int ssCorrect = 0;
-                for (CheckBox cb:Level.simonSaysMaster.checkBoxes) {
+                for (CheckBox cb:level.getSimonSaysMaster().checkBoxes) {
                     if (cb.getState() == CheckBox.TICKED) {
                         ssCorrect++;
                     }
@@ -305,8 +311,8 @@ public class GameState extends State {
 
                 levelFinishedValues.get("coinsCollected").setText(totalCoinsCollected + " / " + totalCoinsInLevel);
                 levelFinishedValues.get("moneyEarned").setText(totalMoneyEarned + " / " + totalMoneyAvailable);
-                levelFinishedValues.get("itemsCollected").setText(Main.player.getNumberOfItemsCollected() + " / " + Level.getItems().size());
-                levelFinishedValues.get("simonSaysCorrect").setText(ssCorrect + " / " + Level.simonSaysMaster.checkBoxes.length);
+                levelFinishedValues.get("itemsCollected").setText(player.getNumberOfItemsCollected() + " / " + level.getItems().size());
+                levelFinishedValues.get("simonSaysCorrect").setText(ssCorrect + " / " + level.getSimonSaysMaster().checkBoxes.length);
                 levelFinishedValues.get("enemiesKilled").setText(totalEnemiesKilled + " / " + totalEnemiesInLevel);
                 if (seconds < 10) {
                     levelFinishedValues.get("timeTaken").setText(minutes + ":0" + seconds + "." + mSeconds);
@@ -315,37 +321,37 @@ public class GameState extends State {
                 }
 
                 // only if all the items etc. were collected, the time for the level is saved
-                if (totalCoinsCollected == totalCoinsInLevel && Main.player.getNumberOfItemsCollected() == Level.getItems().size() && ssCorrect == Level.simonSaysMaster.checkBoxes.length && totalEnemiesKilled == totalEnemiesInLevel) {
+                if (totalCoinsCollected == totalCoinsInLevel && player.getNumberOfItemsCollected() == level.getItems().size() && ssCorrect == level.getSimonSaysMaster().checkBoxes.length && totalEnemiesKilled == totalEnemiesInLevel) {
                     saveTimeForLevel = true;
                 }
             }
 
             // player attributes
-            lives.setText(Main.player.getLives() + "x");
+            lives.setText(player.getLives() + "x");
             // -----------------------------------------------------------------
 
             // ----------------------------------------------------------------- MOBS
             // updating all the mobs and their position
             // handling collisions between the mobs and the player
-            for (Mob mob: Level.getMobs()) {
-                mob.update();
+            for (Mob mob: level.getMobs()) {
+                mob.update(level.getCollisionBoxes());
 
                 if (mob.hasCollisions()) {
-                    if (Main.player.getPlayerRect().intersects(mob.getBounds()) && Main.player.ySpeed > 0) {
+                    if (player.getPlayerRect().intersects(mob.getBounds()) && player.ySpeed > 0) {
                         boolean entityWasKilled = mob.hit();
                         if (entityWasKilled) {
-                            Main.player.addEntityKill(mob.getType());
+                            player.addEntityKill(mob.getType());
                         }
-                        Main.player.ySpeed = Main.player.jumpYSpeed;
-                    } else if (Main.player.getPlayerRect().intersects(mob.getBounds()) && !(Main.player.ySpeed > 0)){
+                        player.ySpeed = player.jumpYSpeed;
+                    } else if (player.getPlayerRect().intersects(mob.getBounds()) && !(player.ySpeed > 0)){
                         // make the player take damage
                         if (mob.getType().equals("snail")) {
-                            Main.player.removeHealth(25);
+                            player.removeHealth(25);
                         } else if (mob.getType().equals("wolf")) {
-                            Main.player.removeHealth(40);
+                            player.removeHealth(40);
                         }
 
-                        health.setFillLevel(Main.player.getHealth());
+                        health.setFillLevel(player.getHealth());
                         health.update();
                     }
                 }
@@ -360,7 +366,7 @@ public class GameState extends State {
                 drawPauseMenuOverlay = true;
             }
             // checking death scenario
-            if (Main.player.getY() > 2200) {
+            if (player.getY() > 2200) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
@@ -393,16 +399,16 @@ public class GameState extends State {
      */
     private void handleMovement() {
         // clearing any previous movement
-        Main.player.move('n');
+        player.move('n');
         // moving upon key press accordingly
         if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_A) || PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_LEFT)) {
-            Main.player.move('l');
+            player.move('l');
         }
         if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_D) || PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_RIGHT)) {
-            Main.player.move('r');
+            player.move('r');
         }
         if (PlayerInputs.getKeysPressedInFrame().contains(KeyEvent.VK_SPACE)) {
-            Main.player.jump();
+            player.jump();
         }
     }
 
@@ -414,7 +420,7 @@ public class GameState extends State {
         drawPlayer(g);
 
         drawMobs(g);
-        // using the translate function with "-HEIGHT" because the origin is always viewed from the current origin
+        // using the translate-function with "-HEIGHT" because the origin is always viewed from the current origin
         // of the current coordinate system which is located at 0, HEIGHT (viewed from the actual screen => not visible)
         // in order to change the coordinate system back from the bottom left to the top left of the screen, the
         // height of the screen needs to be subtracted
@@ -433,7 +439,7 @@ public class GameState extends State {
             drawLevelFinishedOverlay(g);
         }
 
-        Level.simonSaysMaster.drawSimonSaysOverlay(g);
+        level.getSimonSaysMaster().drawSimonSaysOverlay(g);
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
@@ -446,61 +452,61 @@ public class GameState extends State {
      */
     private void drawLevel(Graphics2D g) {
         // drawing the level rectangles
-        for (List<Cube> list:Level.getLevelCubes()) {
+        for (List<Cube> list:level.getLevelCubes()) {
             for (Cube cube:list) {
                 if (cube.getCubeID() == -1) {
                     continue;
                 }
                 // simulating player movement by shifting the level to the side and keeping the player centered
                 if (movementLeftBoundThreshold) {
-                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE() - ((int) Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE() - ((int) player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2), (int) -(level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 // continue player movement when level reached the end
                 } else if (movementRightBoundThreshold) {
-                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) ((cube.getX() - (Level.getLevelCubes().get(0).size() - 48)) * cube.getPixelSIZE()), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) ((cube.getX() - (level.getLevelCubes().get(0).size() - 48)) * cube.getPixelSIZE()), (int) -(level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 } else {
-                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(Level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
+                    g.drawImage(ResourceMaster.getSpriteSheetFromMap("dirt_gras").getSpriteImages()[cube.getCubeID()], (int) cube.getX() * cube.getPixelSIZE(), (int) -(level.getLevelCubes().size() - cube.getY()) * cube.getPixelSIZE(), null, null);
                 }
             }
         }
 
         // drawing the coins
-        for (List<Coin> list:Level.getCoins()) {
+        for (List<Coin> list:level.getCoins()) {
             for (Coin coin:list) {
                 if (!coin.isWasCollected()) {
                     if (movementLeftBoundThreshold) {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     } else if (movementRightBoundThreshold) {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) (coin.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     } else {
                         switch (coin.getValue()) {
                             case 5:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_5").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 10:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_10").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                             case 20:
-                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - coin.getBounds().getY()), null);
+                                g.drawImage(ResourceMaster.getSpriteSheetFromMap("coin_20").getSpriteImages()[(int) ((Main.currentEntityImage / 1.5) % 8)], (int) coin.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - coin.getBounds().getY()), null);
                                 break;
                         }
                     }
@@ -509,13 +515,13 @@ public class GameState extends State {
         }
 
         // drawing the items
-        for (Item item:Level.getItems()) {
+        for (Item item:level.getItems()) {
             if (!item.isWasCollected()) {
-                int itemYPos = (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - item.getBounds().getY() + Math.sin(Main.currentEntityImage / 8f) * 10);
+                int itemYPos = (int) -(level.getLevelCubes().size() * player.getCubeSize() - item.getBounds().getY() + Math.sin(Main.currentEntityImage / 8f) * 10);
                 if (movementLeftBoundThreshold) {
-                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), itemYPos, null);
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), itemYPos, null);
                 } else if (movementRightBoundThreshold) {
-                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), itemYPos, null);
+                    g.drawImage(itemImages[item.getImageArrayIndex()], (int) (item.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), itemYPos, null);
                 } else {
                     g.drawImage(itemImages[item.getImageArrayIndex()], (int) item.getBounds().getX(), itemYPos, null);
                 }
@@ -523,14 +529,14 @@ public class GameState extends State {
         }
 
         // drawing the SimonSays
-        for (SimonSays simon: Level.simonSaysMaster.getSimonSays()) {
+        for (SimonSays simon: level.getSimonSaysMaster().getSimonSays()) {
             g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
             if (movementLeftBoundThreshold) {
-                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), (int) -(level.getLevelCubes().size() * player.getCubeSize() - simon.getBounds().getY()), null);
             } else if (movementRightBoundThreshold) {
-                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) (simon.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), (int) -(level.getLevelCubes().size() * player.getCubeSize() - simon.getBounds().getY()), null);
             } else {
-                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - simon.getBounds().getY()), null);
+                g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - simon.getBounds().getY()), null);
            }
         }
     }
@@ -544,11 +550,11 @@ public class GameState extends State {
     private void drawPlayer(Graphics2D g) {
         // simulating player movement by shifting the level to the side and keeping the player centered
         if (movementLeftBoundThreshold){
-            g.drawImage(Player.getCurrentPlayerImage(), DisplayManager.getWIDTH()/2 + Main.player.getCubeSize()/2, (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
+            g.drawImage(Player.getCurrentPlayerImage(), DisplayManager.getWIDTH()/2 + player.getCubeSize()/2, (int) -(level.getLevelCubes().size() * player.getCubeSize() - player.getY()), null);
         } else if (movementRightBoundThreshold) {
-            g.drawImage(Player.getCurrentPlayerImage(), (int) (Main.player.getX() - (Level.getLevelCubes().get(0).size() * Main.player.getCubeSize() - DisplayManager.getWIDTH())), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
+            g.drawImage(Player.getCurrentPlayerImage(), (int) (player.getX() - (level.getLevelCubes().get(0).size() * player.getCubeSize() - DisplayManager.getWIDTH())), (int) -(level.getLevelCubes().size() * player.getCubeSize() - player.getY()), null);
         } else {
-            g.drawImage(Player.getCurrentPlayerImage(), (int) Main.player.getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - Main.player.getY()), null);
+            g.drawImage(Player.getCurrentPlayerImage(), (int) player.getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - player.getY()), null);
         }
     }
 
@@ -559,13 +565,13 @@ public class GameState extends State {
      * @param g - the graphics object used to paint onto the screen
      */
     private void drawMobs(Graphics2D g) {
-        for (Mob mob: Level.getMobs()) {
+        for (Mob mob: level.getMobs()) {
             if (movementLeftBoundThreshold) {
-                mob.draw(g, (int) (mob.getBounds().getX() - (Main.player.getX() - DisplayManager.getWIDTH() / 2 - Main.player.getCubeSize() / 2)), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+                mob.draw(g, (int) (mob.getBounds().getX() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), (int) -(level.getLevelCubes().size() * player.getCubeSize() - mob.getBounds().getY()));
             } else if (movementRightBoundThreshold) {
-                mob.draw(g, (int) (mob.getBounds().getX() - (Level.getLevelCubes().get(0).size() - 48) * Main.player.getCubeSize()), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+                mob.draw(g, (int) (mob.getBounds().getX() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize()), (int) -(level.getLevelCubes().size() * player.getCubeSize() - mob.getBounds().getY()));
             } else {
-                mob.draw(g, (int) mob.getBounds().getX(), (int) -(Level.getLevelCubes().size() * Main.player.getCubeSize() - mob.getBounds().getY()));
+                mob.draw(g, (int) mob.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - mob.getBounds().getY()));
             }
         }
     }
@@ -586,12 +592,12 @@ public class GameState extends State {
         pauseButton.draw(g);
         // health bars and additions
         health.draw(g);
-        if (!(Main.player.getHealth() > 0)) {
+        if (!(player.getHealth() > 0)) {
             health.setFillColor(new Color(0, 0, 0, 0));
-            if (!Main.player.isDeathAnimPlaying && !Main.player.wasDeathAnimPlayed) {
-                Main.player.startDeathAnim();
+            if (!player.isDeathAnimPlaying && !player.wasDeathAnimPlayed) {
+                player.startDeathAnim();
             }
-            else if (!Main.player.isDeathAnimPlaying) {
+            else if (!player.isDeathAnimPlaying) {
                 drawDeathOverlay = true;
                 gameInterrupted = true;
             }
@@ -688,28 +694,28 @@ public class GameState extends State {
      * movement
      */
     private void resetLevel() {
-        Main.player = new Player(Level.getSpawnLocation(), Main.player.getLives(), Main.player.getBackupCoins(), Main.player.getEntityKills());
+        player = new Player(level.getSpawnLocation(), player.getLives(), player.getBackupCoins(), player.getEntityKills(), level.getLevelLoader());
         health.setFillColor(BasicGUIConstants.HEALTH_BAR_GREEN_COLOR);
-        health.setFillLevel(Main.player.getHealth());
+        health.setFillLevel(player.getHealth());
         health.update();
         drawDeathOverlay = false;
         drawPauseMenuOverlay = false;
         drawLevelFinishedOverlay = false;
         gameInterrupted = false;
 
-        for (ArrayList<Coin> list:Level.getCoins()) {
+        for (ArrayList<Coin> list:level.getCoins()) {
             for (Coin coin:list) {
                 coin.setWasCollected(false);
             }
         }
 
-        for (Mob mob:Level.getMobs()) {
+        for (Mob mob:level.getMobs()) {
             mob.resetCollisions();
             mob.resetBounds();
             mob.resetHealth();
         }
 
-        for (Item item:Level.getItems()) {
+        for (Item item:level.getItems()) {
             item.setWasCollected(false);
         }
 
@@ -719,6 +725,6 @@ public class GameState extends State {
         pauseStart = 0;
         timeWithPauses = System.currentTimeMillis();
 
-        Level.simonSaysMaster.resetSimonSays();
+        level.getSimonSaysMaster().resetSimonSays();
     }
 }

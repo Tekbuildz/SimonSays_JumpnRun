@@ -8,8 +8,6 @@ import display.DisplayManager;
 import display.Renderer;
 import gamestates.MainMenuState;
 import gamestates.StateMaster;
-import levelHandling.Level;
-import player.Player;
 import player.PlayerInputs;
 
 public class Main implements Runnable{
@@ -18,7 +16,6 @@ public class Main implements Runnable{
 
     private static final boolean running = true;
 
-    public static Player player;
     public static long timer;
     public static int currentEntityImage;
 
@@ -42,10 +39,7 @@ public class Main implements Runnable{
      */
     private void setup() {
         loadAllResources();
-        new Level("1");
         DataLoader.loadPlayerData("player");
-
-        player = new Player(Level.getSpawnLocation(), DataLoader.getLives(), DataLoader.getCoins(), DataLoader.getEntityKills());
 
         renderer = new Renderer(DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
@@ -64,6 +58,8 @@ public class Main implements Runnable{
      */
     public static void loadAllResources() {
         ResourceMaster.addImageToMap("title_screen_background", ImageLoader.loadImage("res\\images\\titleScreenBackground.png"));
+        ResourceMaster.addImageToMap("all_items", ImageLoader.loadImage("res\\images\\allItems.png"));
+        ResourceMaster.addImageToMap("ss_ui", ImageLoader.loadImage("res\\images\\SS_UI.png"));
 
         // ------------------------------------------------------------------------------------------------------------- IMAGES FOR GAMESTATE
         ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage("res\\images\\player_jump.png"));

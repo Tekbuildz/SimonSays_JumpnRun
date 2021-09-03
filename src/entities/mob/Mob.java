@@ -2,6 +2,7 @@ package entities.mob;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 public abstract class Mob {
 
@@ -10,8 +11,10 @@ public abstract class Mob {
     /**
      *
      * updates the direction of movement of the mob and checks for collisions
+     *
+     * @param collisionBoxes - the boxes with which the mob can collide
      */
-    public abstract void update();
+    public abstract void update(ArrayList<Rectangle2D> collisionBoxes);
 
     /**
      *

@@ -1,7 +1,6 @@
 package toolbox;
 
 import Loader.DataLoader;
-import gameLoop.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import player.Player;
@@ -9,11 +8,15 @@ import player.Player;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
-import java.util.Iterator;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Objects;
 
 public class DataSaver {
@@ -23,7 +26,7 @@ public class DataSaver {
      * saves all the player statistics to player.xml
      * using the DOM parser to save the data to a xml file
      */
-    public static void saveData(int levelIndex, long timeInMS) {
+    public static void saveData(int levelIndex, long timeInMS, Player player) {
 
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         try {
@@ -40,23 +43,23 @@ public class DataSaver {
             // coins
             Element coins = document.createElement("coins");
             playerStats.appendChild(coins);
-            coins.setAttribute("amount", String.valueOf(Main.player.getCoins()));
+            coins.setAttribute("amount", String.valueOf(player.getCoins()));
 
             // items
             Element items = document.createElement("items");
             playerStats.appendChild(items);
-            items.setAttribute("amount", String.valueOf(DataLoader.getItems() + Main.player.getNumberOfItemsCollected()));
+            items.setAttribute("amount", String.valueOf(DataLoader.getItems() + player.getNumberOfItemsCollected()));
 
             // lives
             Element lives = document.createElement("lives");
             playerStats.appendChild(lives);
-            lives.setAttribute("amount", String.valueOf(Main.player.getLives()));
+            lives.setAttribute("amount", String.valueOf(player.getLives()));
 
             // entity kills
             Element entityKills = document.createElement("entity_kills");
             playerStats.appendChild(entityKills);
-            entityKills.setAttribute("snail", String.valueOf(Main.player.getEntityKills().get("snail")));
-            entityKills.setAttribute("wolf", String.valueOf(Main.player.getEntityKills().get("wolf")));
+            entityKills.setAttribute("snail", String.valueOf(player.getEntityKills().get("snail")));
+            entityKills.setAttribute("wolf", String.valueOf(player.getEntityKills().get("wolf")));
             // ---------------------------------------------------------------------------------------------------------
 
             // --------------------------------------------------------------------------------------------------------- LEVEL DATA
@@ -65,21 +68,26 @@ public class DataSaver {
             Element levelData = document.createElement("level_data");
             rootElement.appendChild(levelData);
 
+            // reading the number of files currently in the level's folder, hence reading the number of levels
+            File directory = new File("levels");
+            int fileCount = Objects.requireNonNull(directory.list()).length;
+
             if (DataLoader.getLevelTimes().isEmpty()) {
-                File directory = new File("levels");
-                int fileCount = Objects.requireNonNull(directory.list()).length;
                 for (int i = 0; i < fileCount; i++) {
                     levelData.setAttribute("level_" + (i + 1), "0");
                 }
-            } else {
-                for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
+            }
+            else {
+                for (int i = 0; i < fileCount; i++) {
                     if (i == levelIndex - 1 && timeInMS > 0) {
-                        if (DataLoader.getLevelTimes().get(i) > timeInMS || DataLoader.getLevelTimes().get(i) == 0) {
+                        if (DataLoader.getLevelTimes().get("level_" + (i + 1)) > timeInMS || DataLoader.getLevelTimes().get("level_" + (i + 1)) == 0) {
                             levelData.setAttribute("level_" + (i + 1), String.valueOf(timeInMS));
-                            continue;
                         }
+                    } else if (i < DataLoader.getLevelTimes().size()) {
+                        levelData.setAttribute("level_" + (i + 1), String.valueOf(DataLoader.getLevelTimes().get("level_" + (i + 1))));
+                    } else {
+                        levelData.setAttribute("level_" + (i + 1), "0");
                     }
-                    levelData.setAttribute("level_" + (i + 1), String.valueOf(DataLoader.getLevelTimes().get(i)));
                 }
             }
             // ---------------------------------------------------------------------------------------------------------

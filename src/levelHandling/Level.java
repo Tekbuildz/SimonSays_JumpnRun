@@ -13,15 +13,16 @@ import java.util.ArrayList;
 
 public class Level {
 
-    private static ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
-    private static ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
-    private static ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
-    private static ArrayList<Item> items = new ArrayList<>();
-    private static ArrayList<Mob> mobs = new ArrayList<>();
-    public static SimonSaysMaster simonSaysMaster;
-    private static Point2D spawnPoint;
-    private static Rectangle2D finish;
-    public static int level;
+    private final ArrayList<ArrayList<Cube>> levelCubes;
+    private final ArrayList<Rectangle2D> collisionBoxes;
+    private final ArrayList<ArrayList<Coin>> coins;
+    private final ArrayList<Item> items;
+    private final ArrayList<Mob> mobs;
+    private final SimonSaysMaster simonSaysMaster;
+    private final Point2D spawnPoint;
+    private final Rectangle2D finish;
+    private final LevelLoader levelLoader;
+    public int level;
 
     /**
      *
@@ -42,22 +43,23 @@ public class Level {
         }
         level = Integer.parseInt(levelName);
         // loading the level and its details
-        LevelLoader.loadLevelData("levels/" + levelName + ".litidata"); // replace this line with LevelLoader.loadLevelData("levels/" + levelName + ".litidata");
-        levelCubes = LevelLoader.getLevelCubes();
-        collisionBoxes = LevelLoader.getCollisionBoxes();
-        coins = LevelLoader.getCoins();
-        items = LevelLoader.getItems();
-        mobs = LevelLoader.getMobs();
-        simonSaysMaster = new SimonSaysMaster(LevelLoader.getSimonSays());
-        spawnPoint = LevelLoader.getSpawnPoint();
-        finish = LevelLoader.getFinish();
+        levelLoader = new LevelLoader("levels/" + levelName + ".litidata");
+        //levelLoader = new LevelLoader("levels/1.litidata");
+        levelCubes = levelLoader.getLevelCubes();
+        collisionBoxes = levelLoader.getCollisionBoxes();
+        coins = levelLoader.getCoins();
+        items = levelLoader.getItems();
+        mobs = levelLoader.getMobs();
+        simonSaysMaster = new SimonSaysMaster(levelLoader.getSimonSays());
+        spawnPoint = levelLoader.getSpawnPoint();
+        finish = levelLoader.getFinish();
     }
 
     /**
      *
      * @return the 2D list of all the cube objects in the current level containing their respective cube data
      */
-    public static ArrayList<ArrayList<Cube>> getLevelCubes() {
+    public ArrayList<ArrayList<Cube>> getLevelCubes() {
         return levelCubes;
     }
 
@@ -65,7 +67,7 @@ public class Level {
      *
      * @return the point where the player enters the level
      */
-    public static Point getSpawnLocation() {
+    public Point getSpawnLocation() {
         return new Point((int) spawnPoint.getX(), (int) spawnPoint.getY());
     }
 
@@ -74,7 +76,7 @@ public class Level {
      * @return an arraylist containing arraylists of all the locations of
      *          5-er, 10-er and 20-er coins in this order of lists
      */
-    public static ArrayList<ArrayList<Coin>> getCoins() {
+    public ArrayList<ArrayList<Coin>> getCoins() {
         return coins;
     }
 
@@ -82,7 +84,7 @@ public class Level {
      *
      * @return an arraylist containing all the items with their bounds
      */
-    public static ArrayList<Item> getItems() {
+    public ArrayList<Item> getItems() {
         return items;
     }
 
@@ -90,7 +92,7 @@ public class Level {
      *
      * @return an arraylist containing all the mob objects
      */
-    public static ArrayList<Mob> getMobs() {
+    public ArrayList<Mob> getMobs() {
         return mobs;
     }
 
@@ -99,7 +101,7 @@ public class Level {
      * @return an ArrayList of rectangles containing all the collision boxes
      *          with which the player can collide
      */
-    public static ArrayList<Rectangle2D> getCollisionBoxes() {
+    public ArrayList<Rectangle2D> getCollisionBoxes() {
         return collisionBoxes;
     }
 
@@ -107,7 +109,24 @@ public class Level {
      *
      * @return a rectangle representing the hitbox of the finish
      */
-    public static Rectangle2D getFinish() {
+    public Rectangle2D getFinish() {
         return finish;
+    }
+
+    /**
+     *
+     * @return an instance of the SimonSaysMaster class handling all its anims
+     */
+    public SimonSaysMaster getSimonSaysMaster() {
+        return simonSaysMaster;
+    }
+
+    /**
+     *
+     * @return an instance of the LevelLoader class containing all the
+     *          information about the level (hitboxes, mobs etc.)
+     */
+    public LevelLoader getLevelLoader() {
+        return levelLoader;
     }
 }

@@ -7,11 +7,13 @@ import guis.TextBox;
 import guis.buttons.ButtonTriangularRectangle;
 import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
+import levelHandling.Level;
 import toolbox.BasicGUIConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class LevelSelectionMenuState extends State{
 
@@ -85,12 +87,23 @@ public class LevelSelectionMenuState extends State{
 
         // showing all the best times under the levels which were already fully completed once
         for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
-            if (DataLoader.getLevelTimes().get(i) != 0) {
-                long minutes = (DataLoader.getLevelTimes().get(i) / 60000) % 60;
-                long seconds = (DataLoader.getLevelTimes().get(i) / 1000) % 60;
-                long mSeconds = DataLoader.getLevelTimes().get(i) % 1000;
-                //System.out.println((i + 1));
-                levelPBs.get("level_" + (i + 1)).setText(minutes + ":" + seconds + "." + mSeconds);
+            if (DataLoader.getLevelTimes().get("level_" + (i + 1)) != 0) {
+                long minutes = (DataLoader.getLevelTimes().get("level_" + (i + 1)) / 60000) % 60;
+                long seconds = (DataLoader.getLevelTimes().get("level_" + (i + 1)) / 1000) % 60;
+                long mSeconds = DataLoader.getLevelTimes().get("level_" + (i + 1)) % 1000;
+
+                String secs;
+                String mSecs;
+                if (seconds < 10) {
+                    secs = "0" + String.valueOf(seconds);
+                } else secs = String.valueOf(seconds);
+                if (mSeconds < 10) {
+                    mSecs = "00" + String.valueOf(mSeconds);
+                } else if (mSeconds < 100) {
+                    mSecs = "0" + String.valueOf(mSeconds);
+                } else mSecs = String.valueOf(mSeconds);
+
+                levelPBs.get("level_" + (i + 1)).setText(minutes + ":" + secs + "." + mSecs);
             }
         }
 
@@ -109,8 +122,7 @@ public class LevelSelectionMenuState extends State{
         for (ButtonTriangularRectangle button:levelButtons.values()) {
             button.update();
             if (button.isButtonWasReleased()) {
-                //new Level(Objects.requireNonNull(Objects.requireNonNull(toolbox.HashMap.getKey(levelButtons, button)).replace("level_", "")));
-                StateMaster.setState(new LoadingLevelState());
+                StateMaster.setState(new LoadingLevelState(new Level(Objects.requireNonNull(Objects.requireNonNull(toolbox.HashMap.getKey(levelButtons, button)).replace("level_", "")))));
             }
         }
     }

@@ -1,11 +1,10 @@
 package player;
 
-import Loader.DataLoader;
+import Loader.LevelLoader;
 import SpriteSheet.ResourceMaster;
 import entities.Coin;
 import entities.Item;
 import gameLoop.Main;
-import levelHandling.Level;
 import toolbox.ImageProcessing;
 
 import java.awt.*;
@@ -19,12 +18,15 @@ public class Player {
     // player statistics
     private int coins;
     private int numberOfItemsCollected;
-    private HashMap<String, Integer> entityKills;
+    private final HashMap<String, Integer> entityKills;
 
     private final Rectangle2D.Double playerRect = new Rectangle2D.Double();
+    private final LevelLoader levelLoader;
+
+    private long systemTimeOfDamage;
+    // constants
     private final float gravityAccel = 0.1f;
     private final int playerDamageCooldownMS = 750;
-    private long systemTimeOfDamage;
     private boolean isVulnerable;
     public double xSpeed = 0;
     public double ySpeed = 0;
@@ -59,8 +61,9 @@ public class Player {
      *
      * @param p - the starting point of the player in the level
      */
-     public Player(Point p, int lives, int coins, HashMap<String, Integer> entityKills) {
+     public Player(Point p, int lives, int coins, HashMap<String, Integer> entityKills, LevelLoader levelLoader) {
         playerRect.setRect(p.x, p.y, playerWidth, playerHeight);
+        this.levelLoader = levelLoader;
         health = 100;
         this.lives = lives;
         this.coins = coins;
@@ -86,7 +89,7 @@ public class Player {
         if (ySpeed >= 6) {
             ySpeed = 6;
         }
-        if (hasVerticalCollision(Level.getCollisionBoxes(), ySpeed)) ySpeed = 0;
+        if (hasVerticalCollision(levelLoader.getCollisionBoxes(), ySpeed)) ySpeed = 0;
     }
 
     /**
@@ -98,7 +101,7 @@ public class Player {
     public void jump() {
         // if statement checks if the velocity is 0 which is the case if the player is either colliding with the ceiling or the floor
         // checking the vertical collision with a positive velocity to eliminate the possibility for the player to jump when colliding with the ceiling
-        if (ySpeed == 0 && hasVerticalCollision(Level.getCollisionBoxes(), 1)) {
+        if (ySpeed == 0 && hasVerticalCollision(levelLoader.getCollisionBoxes(), 1)) {
             ySpeed = jumpYSpeed;
         }
     }
@@ -205,12 +208,12 @@ public class Player {
      */
     public void move(Character direction) {
         if (direction == 'r') {
-            if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
+            if (!hasHorizontalCollision(levelLoader.getCollisionBoxes(), direction)) {
                 xSpeed = 2;
                 Player.setCurrentPlayerImage(ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentEntityImage % 6]);
             }
         } else if (direction == 'l') {
-            if (!hasHorizontalCollision(Level.getCollisionBoxes(), direction)) {
+            if (!hasHorizontalCollision(levelLoader.getCollisionBoxes(), direction)) {
                 xSpeed = -2;
                 Player.setCurrentPlayerImage(ImageProcessing.flipImageHorizontally((BufferedImage) ResourceMaster.getSpriteSheetFromMap("player_walk").getSpriteImages()[Main.currentEntityImage % 6]));
             }

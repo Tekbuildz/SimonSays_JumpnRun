@@ -1,6 +1,7 @@
 package SimonSays;
 
 import gameLoop.Main;
+import player.Player;
 
 import java.awt.geom.Rectangle2D;
 
@@ -33,8 +34,8 @@ public class SimonSays {
      *
      * checks whether the SS collides with the player
      */
-    public void update() {
-        isColliding = Main.player.getPlayerRect().intersects(bounds) && Main.player.xSpeed == 0;
+    public void update(Player player) {
+        isColliding = player.getPlayerRect().intersects(bounds) && player.xSpeed == 0;
     }
 
     /**

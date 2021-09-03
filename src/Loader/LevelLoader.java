@@ -21,15 +21,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class LevelLoader {
 
-    private static final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
-    private static final ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
-    private static final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
-    private static final ArrayList<Item> items = new ArrayList<>();
-    private static final ArrayList<Mob> mobs = new ArrayList<>();
+    private final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();
+    private final ArrayList<Rectangle2D> collisionBoxes = new ArrayList<>();
+    private final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
+    private final ArrayList<Item> items = new ArrayList<>();
+    private final ArrayList<Mob> mobs = new ArrayList<>();
     // each level only contains 3 SimonSays-stations
-    private static final SimonSays[] simonSays = new SimonSays[3];
-    private static Point2D spawnPoint;
-    private static Rectangle2D.Double finish;
+    private final SimonSays[] simonSays = new SimonSays[3];
+    private Point2D spawnPoint;
+    private Rectangle2D.Double finish;
+
+    public LevelLoader(String fileName) {
+        loadLevelData(fileName);
+    }
 
     /**
      *
@@ -44,7 +48,7 @@ public class LevelLoader {
      * @param fileName - the name of the level to be loaded of the format
      *                 fileName.litidata
      */
-    public static void loadLevelData(String fileName) {
+    public void loadLevelData(String fileName) {
         // adding three new ArrayLists for coins of value 5, 10, 20
         for (int i = 0; i < 3; i++) {
             coins.add(new ArrayList<>());
@@ -204,7 +208,7 @@ public class LevelLoader {
      *
      * @return a 2D ArrayList of all the Cubes containing their cubeIDs
      */
-    public static ArrayList<ArrayList<Cube>> getLevelCubes() {
+    public ArrayList<ArrayList<Cube>> getLevelCubes() {
         return levelCubes;
     }
 
@@ -212,7 +216,7 @@ public class LevelLoader {
      *
      * @return an ArrayList of all the collision boxes in the level
      */
-    public static ArrayList<Rectangle2D> getCollisionBoxes() {
+    public ArrayList<Rectangle2D> getCollisionBoxes() {
         return collisionBoxes;
     }
 
@@ -220,7 +224,7 @@ public class LevelLoader {
      *
      * @return a Point2D representing the entry point of the player
      */
-    public static Point2D getSpawnPoint() {
+    public Point2D getSpawnPoint() {
         return spawnPoint;
     }
 
@@ -229,7 +233,7 @@ public class LevelLoader {
      * @return an arraylist containing arraylists of all the locations of
      *          5-er, 10-er and 20-er coins in this order of lists
      */
-    public static ArrayList<ArrayList<Coin>> getCoins() {
+    public ArrayList<ArrayList<Coin>> getCoins() {
         return coins;
     }
 
@@ -237,7 +241,7 @@ public class LevelLoader {
      *
      * @return an arraylist containing all the items with their bounds
      */
-    public static ArrayList<Item> getItems() {
+    public ArrayList<Item> getItems() {
         return items;
     }
 
@@ -245,7 +249,7 @@ public class LevelLoader {
      *
      * @return an arraylist containing all the mob objects
      */
-    public static ArrayList<Mob> getMobs() {
+    public ArrayList<Mob> getMobs() {
         return mobs;
     }
 
@@ -253,7 +257,7 @@ public class LevelLoader {
      *
      * @return a list containing all the SimonSays objects with their position
      */
-    public static SimonSays[] getSimonSays() {
+    public SimonSays[] getSimonSays() {
         return simonSays;
     }
 
@@ -261,7 +265,7 @@ public class LevelLoader {
      *
      * @return the rectangle representing the hitbox of the finish
      */
-    public static Rectangle2D.Double getFinish() {
+    public Rectangle2D.Double getFinish() {
         return finish;
     }
 }

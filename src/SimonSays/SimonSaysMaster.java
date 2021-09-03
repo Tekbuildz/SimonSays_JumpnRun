@@ -4,6 +4,7 @@ import display.DisplayManager;
 import guis.CheckBox;
 import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
+import player.Player;
 import player.PlayerInputs;
 import toolbox.BasicGUIConstants;
 
@@ -119,7 +120,7 @@ public class SimonSaysMaster {
      * the third SS has to check if the player enters the third sequence
      * correctly
      */
-    public void update() {
+    public void update(Player player) {
         // if an animation is playing, the counter should constantly increase
         if (isPlaying) {
             // executed every second
@@ -239,7 +240,7 @@ public class SimonSaysMaster {
                 break;
         }
         for (SimonSays simonSays:simonSays) {
-            simonSays.update();
+            simonSays.update(player);
         }
     }
 

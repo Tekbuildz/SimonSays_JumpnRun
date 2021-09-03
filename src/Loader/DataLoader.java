@@ -19,7 +19,7 @@ public class DataLoader {
     private static int items = 0;
     private static int lives = 0;
     private static HashMap<String, Integer> entityKills = new HashMap<>();
-    private static ArrayList<Long> levelTimes = new ArrayList<>();
+    private static HashMap<String, Long> levelTimes = new HashMap<>();
 
     /**
      *
@@ -29,7 +29,7 @@ public class DataLoader {
      */
     public static void loadPlayerData(String fileName)  {
         entityKills = new HashMap<>();
-        levelTimes = new ArrayList<>();
+        levelTimes = new HashMap<>();
 
         FileInputStream fileInputStream;
         try {
@@ -69,15 +69,12 @@ public class DataLoader {
                         case "level_data":
                             Iterator<Attribute> iterator = startElement.getAttributes();
                             while (iterator.hasNext()) {
-                                levelTimes.add(Long.parseLong(iterator.next().getValue()));
+                                Attribute time = iterator.next();
+                                levelTimes.put(time.getName().getLocalPart(), Long.parseLong(time.getValue()));
                             }
-                            break;
                     }
                 }
             }
-
-
-
         } catch (FileNotFoundException | XMLStreamException e) {
             e.printStackTrace();
         }
@@ -120,7 +117,7 @@ public class DataLoader {
      *
      * @return an arraylist containing all current fastest times
      */
-    public static ArrayList<Long> getLevelTimes() {
+    public static HashMap<String, Long> getLevelTimes() {
         return levelTimes;
     }
 }

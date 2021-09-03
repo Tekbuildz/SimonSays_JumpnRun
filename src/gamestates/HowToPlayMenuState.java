@@ -58,7 +58,7 @@ public class HowToPlayMenuState extends State{
             textWidth,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.DEFAULT_TEXT_FONT,
-            "The player can be moved around the level using the A and D key or the left and right arrow keys. To jump, a tap of the space bar is required. The maximum distance the player can jump is three blocks gap horizontally while going up a block as well.",
+            "The player can be moved around the level using the A and D key or the left and right arrow keys. To jump, a tap of the space bar is required.",
             5, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
@@ -75,10 +75,10 @@ public class HowToPlayMenuState extends State{
     private final TextBox collectablesText = new TextBox(
             xDisplacement,
             collectablesTitle.getOriginalYPos() + collectablesTitle.getTextHeight(),
-            DisplayManager.getWIDTH() / 16 * 7,
+            DisplayManager.getWIDTH() / 16 * 8,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.DEFAULT_TEXT_FONT,
-            "One of the objectives of the game is to collect every item in the level. Such items can either be coins of different values, namely 5, 10 or 20 represented by their appearance, where a coin of value 5 is bronze, 10 is silver and 20 is gold. There is also another type of item in form of either an LED, a PCB or a Screw. ",
+            "One of the objectives of the game is to collect every item in the level. Such items can either be coins of different values, 5, 10 or 20, represented by their appearance by bronze, silver and gold respectively. There is also another type of item in form of either a Screw, an LED or a PCB. ",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
@@ -95,17 +95,26 @@ public class HowToPlayMenuState extends State{
     private final TextBox ssText = new TextBox(
             xDisplacement,
             ssTitle.getOriginalYPos() + ssTitle.getTextHeight(),
+            DisplayManager.getWIDTH() / 16 * 7,
+            BasicGUIConstants.BUTTON_TEXT_COLOR,
+            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            "A Simon Says is a memory game occurring throughout each level, where the player has to remember a given sequence and re-enter it in the same order as it was given. To access one, simply navigate the players hitbox over a Simon Says block in the level and cancel any movement. The User Interface [to the right] should automatically open. Then, the first sequence is given and the player needs to replicate it by pressing the buttons which lit up previously in the same order. Should the player fail, the UI is closed and all further Simon Says blocks are no longer accessible.",
+            0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
+    );
+    private final TextBox ssText2 = new TextBox(
+            xDisplacement,
+            ssText.getOriginalYPos() + ssText.getTextHeight(),
             textWidth,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.DEFAULT_TEXT_FONT,
-            "A Simon Says is a memory game occurring throughout each level, where the player has to remember a given sequence and re-enter it in the same order as it was given. To access one, simply navigate the players hitbox over a Simon Says block in the level and cancel any movement. The User Interface should automatically open. Then, the first sequence is given and the player needs to replicate it by pressing the buttons which lit up previously in the same order. Should the player fail, the UI is closed and all further Simon Says blocks are no longer accessible. But if the player succeeds, a box to the right of the play-field is marked with a green tick and the next sequence begins. The UI closes as soon as the second sequence is finished and this one needs to be entered at the second Simon Says block. There, after entering the second sequence correctly, a third one is displayed and the UI is closed. The third and last one has to be entered in the last block. Be aware though, that each sequence can only be played once, therefore missing a sequence will require you to restart the level in case you are aiming for a perfect run.",
+            "But if the player succeeds, a box to the right of the play-field is marked with a green tick and the next sequence begins. The UI closes as soon as the second sequence is finished and this one needs to be entered at the second Simon Says block. There, after entering the second sequence correctly, a third one is displayed and the UI is closed. The third and last one has to be entered in the last block. Be aware though, that each sequence can only be played once, therefore missing a sequence will require you to restart the level in case you are aiming for a perfect run.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
     // part 4: hostile enemies
     private final TextBox enemiesTitle = new TextBox(
             xDisplacement,
-            ssText.getOriginalYPos() + ssText.getTextHeight() + sectionYSpace,
+            ssText2.getOriginalYPos() + ssText2.getTextHeight() + sectionYSpace,
             textWidth,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.TITLE_FONT,
@@ -118,7 +127,7 @@ public class HowToPlayMenuState extends State{
             textWidth,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.DEFAULT_TEXT_FONT,
-            "Currently, there are two different hostile mobs in the game: a Snail and a Wolf. They have different properties such as speed, health and damage done when intersecting with a player. A snail has a lower speed, lower health and lower damage output than the wolf. In order for the player to deal damage to a mob, he has to be falling onto an enemy. This also allows for a hit towards the mob even if the player only hits the side of the hitbox of the mob and not the top. But walking into the enemy will deal damage to the player. This damage also varies depending on the type of mob, for example a snail deals 25 damage and therefore requires four hits for the player to die, the wolf on the other hand deals 40 damage. When standing inside a mob, damage is dealt every 0.75 seconds.",
+            "Currently, there are two different hostile mobs in the game: a Snail and a Wolf. They have different properties such as speed, health and damage done when intersecting with a player. A snail has a lower speed, lower health and lower damage output than the wolf. In order for the player to deal damage to a mob, he has to be falling onto an enemy. This also allows for a hit towards the mob even if the player only hits the side of the hitbox of the mob and not the top. But walking into the enemy will deal damage to the player.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
@@ -142,6 +151,17 @@ public class HowToPlayMenuState extends State{
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
+    // end: have fun
+    private final TextBox GLHF = new TextBox(
+            xDisplacement,
+            pbText.getOriginalYPos() + pbText.getTextHeight() + sectionYSpace,
+            DisplayManager.getWIDTH() / 16 * 10,
+            BasicGUIConstants.BUTTON_TEXT_COLOR,
+            BasicGUIConstants.TITLE_FONT,
+            "Good Luck and Have Fun!",
+            0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT
+    );
+
 
     public HowToPlayMenuState() {
         htpTexts.add(header);
@@ -151,10 +171,12 @@ public class HowToPlayMenuState extends State{
         htpTexts.add(collectablesText);
         htpTexts.add(ssTitle);
         htpTexts.add(ssText);
+        htpTexts.add(ssText2);
         htpTexts.add(enemiesTitle);
         htpTexts.add(enemiesText);
         htpTexts.add(pbTitle);
         htpTexts.add(pbText);
+        htpTexts.add(GLHF);
 
         backButton.setTextFont(new Font("Calibri", Font.PLAIN, 50));
         backButton.setTextColor(BasicGUIConstants.BUTTON_TEXT_COLOR);
@@ -175,8 +197,8 @@ public class HowToPlayMenuState extends State{
             totalYShift -= mouseWheelMovement * 50;
             if (totalYShift > 0) {
                 totalYShift = 0;
-            } else if (totalYShift < -(pbText.getOriginalYPos() + pbText.getTextHeight() - DisplayManager.getHEIGHT())) {
-                totalYShift = -(pbText.getOriginalYPos() + pbText.getTextHeight() - DisplayManager.getHEIGHT());
+            } else if (totalYShift < -(GLHF.getOriginalYPos() + GLHF.getTextHeight() - DisplayManager.getHEIGHT())) {
+                totalYShift = -(GLHF.getOriginalYPos() + GLHF.getTextHeight() - DisplayManager.getHEIGHT());
             }
 
             for (TextBox tb:htpTexts) {
@@ -194,5 +216,11 @@ public class HowToPlayMenuState extends State{
         for (TextBox tb:htpTexts) {
             tb.draw(g);
         }
+
+        // drawing the image showing all the items and coins
+        g.drawImage(ResourceMaster.getImageFromMap("all_items"), DisplayManager.getWIDTH() / 16 * 11, collectablesTitle.getOriginalYPos() + collectablesTitle.getTextHeight() / 2 + totalYShift, null);
+
+        // drawing the image showing the simon says UI overlay
+        g.drawImage(ResourceMaster.getImageFromMap("ss_ui"), DisplayManager.getWIDTH() / 16 * 10, ssTitle.getOriginalYPos() + ssTitle.getTextHeight() + totalYShift, null);
     }
 }
