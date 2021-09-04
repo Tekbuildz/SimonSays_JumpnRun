@@ -69,6 +69,8 @@ public class Main implements Runnable{
         ResourceMaster.addImageToMap("screw", ImageLoader.loadImage("res\\images\\item_screw.png"));
         ResourceMaster.addImageToMap("simon_says", ImageLoader.loadImage("res\\images\\simon_says.png"));
         ResourceMaster.addImageToMap("game_background", ImageLoader.loadImage("res\\images\\game_background.png"));
+        ResourceMaster.addImageToMap("mushroom_idle_up", ImageLoader.loadImage("res\\images\\mushroom_idle_up.png"));
+        ResourceMaster.addImageToMap("mushroom_idle_down", ImageLoader.loadImage("res\\images\\mushroom_idle_down.png"));
 
         ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet("res\\spritesheets\\coin_5_spritesheet.png", 40, 40));
         ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet("res\\spritesheets\\coin_10_spritesheet.png", 40, 40));
@@ -78,6 +80,8 @@ public class Main implements Runnable{
         ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet("res\\spritesheets\\snail_walk_spritesheet.png", 60, 25));
         ResourceMaster.addSpriteSheetToMap("wolf_walk", new SpriteSheet("res\\spritesheets\\wolf_walk_spritesheet.png", 80, 44));
         ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet("res\\spritesheets\\blocktiles.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("mushroom_squish", new SpriteSheet("res\\spritesheets\\mushroom_squish_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("mushroom_desquish", new SpriteSheet("res\\spritesheets\\mushroom_desquish_spritesheet.png", 40, 40));
         // -------------------------------------------------------------------------------------------------------------
     }
 

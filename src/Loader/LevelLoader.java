@@ -3,6 +3,7 @@ package Loader;
 import entities.Coin;
 import SimonSays.SimonSays;
 import entities.Item;
+import entities.Mushroom;
 import entities.mob.Mob;
 import entities.mob.Snail;
 import entities.mob.Wolf;
@@ -26,6 +27,7 @@ public class LevelLoader {
     private final ArrayList<ArrayList<Coin>> coins = new ArrayList<>();
     private final ArrayList<Item> items = new ArrayList<>();
     private final ArrayList<Mob> mobs = new ArrayList<>();
+    private final ArrayList<Mushroom> mushrooms = new ArrayList<>();
     // each level only contains 3 SimonSays-stations
     private final SimonSays[] simonSays = new SimonSays[3];
     private Point2D spawnPoint;
@@ -169,6 +171,12 @@ public class LevelLoader {
                                                         Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
                                                 ));
                                                 break;
+
+                                            case "mushroom":
+                                                mushrooms.add(new Mushroom(
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("x")).getValue()),
+                                                        Integer.parseInt(startElement.getAttributeByName(new QName("y")).getValue())
+                                                ));
                                         }
                                 }
                             }
@@ -251,6 +259,14 @@ public class LevelLoader {
      */
     public ArrayList<Mob> getMobs() {
         return mobs;
+    }
+
+    /**
+     *
+     * @return an arraylist containing all the mushroom objects
+     */
+    public ArrayList<Mushroom> getMushrooms() {
+        return mushrooms;
     }
 
     /**

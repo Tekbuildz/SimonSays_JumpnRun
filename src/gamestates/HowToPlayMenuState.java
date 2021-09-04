@@ -210,6 +210,7 @@ public class HowToPlayMenuState extends State{
     @Override
     public void render(Graphics2D g) {
         g.drawImage(ResourceMaster.getImageFromMap("title_screen_background"), 0, 0, null);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         backButton.draw(g);
         backgroundPoly.draw(g);
 
@@ -217,6 +218,7 @@ public class HowToPlayMenuState extends State{
             tb.draw(g);
         }
 
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         // drawing the image showing all the items and coins
         g.drawImage(ResourceMaster.getImageFromMap("all_items"), DisplayManager.getWIDTH() / 16 * 11, collectablesTitle.getOriginalYPos() + collectablesTitle.getTextHeight() / 2 + totalYShift, null);
 

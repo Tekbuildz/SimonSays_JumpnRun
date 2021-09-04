@@ -777,15 +777,6 @@
       <property name="indestructible" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="147" name="10" type="PROP" x="3200" y="480" width="40" height="40">
-     <properties>
-      <property name="addShadow" type="bool" value="true"/>
-      <property name="collision" type="bool" value="true"/>
-      <property name="collisionboxHeight" type="float" value="16.0"/>
-      <property name="collisionboxWidth" type="float" value="16.0"/>
-      <property name="indestructible" type="bool" value="false"/>
-     </properties>
-    </object>
     <object id="148" name="20" type="PROP" x="3320" y="240" width="40" height="40">
      <properties>
       <property name="addShadow" type="bool" value="true"/>
@@ -912,7 +903,15 @@
       <property name="indestructible" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="162" name="5" type="CREATURE" x="4720" y="440" width="40" height="40"/>
+    <object id="162" name="5" type="PROP" x="4720" y="440" width="40" height="40">
+      <properties>
+       <property name="addShadow" type="bool" value="true"/>
+       <property name="collision" type="bool" value="true"/>
+       <property name="collisionboxHeight" type="float" value="16.0"/>
+       <property name="collisionboxWidth" type="float" value="16.0"/>
+       <property name="indestructible" type="bool" value="false"/>
+      </properties>
+     </object>
     <object id="163" name="5" type="PROP" x="4920" y="440" width="40" height="40">
      <properties>
       <property name="addShadow" type="bool" value="true"/>
@@ -1003,6 +1002,7 @@
       <property name="indestructible" type="bool" value="false"/>
      </properties>
     </object>
+    <object id="173" name="mushroom" type="CREATURE" x="3200" y="520" width="40" height="40"/>
    </objectgroup>
   </map>
  </maps>

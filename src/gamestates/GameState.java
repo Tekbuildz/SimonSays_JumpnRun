@@ -4,6 +4,7 @@ import Loader.DataLoader;
 import entities.Coin;
 import SimonSays.SimonSays;
 import entities.Item;
+import entities.Mushroom;
 import entities.mob.Mob;
 import guis.CheckBox;
 import toolbox.DataSaver;
@@ -356,6 +357,24 @@ public class GameState extends State {
                     }
                 }
             }
+
+            for (Mushroom mushroom:level.getMushrooms()) {
+                mushroom.update();
+
+                if (player.getPlayerRect().intersects(mushroom.getHitBox())) {
+                    if (player.ySpeed > 0) {
+                        if (mushroom.isIdleUp()) {
+                            player.ySpeed = -6f;
+                            mushroom.startSquishAnimation();
+                        }
+                    } else {
+                        player.removeHealth(15);
+
+                        health.setFillLevel(player.getHealth());
+                        health.update();
+                    }
+                }
+            }
             // -----------------------------------------------------------------
 
             // ----------------------------------------------------------------- VARIOUS CAUSES FOR INTERRUPTION
@@ -366,7 +385,7 @@ public class GameState extends State {
                 drawPauseMenuOverlay = true;
             }
             // checking death scenario
-            if (player.getY() > 2200) {
+            if (player.getY() > Toolkit.getDefaultToolkit().getScreenSize().getHeight() + player.getPlayerRect().getHeight()) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
@@ -538,6 +557,17 @@ public class GameState extends State {
             } else {
                 g.drawImage(ResourceMaster.getImageFromMap("simon_says"), (int) simon.getBounds().getX(), (int) -(level.getLevelCubes().size() * player.getCubeSize() - simon.getBounds().getY()), null);
            }
+        }
+
+        // drawing the mushrooms
+        for (Mushroom mushroom: level.getMushrooms()) {
+            if (movementLeftBoundThreshold) {
+                mushroom.draw(g, (int) (mushroom.getxImage() - (player.getX() - DisplayManager.getWIDTH() / 2 - player.getCubeSize() / 2)), -(level.getLevelCubes().size() * player.getCubeSize() - mushroom.getyImage()));
+            } else if (movementRightBoundThreshold) {
+                mushroom.draw(g, mushroom.getxImage() - (level.getLevelCubes().get(0).size() - 48) * player.getCubeSize(), -(level.getLevelCubes().size() * player.getCubeSize() - mushroom.getyImage()));
+            } else {
+                mushroom.draw(g, mushroom.getxImage(), -(level.getLevelCubes().size() * player.getCubeSize() - mushroom.getyImage()));
+            }
         }
     }
 

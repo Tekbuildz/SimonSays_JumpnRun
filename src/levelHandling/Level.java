@@ -4,6 +4,7 @@ import Loader.LevelLoader;
 import SimonSays.SimonSaysMaster;
 import entities.Coin;
 import entities.Item;
+import entities.Mushroom;
 import entities.mob.Mob;
 
 import java.awt.*;
@@ -18,6 +19,7 @@ public class Level {
     private final ArrayList<ArrayList<Coin>> coins;
     private final ArrayList<Item> items;
     private final ArrayList<Mob> mobs;
+    private final ArrayList<Mushroom> mushrooms;
     private final SimonSaysMaster simonSaysMaster;
     private final Point2D spawnPoint;
     private final Rectangle2D finish;
@@ -50,6 +52,7 @@ public class Level {
         coins = levelLoader.getCoins();
         items = levelLoader.getItems();
         mobs = levelLoader.getMobs();
+        mushrooms = levelLoader.getMushrooms();
         simonSaysMaster = new SimonSaysMaster(levelLoader.getSimonSays());
         spawnPoint = levelLoader.getSpawnPoint();
         finish = levelLoader.getFinish();
@@ -94,6 +97,14 @@ public class Level {
      */
     public ArrayList<Mob> getMobs() {
         return mobs;
+    }
+
+    /**
+     *
+     * @return an arraylist containing all the mushroom objects
+     */
+    public ArrayList<Mushroom> getMushrooms() {
+        return mushrooms;
     }
 
     /**

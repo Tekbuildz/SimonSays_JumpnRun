@@ -40,7 +40,10 @@ public class LoadingLevelState extends State{
     @Override
     public void render(Graphics2D g) {
         g.drawImage(ResourceMaster.getImageFromMap("title_screen_background"), 0, 0, null);
+
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         loadingText.draw(g);
         loadingBar.draw(g);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     }
 }
