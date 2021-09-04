@@ -1002,7 +1002,6 @@
       <property name="indestructible" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="173" name="mushroom" type="CREATURE" x="3200" y="520" width="40" height="40"/>
    </objectgroup>
   </map>
  </maps>
