@@ -385,7 +385,7 @@ public class GameState extends State {
                 drawPauseMenuOverlay = true;
             }
             // checking death scenario
-            if (player.getY() > Toolkit.getDefaultToolkit().getScreenSize().getHeight() + player.getPlayerRect().getHeight()) {
+            if (player.getY() > level.getLevelCubes().size() * player.getCubeSize()) {
                 gameInterrupted = true;
                 drawDeathOverlay = true;
             }
