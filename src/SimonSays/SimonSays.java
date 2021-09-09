@@ -8,9 +8,10 @@ import java.awt.geom.Rectangle2D;
 public class SimonSays {
 
     // sequence of this SimonSays where:
-    // X2X1X
-    // XXXXX
-    // X3X4X
+    //      1 is the top right quadrant
+    //      2 is the top left quadrant
+    //      3 is the bottom left quadrant
+    //      4 is the bottom right quadrant
     // is the integer assigned to each button
     private boolean isColliding = false;
     private boolean isCompleted = false;

@@ -30,8 +30,11 @@ public class StatisticsMenuState extends State{
     private final TextBox[] values = new TextBox[4];
     private final ButtonTriangularRectangle backButton = new ButtonTriangularRectangle(-20, -20, DisplayManager.getWIDTH() / 8 + 40, (int) (100 * BasicGUIConstants.rsf), 0, "<-");
 
-    // TextBoxes for all the statistics (coins, wolfs killed, snails killed)
-
+    /**
+     *
+     * basic constructor of the StatisticsMenuState
+     * reads all statistics values and adds them to TextBoxes
+     */
     public StatisticsMenuState() {
         stats.put("money", DataLoader.getCoins());
         stats.put("items", DataLoader.getItems());

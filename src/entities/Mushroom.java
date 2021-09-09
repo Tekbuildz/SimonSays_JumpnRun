@@ -26,6 +26,16 @@ public class Mushroom {
     private long squishAnimTime;
     private int currentSquishSprite = 0;
 
+    /**
+     *
+     * basic constructor of the Mushroom class
+     * the hitbox does not have a width and height of 40 pixels
+     * as the mushroom itself is much smaller, hence the image
+     * has a width and height of 40 pixels but not the hitbox
+     *
+     * @param x - the x coordinate of the mushroom
+     * @param y - the y coordinate of the mushroom
+     */
     public Mushroom(int x, int y) {
         xImage = x;
         yImage = y;
@@ -35,6 +45,12 @@ public class Mushroom {
         currentMushroomImage = ResourceMaster.getImageFromMap("mushroom_idle_up");
     }
 
+    /**
+     *
+     * updating the mushroom depending on the state of it
+     * changing its current image depending on its state
+     * changing its action upon collision depending on its state
+     */
     public void update() {
         isIdleUp = !isSquishAnimationPlaying && !isCoolDownActive && !isDeSquishAnimationPlaying;
 
@@ -69,15 +85,33 @@ public class Mushroom {
         }
     }
 
+    /**
+     *
+     * draws the image of the mushroom in its current state
+     * coordinates of image given externally to implement the horizontal
+     * shift of the level to simulate player movement
+     *
+     * @param g - the graphics object used to paint onto the screen
+     * @param x - the x coordinate at which the image should be drawn
+     * @param y - the y coordinate at which the image should be drawn
+     */
     public void draw(Graphics2D g, int x, int y) {
         g.drawImage(currentMushroomImage, x, y, null);
     }
 
+    /**
+     *
+     * starts the animation and timers to begin the squish-animation
+     */
     public void startSquishAnimation() {
         isSquishAnimationPlaying = true;
         squishAnimTime = System.currentTimeMillis();
     }
 
+    /**
+     *
+     * resets all the variables used for the squish-animation, starts cooldown
+     */
     private void startCoolDownPhase() {
         currentSquishSprite = 0;
         isCoolDownActive = true;
@@ -86,12 +120,21 @@ public class Mushroom {
         coolDownTimeOfAction = System.currentTimeMillis();
     }
 
+    /**
+     *
+     * resets all the variables of the cooldown phase and lauches de-squish-animation
+     */
     private void startDeSquishAnimation() {
         isCoolDownActive = false;
         isDeSquishAnimationPlaying = true;
         squishAnimTime = System.currentTimeMillis();
     }
 
+    /**
+     *
+     * resets all the variables of the de-squish-animation and returns to
+     * its original state
+     */
     private void resetMushroom() {
         currentSquishSprite = 0;
         isDeSquishAnimationPlaying = false;

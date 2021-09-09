@@ -42,15 +42,18 @@ public abstract class Mob {
 
     /**
      *
-     * removes the mob by changing a variable in order to prevent it from
-     * rendering on screen and colliding with the player
+     * subtracts a constant amount of health of the mob
+     * function is called if the mob was hit by the player
+     * changes hasCollisions boolean if the mob has no
+     * health left
+     *
      * @return whether the mob was killed during this hit or not
      */
     public abstract boolean hit();
 
     /**
      *
-     * resets the variable hasCollisions of each mob
+     * resets the variable hasCollisions
      */
     public abstract void resetCollisions();
 

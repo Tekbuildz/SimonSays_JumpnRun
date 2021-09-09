@@ -22,6 +22,14 @@ public class Wolf extends Mob{
 
     private boolean hasCollisions = true;
 
+    /**
+     *
+     * basic constructor of a wolf
+     * width and height are predefined to 80 and 44 respectively
+     *
+     * @param x - the initial x coordinate of the wolf
+     * @param y - the initial y coordinate of the wolf
+     */
     public Wolf(int x, int y) {
         int width = 80;
         int height = 44;
@@ -66,8 +74,7 @@ public class Wolf extends Mob{
      *
      * @param collisionBoxes - an arraylist containing rectangles representing
      *                       all the collision boxes of the level
-     * @return whether the snail would collide if it moved by its current speed
-     *          further
+     * @return whether the snail would collide with a wall if it moved further
      */
     private boolean hasHorizontalCollision(ArrayList<Rectangle2D> collisionBoxes) {
         boolean doesIntersect = false;
@@ -121,9 +128,4 @@ public class Wolf extends Mob{
     public void resetBounds() {
         this.bounds.setRect(originalBounds.getBounds2D());
     }
-
-    // no need for vertical collisions since mob only walks from side to side in trench
-
-
-    // potentially add small health-bar above mob
 }

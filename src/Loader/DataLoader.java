@@ -19,11 +19,13 @@ public class DataLoader {
     private static int items = 0;
     private static int lives = 0;
     private static HashMap<String, Integer> entityKills = new HashMap<>();
-    private static HashMap<String, Long> levelTimes = new HashMap<>();
+    private static HashMap<String, Integer> levelTimes = new HashMap<>();
 
     /**
      *
      * loads the player statistics from an XML file
+     * by searching through the file with the STAX parser and
+     * checking each StartElement
      *
      * @param fileName - the name of the XML file to be read from
      */
@@ -70,7 +72,7 @@ public class DataLoader {
                             Iterator<Attribute> iterator = startElement.getAttributes();
                             while (iterator.hasNext()) {
                                 Attribute time = iterator.next();
-                                levelTimes.put(time.getName().getLocalPart(), Long.parseLong(time.getValue()));
+                                levelTimes.put(time.getName().getLocalPart(), Integer.parseInt(time.getValue()));
                             }
                     }
                 }
@@ -117,7 +119,7 @@ public class DataLoader {
      *
      * @return an arraylist containing all current fastest times
      */
-    public static HashMap<String, Long> getLevelTimes() {
+    public static HashMap<String, Integer> getLevelTimes() {
         return levelTimes;
     }
 }

@@ -52,7 +52,7 @@ public class CheckBox {
 
     /**
      *
-     * draws the checkBox and depending on its state also a cross or a tick
+     * draws the checkBox and depending on its state also a cross, tick or none
      *
      * @param g - the graphics object used to paint onto the screen
      */

@@ -8,11 +8,7 @@ public class TriangularRectangle {
     private Polyline outline;
     private boolean hasOutline = true;
 
-    private Color fillColor;
-
-    private int x, y;
-    private int width, height;
-    private int triangularCutoffSize;
+    private final Color fillColor;
 
     /**
      *
@@ -54,12 +50,6 @@ public class TriangularRectangle {
      * @param strokeWeight - the width/thickness of the outline-line
      */
     public TriangularRectangle(int x, int y, int width, int height, int triangularCutoffSize, Color fillColor, Color outlineColor, float strokeWeight) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.triangularCutoffSize = triangularCutoffSize;
-
         this.fillColor = fillColor;
 
         polygon = new Polygon(

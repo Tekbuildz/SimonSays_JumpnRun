@@ -8,10 +8,12 @@ import guis.buttons.ButtonTriangularRectangle;
 import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
 import levelHandling.Level;
+import player.PlayerInputs;
 import toolbox.BasicGUIConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -56,7 +58,15 @@ public class LevelSelectionMenuState extends State{
             UIConstraints.UI_CENTER_BOUND_CONSTRAINT
     );
 
+    /**
+     *
+     * basic constructor of the LevelSelectionMenuState
+     * loads personal bests for each level to show them under the level button
+     * adds other UI related objects to lists for simplified handling
+     */
     public LevelSelectionMenuState() {
+        DataLoader.loadPlayerData("player");
+
         levelButtons.put("level_1", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "1"));
         levelButtons.put("level_2", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "2"));
         levelButtons.put("level_3", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "3"));
@@ -95,12 +105,12 @@ public class LevelSelectionMenuState extends State{
                 String secs;
                 String mSecs;
                 if (seconds < 10) {
-                    secs = "0" + String.valueOf(seconds);
+                    secs = "0" + seconds;
                 } else secs = String.valueOf(seconds);
                 if (mSeconds < 10) {
-                    mSecs = "00" + String.valueOf(mSeconds);
+                    mSecs = "00" + mSeconds;
                 } else if (mSeconds < 100) {
-                    mSecs = "0" + String.valueOf(mSeconds);
+                    mSecs = "0" + mSeconds;
                 } else mSecs = String.valueOf(mSeconds);
 
                 levelPBs.get("level_" + (i + 1)).setText(minutes + ":" + secs + "." + mSecs);
@@ -116,7 +126,7 @@ public class LevelSelectionMenuState extends State{
     @Override
     public void update() {
         returnButton.update();
-        if (returnButton.isButtonWasReleased()) {
+        if (returnButton.isButtonWasReleased() || PlayerInputs.getKeysReleasedInFrame().contains(KeyEvent.VK_ESCAPE)) {
             StateMaster.setState(new MainMenuState());
         }
         for (ButtonTriangularRectangle button:levelButtons.values()) {

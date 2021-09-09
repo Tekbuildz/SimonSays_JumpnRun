@@ -68,20 +68,6 @@ public class HealthBar {
 
     /**
      *
-     * sets the background color of the health bar
-     * especially useful if the gui fill-color should be different to the
-     * background color of the health bar since the polygon of it has a
-     * transparent fillColor
-     *
-     * @param bgColor - the background color of the health bar
-     */
-    public void setBGColor(Color bgColor) {
-        this.hasBGColor = true;
-        bg = new TriangularRectangle(x, y, width, height, triangularCutoffsize, bgColor);
-    }
-
-    /**
-     *
      * changes the fillColor of the health bar
      * can be used to make the health bar turn red when reaching 0 health
      *

@@ -162,7 +162,12 @@ public class HowToPlayMenuState extends State{
             0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT
     );
 
-
+    /**
+     *
+     * basic constructor of the HowToPlayMenuState
+     * adds all the texts to an ArrayList for easier handling of the yShift
+     * adds all the color and font settings to the Return-Button
+     */
     public HowToPlayMenuState() {
         htpTexts.add(header);
         htpTexts.add(controlsTitle);
@@ -185,6 +190,11 @@ public class HowToPlayMenuState extends State{
         backButton.setPressedColor(BasicGUIConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
     }
 
+    /**
+     *
+     * usage of the MouseWheelListener, to apply ability to scroll down
+     * through the quick explanation page
+     */
     @Override
     public void update() {
         backButton.update();

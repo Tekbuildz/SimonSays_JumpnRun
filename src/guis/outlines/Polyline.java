@@ -4,9 +4,6 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 public class Polyline {
-    private final int[] xpoints;
-    private final int[] ypoints;
-    private final int npoints;
     private final Color fillColor;
     private final float strokeWeight;
 
@@ -26,9 +23,6 @@ public class Polyline {
      * @param strokeWeight - the thickness of the line
      */
     public Polyline(int[] xpoints, int[] ypoints, int npoints, Color fillColor, float strokeWeight) {
-        this.xpoints = xpoints;
-        this.ypoints = ypoints;
-        this.npoints = npoints;
         this.fillColor = fillColor;
         this.strokeWeight = strokeWeight;
 
@@ -57,8 +51,8 @@ public class Polyline {
     public void draw(Graphics2D g) {
         g.setColor(fillColor);
         g.setStroke(new BasicStroke(strokeWeight));
-        for (int i = 0; i < lines.length; i++) {
-            g.draw(lines[i]);
+        for (Line2D.Double line : lines) {
+            g.draw(line);
         }
     }
 }

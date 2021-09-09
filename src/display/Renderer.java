@@ -24,7 +24,7 @@ public class Renderer extends JPanel{
 
     /**
      *
-     * painting all the contents of the game on the screen
+     * painting all the contents of the current state on the screen
      *
      * @param graphics - the graphics object used to paint onto the screen
      */

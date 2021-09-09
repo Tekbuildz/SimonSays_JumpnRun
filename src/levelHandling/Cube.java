@@ -29,7 +29,7 @@ public class Cube {
     public Cube(int cubeID, int x, int y) {
         this.cubeID = cubeID;
 
-        // the rectangle describing the cube, where x, y, SIZE are measured in cubes/tiles
+        // the rectangle describing the cube, where x, y, SIZE are measured in tiles
         this.rectangle = new Rectangle(x, y, SIZE, SIZE);
     }
 

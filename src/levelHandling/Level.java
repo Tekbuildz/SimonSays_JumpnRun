@@ -30,7 +30,7 @@ public class Level {
      *
      * basic constructor of a Level
      * loads the data (collision boxes, cubeID, coins, spawn point and finish)
-     * from XML file
+     * from XML file making use of the LevelLoader class
      *
      * @param levelName - the name of the level to be loaded
      */

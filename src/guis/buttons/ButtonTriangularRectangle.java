@@ -20,9 +20,8 @@ public class ButtonTriangularRectangle extends Button {
 
     private final Polygon triangularRectangle;
 
-    private int x, y;
-    private int width, height;
-    private int triangularCutoffSize;
+    private final int x, y;
+    private final int width, height;
 
     /**
      *
@@ -45,7 +44,6 @@ public class ButtonTriangularRectangle extends Button {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.triangularCutoffSize = triangularCutoffSize;
         this.text = text;
 
         fillColor = BasicGUIConstants.BUTTON_FILL_COLOR;

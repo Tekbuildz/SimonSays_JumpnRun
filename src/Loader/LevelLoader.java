@@ -40,15 +40,15 @@ public class LevelLoader {
     /**
      *
      * loads all information about the level from an XML file
-     * this function uses an XML parser reading the data from a file
+     * this function uses a STAX XML parser reading the data from a file
      * given by a FileInputStream and then checking for specific XML-Elements
      * <p>
-     * Using those elements, the parser checks for collision boxes, entities
+     * Using those elements, the parser checks for collision boxes, entities,
      * SimonSays, the spawn point and the level with all the cubeIDs stored
      *
      *
      * @param fileName - the name of the level to be loaded of the format
-     *                 fileName.litidata
+     *                 someName.litidata
      */
     public void loadLevelData(String fileName) {
         // adding three new ArrayLists for coins of value 5, 10, 20

@@ -18,6 +18,14 @@ public class LoadingLevelState extends State{
     private final TextBox loadingText;
     private final Level level;
 
+    /**
+     *
+     * basic constructor of the LoadingLevelState
+     * contains a simple health bar with increasing fillLevel acting
+     * as a progress-bar
+     *
+     * @param level - the level object passed onto the GameState
+     */
     public LoadingLevelState(Level level) {
         this.level = level;
         int HBWidth = (int) (400 * BasicGUIConstants.rsf);

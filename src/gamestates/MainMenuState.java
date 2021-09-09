@@ -17,6 +17,11 @@ public class MainMenuState extends State {
     private final TextBox title = new TextBox(0, (int) (250 * BasicGUIConstants.rsf), DisplayManager.getWIDTH(), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
     private final HashMap<String, Button> buttons = new HashMap<>();
 
+    /**
+     *
+     * basic constructor of the MainMenuState
+     * creates all buttons and adds them to an ArrayList for easier handling
+     */
     public MainMenuState() {
         int buttonWidth = (int) (250 * BasicGUIConstants.rsf);
         int buttonHeight = (int) (60 * BasicGUIConstants.rsf);

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <data>
     <player_stats>
-        <coins amount="8500"/>
-        <items amount="19"/>
+        <coins amount="9740"/>
+        <items amount="28"/>
         <lives amount="1"/>
-        <entity_kills snail="88" wolf="26"/>
+        <entity_kills snail="108" wolf="47"/>
     </player_stats>
-    <level_data level_1="95058" level_2="67358"/>
+    <level_data level_1="95058" level_2="290726"/>
 </data>

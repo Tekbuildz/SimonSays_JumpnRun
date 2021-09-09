@@ -72,23 +72,17 @@ public class DataSaver {
             File directory = new File("levels");
             int fileCount = Objects.requireNonNull(directory.list()).length;
 
-            if (DataLoader.getLevelTimes().isEmpty()) {
-                for (int i = 0; i < fileCount; i++) {
-                    levelData.setAttribute("level_" + (i + 1), "0");
+            for (int i = 1; i < DataLoader.getLevelTimes().size() + 1; i++) {
+                if (DataLoader.getLevelTimes().get("level_" + i) > timeInMS && i == levelIndex) {
+                    levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
+                }
+                else {
+                    levelData.setAttribute("level_" + i, String.valueOf(DataLoader.getLevelTimes().get("level_" + i)));
                 }
             }
-            else {
-                for (int i = 0; i < fileCount; i++) {
-                    if (i == levelIndex - 1 && timeInMS > 0) {
-                        if (DataLoader.getLevelTimes().get("level_" + (i + 1)) > timeInMS || DataLoader.getLevelTimes().get("level_" + (i + 1)) == 0) {
-                            levelData.setAttribute("level_" + (i + 1), String.valueOf(timeInMS));
-                        }
-                    } else if (i < DataLoader.getLevelTimes().size()) {
-                        levelData.setAttribute("level_" + (i + 1), String.valueOf(DataLoader.getLevelTimes().get("level_" + (i + 1))));
-                    } else {
-                        levelData.setAttribute("level_" + (i + 1), "0");
-                    }
-                }
+
+            for (int i = DataLoader.getLevelTimes().size() + 1; i < fileCount + 1; i++) {
+                levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
             }
             // ---------------------------------------------------------------------------------------------------------
 

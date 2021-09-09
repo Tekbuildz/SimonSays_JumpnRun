@@ -9,7 +9,7 @@ public class ImageLoader {
 
     /**
      *
-     * loads an image when given the path to memory
+     * loads an image, with the given path, to memory
      *
      * @param pathName - the name of the image file to be loaded
      * @return the loaded image

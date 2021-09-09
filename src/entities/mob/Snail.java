@@ -24,7 +24,7 @@ public class Snail extends Mob{
 
     /**
      *
-     * basic constructor of a snail, extends to the Mob class
+     * basic constructor of a snail
      * width and height of the snail are predefined to 60 and 24 respectively
      *
      * @param x - the initial x coordinate of the snail
@@ -79,8 +79,7 @@ public class Snail extends Mob{
      *
      * @param collisionBoxes - an arraylist containing rectangles representing
      *                       all the collision boxes of the level
-     * @return whether the snail would collide if it moved by its current speed
-     *          further
+     * @return whether the snail would collide with a wall if it moved further
      */
     private boolean hasHorizontalCollision(ArrayList<Rectangle2D> collisionBoxes) {
         boolean doesIntersect = false;
