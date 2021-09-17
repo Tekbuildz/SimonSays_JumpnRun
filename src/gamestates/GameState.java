@@ -349,9 +349,9 @@ public class GameState extends State {
                     } else if (player.getPlayerRect().intersects(mob.getBounds()) && player.ySpeed <= 0){
                         // make the player take damage
                         if (mob.getType().equals("snail")) {
-                            player.removeHealth(25);
+                            player.removeHealth(10);
                         } else if (mob.getType().equals("wolf")) {
-                            player.removeHealth(40);
+                            player.removeHealth(15);
                         }
 
                         health.setFillLevel(player.getHealth());
@@ -370,7 +370,7 @@ public class GameState extends State {
                             mushroom.startSquishAnimation();
                         }
                     } else {
-                        player.removeHealth(15);
+                        player.removeHealth(5);
 
                         health.setFillLevel(player.getHealth());
                         health.update();
