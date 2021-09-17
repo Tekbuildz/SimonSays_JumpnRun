@@ -135,7 +135,9 @@ public class Mushroom {
      * resets all the variables of the de-squish-animation and returns to
      * its original state
      */
-    private void resetMushroom() {
+    public void resetMushroom() {
+        isSquishAnimationPlaying = false;
+        isCoolDownActive = false;
         currentSquishSprite = 0;
         isDeSquishAnimationPlaying = false;
         currentMushroomImage = ResourceMaster.getImageFromMap("mushroom_idle_up");

@@ -346,7 +346,7 @@ public class GameState extends State {
                             player.addEntityKill(mob.getType());
                         }
                         player.ySpeed = player.jumpYSpeed;
-                    } else if (player.getPlayerRect().intersects(mob.getBounds()) && !(player.ySpeed > 0)){
+                    } else if (player.getPlayerRect().intersects(mob.getBounds()) && player.ySpeed <= 0){
                         // make the player take damage
                         if (mob.getType().equals("snail")) {
                             player.removeHealth(25);
@@ -750,6 +750,10 @@ public class GameState extends State {
 
         for (Item item:level.getItems()) {
             item.setWasCollected(false);
+        }
+
+        for (Mushroom mushroom:level.getMushrooms()) {
+            mushroom.resetMushroom();
         }
 
         mSeconds = 0;
