@@ -121,47 +121,6 @@ public class SimonSaysMaster {
      * correctly
      */
     public void update(Player player) {
-        // if an animation is playing, the counter should constantly increase
-        if (isPlaying) {
-            // executed every second
-            if (System.currentTimeMillis() - animationTimer > 750) {
-                // making a pause every other cycle
-                doPause = !doPause;
-                // resetting all the color of the buttons after being lit up by the animation
-                for (int i = 0; i < ops.length; i++) {
-                    ops[i].setFillColor(opColors[i]);
-                }
-                animationTimer += 750;
-                // only if no pause is to be done in this cycle, a next action will be displayed
-                if (!doPause) {
-                    currentAnimation++;
-                }
-            }
-        } else {
-            // mouse interaction with SimonSays
-            for (int i = 0; i < ops.length; i++) {
-                // whether the player hovers over the specific button or not
-                if (ops[i].contains(PlayerInputs.getMousePos())) {
-                    for (SimonSays simonSays : simonSays) {
-                        // checking each tile whether the player released the mouse button over it and adds it to the player inputs
-                        if (PlayerInputs.getMouseButtonsReleasedInFrame().contains(1) && simonSays.isColliding() && playerInputs.size() < sequences[currentSSCounter].length) {
-                            playerInputs.add(i);
-                        }
-                    }
-                    // if the player presses the button and hovers over it, it becomes darker
-                    if (PlayerInputs.isMousePressed()) {
-                        ops[i].setFillColor(opColors[i].darker());
-                    }
-                    // if the player doesn't press the button but hovers over it, it becomes brighter
-                    else {
-                        ops[i].setFillColor(opColors[i].brighter());
-                    }
-                    // resetting the button color
-                } else {
-                    ops[i].setFillColor(opColors[i]);
-                }
-            }
-        }
 
         // distinguishing between the SimonSays since not each one has to
         // execute the same actions
@@ -177,7 +136,7 @@ public class SimonSaysMaster {
 
             // a case has an empty body without a break statement,
             // it will execute the same code which the following has
-            // here: case 0 executes also the code form case 1
+            // here: case 0 executes also the code from case 1
             case 0:
 
             case 1:
@@ -241,6 +200,49 @@ public class SimonSaysMaster {
         }
         for (SimonSays simonSays:simonSays) {
             simonSays.update(player);
+        }
+
+
+        // if an animation is playing, the counter should constantly increase
+        if (isPlaying) {
+            // executed every second
+            if (System.currentTimeMillis() - animationTimer > 750) {
+                // making a pause every other cycle
+                doPause = !doPause;
+                // resetting all the color of the buttons after being lit up by the animation
+                for (int i = 0; i < ops.length; i++) {
+                    ops[i].setFillColor(opColors[i]);
+                }
+                animationTimer += 750;
+                // only if no pause is to be done in this cycle, a next action will be displayed
+                if (!doPause) {
+                    currentAnimation++;
+                }
+            }
+        } else {
+            // mouse interaction with SimonSays
+            for (int i = 0; i < ops.length; i++) {
+                // whether the player hovers over the specific button or not
+                if (ops[i].contains(PlayerInputs.getMousePos())) {
+                    for (SimonSays simonSays : simonSays) {
+                        // checking each tile whether the player released the mouse button over it and adds it to the player inputs
+                        if (PlayerInputs.getMouseButtonsReleasedInFrame().contains(1) && simonSays.isColliding() && playerInputs.size() < sequences[currentSSCounter].length) {
+                            playerInputs.add(i);
+                        }
+                    }
+                    // if the player presses the button and hovers over it, it becomes darker
+                    if (PlayerInputs.isMousePressed()) {
+                        ops[i].setFillColor(opColors[i].darker());
+                    }
+                    // if the player doesn't press the button but hovers over it, it becomes brighter
+                    else {
+                        ops[i].setFillColor(opColors[i].brighter());
+                    }
+                    // resetting the button color
+                } else {
+                    ops[i].setFillColor(opColors[i]);
+                }
+            }
         }
     }
 

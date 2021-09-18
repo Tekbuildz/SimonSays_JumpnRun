@@ -118,8 +118,10 @@ public class LevelSelectionMenuState extends State{
         }
 
         // showing "Not completed" if the level was either never played or not all the objectives were fulfilled
-        for (int i = DataLoader.getLevelTimes().size(); i < levelPBs.size(); i++) {
-            levelPBs.get("level_" + (i + 1)).setText("Not completed");
+        for (int i = 0; i < levelPBs.size(); i++) {
+            if (DataLoader.getLevelTimes().get("level_" + (i + 1)) == 0) {
+                levelPBs.get("level_" + (i + 1)).setText("Not completed");
+            }
         }
     }
 

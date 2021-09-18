@@ -72,17 +72,35 @@ public class DataSaver {
             File directory = new File("levels");
             int fileCount = Objects.requireNonNull(directory.list()).length;
 
-            for (int i = 1; i < DataLoader.getLevelTimes().size() + 1; i++) {
-                if (DataLoader.getLevelTimes().get("level_" + i) > timeInMS && i == levelIndex) {
-                    levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
+//            for (int i = 1; i < DataLoader.getLevelTimes().size() + 1; i++) {
+//                if (DataLoader.getLevelTimes().get("level_" + i) > timeInMS && i == levelIndex) {
+//                    levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
+//                }
+//                else {
+//                    levelData.setAttribute("level_" + i, String.valueOf(DataLoader.getLevelTimes().get("level_" + i)));
+//                }
+//            }
+//
+//            for (int i = DataLoader.getLevelTimes().size() + 1; i < fileCount + 1; i++) {
+//                levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
+//            }
+
+            if (fileCount > DataLoader.getLevelTimes().size()) {
+                for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
+                    levelData.setAttribute("level_" + (i + 1), String.valueOf(DataLoader.getLevelTimes().get("level_" + (i + 1))));
                 }
-                else {
-                    levelData.setAttribute("level_" + i, String.valueOf(DataLoader.getLevelTimes().get("level_" + i)));
+                for (int i = DataLoader.getLevelTimes().size(); i < fileCount; i++) {
+                    levelData.setAttribute("level_" + (i + 1), "0");
                 }
             }
 
-            for (int i = DataLoader.getLevelTimes().size() + 1; i < fileCount + 1; i++) {
-                levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
+            for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
+                if (levelIndex == (i + 1) && DataLoader.getLevelTimes().get("level_" + (i + 1)) > timeInMS && timeInMS != 0) {
+                    levelData.setAttribute("level_" + (i + 1), String.valueOf(timeInMS));
+                }
+                else {
+                    levelData.setAttribute("level_" + (i + 1), String.valueOf(DataLoader.getLevelTimes().get("level_" + (i + 1))));
+                }
             }
             // ---------------------------------------------------------------------------------------------------------
 
