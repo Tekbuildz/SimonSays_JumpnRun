@@ -127,7 +127,7 @@ public class HowToPlayMenuState extends State{
             textWidth,
             BasicGUIConstants.BUTTON_TEXT_COLOR,
             BasicGUIConstants.DEFAULT_TEXT_FONT,
-            "Currently, there are two different hostile mobs in the game: a Snail and a Wolf. They have different properties such as speed, health and damage done when intersecting with a player. A snail has a lower speed, lower health and lower damage output than the wolf. In order for the player to deal damage to a mob, he has to be falling onto an enemy. This also allows for a hit towards the mob even if the player only hits the side of the hitbox of the mob and not the top. But walking into the enemy will deal damage to the player.",
+            "Currently, there are two different hostile mobs in the game: a Snail and a Wolf. They have different properties such as speed, health and damage done when intersecting with a player. A snail has a lower speed, lower health and lower damage output than the wolf. In order for the player to deal damage to a mob, he has to be falling onto an enemy. This also allows for a hit towards the mob even if the player only hits the side of the hitbox of the mob and not the top. But walking into the enemy will deal damage to the player. Be aware though, that if two enemies are behind each other, the player will only deal damage to one but take damage from the other one.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
 
