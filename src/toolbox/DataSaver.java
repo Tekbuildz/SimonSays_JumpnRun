@@ -95,7 +95,7 @@ public class DataSaver {
             }
 
             for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
-                if (levelIndex == (i + 1) && DataLoader.getLevelTimes().get("level_" + (i + 1)) > timeInMS && timeInMS != 0) {
+                if (levelIndex == (i + 1) && DataLoader.getLevelTimes().get("level_" + (i + 1)) > timeInMS || DataLoader.getLevelTimes().get("level_" + (i + 1)) == 0) {
                     levelData.setAttribute("level_" + (i + 1), String.valueOf(timeInMS));
                 }
                 else {
