@@ -11,6 +11,17 @@ import toolbox.UIConstraints;
 
 import java.awt.*;
 
+/**
+ *
+ * the LoadingLevelState shows a health bar with constantly increasing fill-
+ * level to simulate a progress-bar until the level starts
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 3.6
+ */
 public class LoadingLevelState extends State{
 
     private final int CEIAtStart; // currentEntityImageAtStart

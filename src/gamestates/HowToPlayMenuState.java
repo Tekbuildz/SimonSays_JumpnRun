@@ -12,6 +12,17 @@ import toolbox.UIConstraints;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ *
+ * the HowToPlayMenuState handles all the objects which are displayed when
+ * viewing the How To Play page in the game
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 0.7
+ * @since 3.6
+ */
 public class HowToPlayMenuState extends State{
 
     private int totalYShift = 0;

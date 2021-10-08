@@ -12,6 +12,17 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ *
+ * the MainMenuState handles all the objects which need to be drawn to the
+ * title screen such as the title itself and the different buttons
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 0.6
+ * @since 1.1
+ */
 public class MainMenuState extends State {
 
     private final TextBox title = new TextBox(0, (int) (250 * BasicGUIConstants.rsf), DisplayManager.getWIDTH(), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);

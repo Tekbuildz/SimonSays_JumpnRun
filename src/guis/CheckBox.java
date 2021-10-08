@@ -4,6 +4,15 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * the CheckBox creates a hollow rectangle which is depending on its state
+ * either empty, filled with a tick or a cross
+ *
+ * @author Thomas Bundi
+ * @version 0.4
+ * @since 2.7
+ */
 public class CheckBox {
 
     public static final int EMPTY = 0;

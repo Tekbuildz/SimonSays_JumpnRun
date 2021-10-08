@@ -1,9 +1,7 @@
 package entities.mob;
 
-import Loader.LevelLoader;
 import SpriteSheet.ResourceMaster;
 import gameLoop.Main;
-import levelHandling.Level;
 import toolbox.ImageProcessing;
 
 import java.awt.*;
@@ -11,6 +9,16 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ *
+ * Wolf class which extends to the Mob class and therefore overrides its
+ * functions, contains all the information necessary to draw and handle a
+ * wolf in the game
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 3.6
+ */
 public class Wolf extends Mob{
 
     private int health = 200;

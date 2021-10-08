@@ -5,6 +5,14 @@ import player.PlayerInputs;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ * creates the frame on which the entire game is built on
+ *
+ * @author Thomas Bundi
+ * @version 1.3
+ * @since 0.2
+ */
 public class DisplayManager extends JPanel {
 
     private static final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();

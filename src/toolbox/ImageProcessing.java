@@ -4,6 +4,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+/**
+ *
+ * the ImageProcessing class contains a function to flip an image horizontally
+ * which is used when flipping an animation to make an object move backwards
+ *
+ * @author Thomas Bundi
+ * @version 0.2
+ * @since 2.5
+ */
 public class ImageProcessing {
 
     private static AffineTransform affineTransform;

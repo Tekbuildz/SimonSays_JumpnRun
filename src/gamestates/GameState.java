@@ -31,6 +31,21 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
 
+/**
+ *
+ * GameState class handles all the updates and other actions which occur in a
+ * level including drawing the objects to the screen or calling their draw-
+ * function
+ * <p>
+ * in addition, the GameState class is used as an instance where whenever a new
+ * level is started, a new GameState class is created
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 3.5
+ * @since 1.1
+ */
 public class GameState extends State {
 
     private int currentEntityImage;

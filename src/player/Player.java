@@ -13,6 +13,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ *
+ * the Player class handles the position of the player, its current image and
+ * the collisions with other collisionboxes, in addition it also keeps track of
+ * the statistics of the current level which were not yet saved to disc
+ *
+ * @author Thomas Bundi
+ * @version 2.2
+ * @since 0.3
+ */
 public class Player {
 
     // player statistics

@@ -2,6 +2,16 @@ package gamestates;
 
 import java.awt.*;
 
+/**
+ *
+ * the abstract class State contains the functions which all the screens need
+ * to have, the update and the render function, responsible for updating and
+ * drawing the objects respectively to the screen
+ *
+ * @author Thomas Bundi
+ * @version 0.4
+ * @since 1.1
+ */
 public abstract class State {
 
     /**

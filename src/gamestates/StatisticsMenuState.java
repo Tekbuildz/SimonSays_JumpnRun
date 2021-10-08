@@ -12,6 +12,17 @@ import toolbox.UIConstraints;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ *
+ * the StatisticsMenuState class handles all the objects required to display
+ * the statistics to the screen
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 0.6
+ * @since 3.2
+ */
 public class StatisticsMenuState extends State{
 
     private final OutlinedPolygon backgroundPoly = new OutlinedPolygon(

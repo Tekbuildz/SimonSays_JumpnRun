@@ -19,6 +19,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Objects;
 
+/**
+ *
+ * the DataSaver class saves the player statistics to disc and also saves a
+ * new personal best time in a level if one was achieved
+ *
+ * @author Thomas Bundi
+ * @version 1.1
+ * @since 2.4
+ */
 public class DataSaver {
 
     /**

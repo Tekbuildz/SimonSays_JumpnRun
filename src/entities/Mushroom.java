@@ -6,6 +6,15 @@ import player.Player;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * the mushroom class contains all elements of the mushroom, which contain its
+ * location, its animation and its current image
+ *
+ * @author Thomas Bundi
+ * @version 0.4
+ * @since 4.1
+ */
 public class Mushroom {
 
     private static final int hitBoxWidth = 24;

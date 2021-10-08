@@ -20,6 +20,16 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ *
+ * the LevelLoader class contains a function to load all the Information of a
+ * level to static variables which are later stored in non-static variables in
+ * the Level class
+ *
+ * @author Thomas Bundi
+ * @version 1.5
+ * @since 1.3
+ */
 public class LevelLoader {
 
     private final ArrayList<ArrayList<Cube>> levelCubes = new ArrayList<>();

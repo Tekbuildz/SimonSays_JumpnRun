@@ -3,6 +3,15 @@ package guis.outlines;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ *
+ * the OutlinedPolygon class creates and handles the objects to display a
+ * polygon with an outline
+ *
+ * @author Thomas Bundi
+ * @version 0.3
+ * @since 2.1
+ */
 public class OutlinedPolygon {
 
     private Color fillColor;

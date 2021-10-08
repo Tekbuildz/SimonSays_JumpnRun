@@ -8,6 +8,16 @@ import java.awt.geom.AffineTransform;
 
 import static org.apache.commons.text.WordUtils.wrap;
 
+/**
+ *
+ * the TextBox class contains a width which is not displayed but acts as a
+ * horizontal boundary for the text, and it displays text with word wrap
+ * according to this width
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.7
+ */
 public class TextBox {
 
     private final int x;

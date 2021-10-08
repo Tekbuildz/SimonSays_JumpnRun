@@ -13,6 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ *
+ * the DataLoader class loads data from the player.xml file and stores it in
+ * variables
+ *
+ * @author Thomas Bundi
+ * @version 0.8
+ * @since 2.4
+ */
 public class DataLoader {
 
     private static int coins = 0;

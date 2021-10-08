@@ -3,6 +3,15 @@ package guis.outlines;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
+/**
+ *
+ * the OutlinedEllipse class creates and handles the objects to display an
+ * ellipse with an outline
+ *
+ * @author Thomas Bundi
+ * @version 0.2
+ * @since 2.1
+ */
 public class OutlinedEllipse {
 
     private final Color fillColor;

@@ -2,6 +2,17 @@ package entities;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * coin class which only contains the basic information about the coin, like if
+ * it was previously collected, its location, its value and the type of item
+ * <p>
+ * the animation is handled in the GameState class
+ *
+ * @author Thomas Bundi
+ * @version 0.4
+ * @since 2.4
+ */
 public class Item {
 
     private final Rectangle2D.Double bounds;

@@ -2,6 +2,17 @@ package guis.buttons;
 
 import java.awt.*;
 
+/**
+ *
+ * the abstract class Button contains all the functions which each other type
+ * of button also has such as a functionality when getting triggered or
+ * updating its color depending on whether the mouse is hovering above the
+ * button or not
+ *
+ * @author Thomas Bundi
+ * @version 0.3
+ * @since 1.7
+ */
 public abstract class Button {
 
     /**

@@ -3,6 +3,16 @@ package guis.outlines;
 import java.awt.*;
 import java.awt.geom.Line2D;
 
+/**
+ *
+ * the PolyLine class creates, according to the given points, multiple lines
+ * connected with each other to form a single, long line with its color and the
+ * strokeWeight as attributes
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.9
+ */
 public class Polyline {
     private final Color fillColor;
     private final float strokeWeight;

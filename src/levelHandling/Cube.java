@@ -3,6 +3,15 @@ package levelHandling;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * the Cube class contains all the information necessary about a cube such as
+ * its position and ID
+ *
+ * @author Thomas Bundi
+ * @version 1.2
+ * @since 0.3
+ */
 public class Cube {
 
 

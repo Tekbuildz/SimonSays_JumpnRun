@@ -4,6 +4,15 @@ import guis.outlines.TriangularRectangle;
 
 import java.awt.*;
 
+/**
+ *
+ * the HealthBar class creates a TriangularRectangle as its base and contains
+ * attributes such as the fill-level of the bar and its color
+ *
+ * @author Thomas Bundi
+ * @version 0.6
+ * @since 1.7
+ */
 public class HealthBar {
 
     private final int x;

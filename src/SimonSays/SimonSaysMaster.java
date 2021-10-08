@@ -12,6 +12,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ *
+ * the SimonSaysMaster class handles all the displaying of the sequences of each
+ * of the SimonSays blocks and whether the player re-enters the sequence
+ * correctly
+ *
+ * @author Thomas Bundi
+ * @version 0.7
+ * @since 2.6
+ */
 public class SimonSaysMaster {
 
     // ------------------------------------------------------------------------- SIMON_SAYS VARIABLES

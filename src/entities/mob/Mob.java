@@ -4,6 +4,15 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+/**
+ *
+ * abstract class Mob which contains all the basic functions all the mobs have
+ * to be able to do and execute
+ *
+ * @author Thomas Bundi
+ * @version 0.7
+ * @since 2.9
+ */
 public abstract class Mob {
 
     public static final float gravityAccel = 0.1f;

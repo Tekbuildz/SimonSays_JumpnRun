@@ -2,6 +2,15 @@ package toolbox;
 
 import java.util.Map;
 
+/**
+ *
+ * the HashMap class contains a function which enables the return of a key of
+ * a HashMap, when given the corresponding value
+ *
+ * @author Thomas Bundi
+ * @version 0.3
+ * @since 1.7
+ */
 public class HashMap {
 
     /**

@@ -1,10 +1,20 @@
 package SimonSays;
 
-import gameLoop.Main;
 import player.Player;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ *
+ * the SimonSays class contains the basic information about the individual
+ * SimonSays box in the levels such as whether it is colliding with the player
+ * and whether the player has already completed this station or not and its
+ * location
+ *
+ * @author Thomas Bundi
+ * @version 0.7
+ * @since 2.6
+ */
 public class SimonSays {
 
     // sequence of this SimonSays where:

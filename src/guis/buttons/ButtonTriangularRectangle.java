@@ -5,6 +5,18 @@ import toolbox.BasicGUIConstants;
 
 import java.awt.*;
 
+/**
+ *
+ * the ButtonTriangularRectangle class creates all the necessary objects to
+ * update and draw a button, where the corners are cut out in the shape of a
+ * triangle
+ * <p>
+ * extends to the Button class and hence overrides the update / render function
+ *
+ * @author Thomas Bundi
+ * @version 0.6
+ * @since 1.8
+ */
 public class ButtonTriangularRectangle extends Button {
 
     private final String text;

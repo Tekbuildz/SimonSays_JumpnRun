@@ -17,6 +17,17 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ *
+ * the LevelSelectionMenuState handles all the objects which are displayed when
+ * entering the level selection screen
+ * <p>
+ * extends to the State class, hence overrides the update and render function
+ *
+ * @author Thomas Bundi
+ * @version 0.8
+ * @since 2.6
+ */
 public class LevelSelectionMenuState extends State{
 
     // 3 is hardcoded, since only using 3 levels for now

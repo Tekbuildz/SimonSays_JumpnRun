@@ -12,6 +12,15 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+/**
+ *
+ * the Level class contains all the information about a single level, such as
+ * the locations of all the collisionboxes, coins, items etc.
+ *
+ * @author Thomas Bundi
+ * @version 2.1
+ * @since 0.3
+ */
 public class Level {
 
     private final ArrayList<ArrayList<Cube>> levelCubes;

@@ -3,6 +3,15 @@ package SpriteSheet;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+/**
+ *
+ * the ResourceMaster class contains two Hashmaps which hold all the loaded
+ * images and SpriteSheets
+ *
+ * @author Thomas Bundi
+ * @version 0.2
+ * @since 2.5
+ */
 public class ResourceMaster {
 
     private static final HashMap<String, SpriteSheet> spriteSheetMap = new HashMap<>();

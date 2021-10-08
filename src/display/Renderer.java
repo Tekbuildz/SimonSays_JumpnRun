@@ -5,6 +5,14 @@ import gamestates.StateMaster;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ *
+ * contains JPanel to which all the elements are drawn
+ *
+ * @author Thomas Bundi
+ * @version 1.3
+ * @since 0.6
+ */
 public class Renderer extends JPanel{
 
     private final int WIDTH;

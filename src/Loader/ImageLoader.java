@@ -5,6 +5,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ *
+ * the ImageLoader class contains a function which returns an image when given
+ * a path to the image
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.3
+ */
 public class ImageLoader {
 
     /**

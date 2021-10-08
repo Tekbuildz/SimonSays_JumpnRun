@@ -10,6 +10,15 @@ import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import player.PlayerInputs;
 
+/**
+ *
+ * Main class contains the main game loop of the game, loads all the images
+ * to memory and calls the repaint function of the Renderer class
+ *
+ * @author Thomas Bundi
+ * @version 2.7
+ * @since 0.1
+ */
 public class Main implements Runnable{
 
     private Renderer renderer;

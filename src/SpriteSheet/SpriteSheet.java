@@ -6,6 +6,15 @@ import Loader.SpriteSheetLoader;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ *
+ * the SpriteSheet class contains an array of images containing all the
+ * individual sub-images of a SpriteSheet
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.3
+ */
 public class SpriteSheet {
 
     private final Image[] spriteImages;

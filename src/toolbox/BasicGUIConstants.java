@@ -4,6 +4,15 @@ import display.DisplayManager;
 
 import java.awt.*;
 
+/**
+ *
+ * the BasicGUIConstants class holds as the name indicates the UI constants
+ * which are used more than once, such as basic colors or fonts
+ *
+ * @author Thomas Bundi
+ * @version 0.4
+ * @since 2.4
+ */
 public class BasicGUIConstants {
 
     public static final double rsf = DisplayManager.getWIDTH() / 1920f;

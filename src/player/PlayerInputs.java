@@ -4,6 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+/**
+ *
+ * the PlayerInputs class handles all the potential inputs from the player such
+ * as mouse movement, scrolling and key presses
+ * the information about key presses is stored in an ArrayList which keeps track
+ * of the actions which occurred in the last frame
+ *
+ * @author Thomas Bundi
+ * @version 1.1
+ * @since 0.9
+ */
 public class PlayerInputs implements KeyListener, MouseListener, MouseWheelListener {
 
     private static final ArrayList<Integer> keysPressedInFrame = new ArrayList<>();

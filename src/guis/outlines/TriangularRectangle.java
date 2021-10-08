@@ -2,6 +2,15 @@ package guis.outlines;
 
 import java.awt.*;
 
+/**
+ *
+ * the TriangularRectangle class creates a rectangle, where the edges are cut
+ * off in a triangular shape, it also contains several options like its color
+ *
+ * @author Thomas Bundi
+ * @version 0.6
+ * @since 1.9
+ */
 public class TriangularRectangle {
 
     private final Polygon polygon;

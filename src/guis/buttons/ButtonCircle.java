@@ -6,6 +6,17 @@ import toolbox.BasicGUIConstants;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
+/**
+ *
+ * the ButtonCircle class creates all the objects necessary to display and
+ * operate a button in the shape of a circle
+ * <p>
+ * extends to the Button class and hence overrides the update / render function
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.7
+ */
 public class ButtonCircle extends Button {
 
     private final String text;

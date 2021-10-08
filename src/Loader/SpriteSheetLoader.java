@@ -3,6 +3,15 @@ package Loader;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ *
+ * the SpriteSheetLoader class contains two functions to get the size of a
+ * SpriteSheet and to get the individual Sprites as an array of images
+ *
+ * @author Thomas Bundi
+ * @version 0.5
+ * @since 1.3
+ */
 public class SpriteSheetLoader {
 
     /**
