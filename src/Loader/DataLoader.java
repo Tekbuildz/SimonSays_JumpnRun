@@ -44,7 +44,7 @@ public class DataLoader {
 
         FileInputStream fileInputStream;
         try {
-            fileInputStream = new FileInputStream("data/" + fileName + ".xml");
+            fileInputStream = new FileInputStream(System.getProperty("user.home") + "/SimonSays_JAR/player.xml");
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             XMLEventReader eventReader = inputFactory.createXMLEventReader(fileInputStream);
 

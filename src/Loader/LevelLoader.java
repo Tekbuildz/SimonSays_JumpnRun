@@ -60,7 +60,7 @@ public class LevelLoader {
      * @param fileName - the name of the level to be loaded of the format
      *                 someName.litidata
      */
-    public void loadLevelData(String fileName) {
+    private void loadLevelData(String fileName) {
         // adding three new ArrayLists for coins of value 5, 10, 20
         for (int i = 0; i < 3; i++) {
             coins.add(new ArrayList<>());

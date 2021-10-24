@@ -16,6 +16,7 @@ import java.awt.*;
 public class DisplayManager extends JPanel {
 
     private static final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private static final int DPI = Toolkit.getDefaultToolkit().getScreenResolution();
     private static final int WIDTH = gd.getDisplayMode().getWidth();
     private static final int HEIGHT = gd.getDisplayMode().getHeight();
 
@@ -24,6 +25,7 @@ public class DisplayManager extends JPanel {
      * creating a basic JFrame and adding listeners to it
      */
     public void createDisplay(Renderer renderer) {
+
         JFrame frame = new JFrame("Jump 'n' Run");
         // removing the title-bar of the application-window
         // https://stackoverflow.com/questions/52148325/java-show-fullscreen-swing-application-with-taskbar-without-titlebar
@@ -56,5 +58,13 @@ public class DisplayManager extends JPanel {
      */
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    /**
+     *
+     * @return the resolution of the screen in DPI
+     */
+    public static int getDPI() {
+        return DPI;
     }
 }

@@ -60,17 +60,11 @@ public class GameState extends State {
     private boolean gameInterrupted = false;
     private boolean saveTimeForLevel = false;
 
-    // not having to stretch WIDTH and HEIGHT since they contain the size of the current display and are not hard-coded
-    private final int WIDTH = DisplayManager.getWIDTH();
-    private final int HEIGHT = DisplayManager.getHEIGHT();
-
     private boolean movementLeftBoundThreshold;
     private boolean movementRightBoundThreshold;
 
-    // rsf = resolutionStretchFactor (converting the points from 1920x1080 screen to the resolution of the current main screen
-    private final double rsf = WIDTH / 1920f;
-    private final int overlayButtonsWidth = (int) (180 * rsf);
-    private final int overlayButtonsHeight = (int) (50 * rsf);
+    private final int overlayButtonsWidth = (int) (180 * BasicGUIConstants.rsf);
+    private final int overlayButtonsHeight = (int) (50 * BasicGUIConstants.rsf);
 
     // ----------------- TIMER -------------------
     private long timeWithPauses;
@@ -82,32 +76,32 @@ public class GameState extends State {
 
     // ----------------- PAUSE MENU OVERLAY -----------------
     private final HashMap<String, Button> pauseMenuOverlayButtons = new HashMap<>();
-    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (20 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
+    private final TriangularRectangle pauseMenuOverlayPolygon = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (20 * BasicGUIConstants.rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
 
     // ----------------- DEATH OVERLAY -----------------
     private final HashMap<String, Button> deathOverlayButtons = new HashMap<>();
-    private final TriangularRectangle deathOverlayPolygon = new TriangularRectangle(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (15 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
-    private final TextBox deathOverlayYouDied = new TextBox(WIDTH / 2 - overlayButtonsWidth, HEIGHT / 2 - (int) (overlayButtonsHeight * 1.5), overlayButtonsWidth * 2, Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * rsf)), "You Died!", 5, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
+    private final TriangularRectangle deathOverlayPolygon = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight * 3, overlayButtonsWidth * 2, overlayButtonsHeight * 6, (int) (15 * BasicGUIConstants.rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
+    private final TextBox deathOverlayYouDied = new TextBox(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth, DisplayManager.getHEIGHT() / 2 - (int) (overlayButtonsHeight * 1.5), overlayButtonsWidth * 2, Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * BasicGUIConstants.rsf)), "You Died!", 5, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
 
     // ----------------- GAME FINISHED OVERLAY -----------------
     private final HashMap<String, Button> levelFinishedOverlayButtons = new HashMap<>();
     private final HashMap<String, TextBox> levelFinishedTexts = new HashMap<>();
     private final HashMap<String, TextBox> levelFinishedValues = new HashMap<>();
-    private final TriangularRectangle levelFinishedOverlayPolygon = new TriangularRectangle(WIDTH / 2 - overlayButtonsWidth * 2, HEIGHT / 2 - overlayButtonsHeight * 5, overlayButtonsWidth * 4, overlayButtonsHeight * 10, (int) (20 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
+    private final TriangularRectangle levelFinishedOverlayPolygon = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth * 2, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight * 5, overlayButtonsWidth * 4, overlayButtonsHeight * 10, (int) (20 * BasicGUIConstants.rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 2f);
 
     // ----------------- GENERAL OVERLAY -----------------
-    private final ButtonCircle pauseButton = new ButtonCircle((int) (20 * rsf), (int) (10 * rsf), (int) (60 * rsf), "II");
-    private final OutlinedPolygon bottomOverlay = new OutlinedPolygon(new int[]{0, (int) (280 * rsf), (int) (400 * rsf), WIDTH - (int) (400 * rsf), WIDTH - (int) (280 * rsf), WIDTH, WIDTH, 0}, new int[]{HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (50 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT - (int) (150 * rsf), HEIGHT, HEIGHT}, 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
-    private final OutlinedPolygon topLeftOverlay = new OutlinedPolygon(new int[]{0, (int) (140 * rsf), (int) (80 * rsf), 0}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
-    private final OutlinedPolygon topRightOverlay = new OutlinedPolygon(new int[]{WIDTH, WIDTH - (int) (240 * rsf), WIDTH - (int) (180 * rsf), WIDTH}, new int[]{0, 0, (int) (80 * rsf), (int) (80 * rsf)}, 4, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+    private final ButtonCircle pauseButton = new ButtonCircle((int) (20 * BasicGUIConstants.rsf), (int) (10 * BasicGUIConstants.rsf), (int) (60 * BasicGUIConstants.rsf), "II");
+    private final OutlinedPolygon bottomOverlay = new OutlinedPolygon(new int[]{0, (int) (280 * BasicGUIConstants.rsf), (int) (400 * BasicGUIConstants.rsf), DisplayManager.getWIDTH() - (int) (400 * BasicGUIConstants.rsf), DisplayManager.getWIDTH() - (int) (280 * BasicGUIConstants.rsf), DisplayManager.getWIDTH(), DisplayManager.getWIDTH(), 0}, new int[]{DisplayManager.getHEIGHT() - (int) (150 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (150 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (50 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (50 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (150 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (150 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT(), DisplayManager.getHEIGHT()}, 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+    private final OutlinedPolygon topLeftOverlay = new OutlinedPolygon(new int[]{0, (int) (140 * BasicGUIConstants.rsf), (int) (80 * BasicGUIConstants.rsf), 0}, new int[]{0, 0, (int) (80 * BasicGUIConstants.rsf), (int) (80 * BasicGUIConstants.rsf)}, 4, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
+    private final OutlinedPolygon topRightOverlay = new OutlinedPolygon(new int[]{DisplayManager.getWIDTH(), DisplayManager.getWIDTH() - (int) (240 * BasicGUIConstants.rsf), DisplayManager.getWIDTH() - (int) (180 * BasicGUIConstants.rsf), DisplayManager.getWIDTH()}, new int[]{0, 0, (int) (80 * BasicGUIConstants.rsf), (int) (80 * BasicGUIConstants.rsf)}, 4, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 3.5f);
 
-    private final HealthBar health = new HealthBar((int) (80 * rsf), HEIGHT - (int) (110 * rsf), (int) (180 * rsf), (int) (30 * rsf), (int) (10 * rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, Color.BLACK, 4f);
-    private final OutlinedEllipse faiOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (110 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f); // faiOutline = firstAidImageOutline
-    private final OutlinedEllipse livesOutline = new OutlinedEllipse((int) (40 * rsf), HEIGHT - (int) (60 * rsf), (int) (30 * rsf), (int) (30 * rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f);
+    private final HealthBar health = new HealthBar((int) (80 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (110 * BasicGUIConstants.rsf), (int) (180 * BasicGUIConstants.rsf), (int) (30 * BasicGUIConstants.rsf), (int) (10 * BasicGUIConstants.rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, Color.BLACK, 4f);
+    private final OutlinedEllipse faiOutline = new OutlinedEllipse((int) (40 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (110 * BasicGUIConstants.rsf), (int) (30 * BasicGUIConstants.rsf), (int) (30 * BasicGUIConstants.rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f); // faiOutline = firstAidImageOutline
+    private final OutlinedEllipse livesOutline = new OutlinedEllipse((int) (40 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (60 * BasicGUIConstants.rsf), (int) (30 * BasicGUIConstants.rsf), (int) (30 * BasicGUIConstants.rsf), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR.darker(), Color.BLACK, 3f);
 
-    private final TextBox lives = new TextBox((int) (80 * rsf), HEIGHT - (int) (35 * rsf), (int) (180 * rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * rsf)), "", 5, UIConstraints.UI_RIGHT_BOUND_CONSTRAINT);
-    private final TextBox coins = new TextBox(WIDTH - (int) (260 * rsf), HEIGHT - (int) (60 * rsf), (int) (240 * rsf), BasicGUIConstants.MONEY_YELLOW_COLOR, new Font("Calibri", Font.PLAIN, (int) (60 * rsf)), "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
-    private final TextBox time = new TextBox(WIDTH - (int) (180 * rsf), (int) (50 * rsf), (int) (180 * rsf), Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * rsf)), "00:00.000", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
+    private final TextBox lives = new TextBox((int) (80 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (35 * BasicGUIConstants.rsf), (int) (180 * BasicGUIConstants.rsf), BasicGUIConstants.HEALTH_BAR_GREEN_COLOR, new Font("Calibri", Font.PLAIN, (int) (30 * BasicGUIConstants.rsf)), "", 5, UIConstraints.UI_RIGHT_BOUND_CONSTRAINT);
+    private final TextBox coins = new TextBox(DisplayManager.getWIDTH() - (int) (260 * BasicGUIConstants.rsf), DisplayManager.getHEIGHT() - (int) (60 * BasicGUIConstants.rsf), (int) (240 * BasicGUIConstants.rsf), BasicGUIConstants.MONEY_YELLOW_COLOR, new Font("Calibri", Font.PLAIN, (int) (60 * BasicGUIConstants.rsf)), "", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
+    private final TextBox time = new TextBox(DisplayManager.getWIDTH() - (int) (180 * BasicGUIConstants.rsf), (int) (50 * BasicGUIConstants.rsf), (int) (180 * BasicGUIConstants.rsf), Color.WHITE, new Font("Calibri", Font.PLAIN, (int) (40 * BasicGUIConstants.rsf)), "00:00.000", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT);
 
     /**
      *
@@ -125,34 +119,34 @@ public class GameState extends State {
         itemImages[1] = ResourceMaster.getImageFromMap("pcb");
         itemImages[2] = ResourceMaster.getImageFromMap("screw");
 
-        pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * rsf)));
+        pauseButton.setTextFont(new Font("Calibri", Font.PLAIN, (int) (40 * BasicGUIConstants.rsf)));
 
         // ----------------- PAUSE MENU OVERLAY -----------------
-        pauseMenuOverlayButtons.put("continueButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight * 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Continue"));
-        pauseMenuOverlayButtons.put("restartButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Restart"));
-        pauseMenuOverlayButtons.put("exitGameButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Exit Game"));
+        pauseMenuOverlayButtons.put("continueButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth / 2, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight * 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Continue"));
+        pauseMenuOverlayButtons.put("restartButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth / 2, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Restart"));
+        pauseMenuOverlayButtons.put("exitGameButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth / 2, DisplayManager.getHEIGHT() / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Exit Game"));
         for (Button button: pauseMenuOverlayButtons.values()) {
             button.setTextFont(BasicGUIConstants.DEFAULT_BUTTON_FONT);
         }
 
         // ----------------- DEATH OVERLAY -----------------
-        deathOverlayButtons.put("restartButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Restart"));
-        deathOverlayButtons.put("exitGameDeathButton", new ButtonTriangularRectangle(WIDTH / 2 - overlayButtonsWidth / 2, HEIGHT / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Titlescreen"));
+        deathOverlayButtons.put("restartButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth / 2, DisplayManager.getHEIGHT() / 2 - overlayButtonsHeight / 2, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Restart"));
+        deathOverlayButtons.put("exitGameDeathButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth / 2, DisplayManager.getHEIGHT() / 2 + overlayButtonsHeight, overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Titlescreen"));
         for (Button button: deathOverlayButtons.values()) {
             button.setTextFont(BasicGUIConstants.DEFAULT_BUTTON_FONT);
         }
 
         // ----------------- GAME FINISHED OVERLAY -----------------
-        levelFinishedOverlayButtons.put("restartButton", new ButtonTriangularRectangle(WIDTH / 2 - (int) (overlayButtonsWidth * 1.5), HEIGHT / 2 + (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Restart"));
-        levelFinishedOverlayButtons.put("continueButton", new ButtonTriangularRectangle(WIDTH / 2 + (int) (overlayButtonsWidth * 0.5), HEIGHT / 2 + (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth, overlayButtonsHeight, (int) (10 * rsf), "Continue"));
+        levelFinishedOverlayButtons.put("restartButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - (int) (overlayButtonsWidth * 1.5), DisplayManager.getHEIGHT() / 2 + (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Restart"));
+        levelFinishedOverlayButtons.put("continueButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 + (int) (overlayButtonsWidth * 0.5), DisplayManager.getHEIGHT() / 2 + (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth, overlayButtonsHeight, (int) (10 * BasicGUIConstants.rsf), "Continue"));
         for (Button button: levelFinishedOverlayButtons.values()) {
             button.setTextFont(BasicGUIConstants.DEFAULT_BUTTON_FONT);
         }
-        levelFinishedTexts.put("wellDone", new TextBox(WIDTH / 2 - overlayButtonsWidth * 2, HEIGHT / 2 - (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth * 4, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, (int) (50 * rsf)), "Well Done!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
+        levelFinishedTexts.put("wellDone", new TextBox(DisplayManager.getWIDTH() / 2 - overlayButtonsWidth * 2, DisplayManager.getHEIGHT() / 2 - (int) (overlayButtonsHeight * 3.5), overlayButtonsWidth * 4, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, (int) (50 * BasicGUIConstants.rsf)), "Well Done!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
 
-        int endTextX = WIDTH / 2 - (int) (overlayButtonsWidth * 1.5);
-        int endTextY = HEIGHT / 2 - 20;
-        int endValuesX = WIDTH / 2 + overlayButtonsWidth / 2;
+        int endTextX = DisplayManager.getWIDTH() / 2 - (int) (overlayButtonsWidth * 1.5);
+        int endTextY = DisplayManager.getHEIGHT() / 2 - 20;
+        int endValuesX = DisplayManager.getWIDTH() / 2 + overlayButtonsWidth / 2;
         int width = overlayButtonsWidth * 3;
         levelFinishedTexts.put("coinsCollected", new TextBox(endTextX, endTextY - overlayButtonsHeight * 2, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Coins collected:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
         levelFinishedTexts.put("moneyEarned", new TextBox(endTextX, endTextY - overlayButtonsHeight, width, BasicGUIConstants.BUTTON_TEXT_COLOR, BasicGUIConstants.DEFAULT_BUTTON_FONT, "Money earned:", 0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT));
@@ -451,16 +445,16 @@ public class GameState extends State {
     @Override
     public void render(Graphics2D g) {
         g.drawImage(ResourceMaster.getImageFromMap("game_background"), 0, 0, null);
-        g.translate(0, HEIGHT);
+        g.translate(0, DisplayManager.getHEIGHT());
         drawLevel(g);
         drawPlayer(g);
 
         drawMobs(g);
-        // using the translate-function with "-HEIGHT" because the origin is always viewed from the current origin
-        // of the current coordinate system which is located at 0, HEIGHT (viewed from the actual screen => not visible)
+        // using the translate-function with "-DisplayManager.getHEIGHT()" because the origin is always viewed from the current origin
+        // of the current coordinate system which is located at 0, DisplayManager.getHEIGHT() (viewed from the actual screen => not visible)
         // in order to change the coordinate system back from the bottom left to the top left of the screen, the
         // height of the screen needs to be subtracted
-        g.translate(0, -HEIGHT);
+        g.translate(0, -DisplayManager.getHEIGHT());
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawGUIOverlay(g);
@@ -671,7 +665,7 @@ public class GameState extends State {
     private void drawPauseMenuOverlay(Graphics2D g) {
         // creating a semi-transparent overlay over the entire screen to hit focus on the game and switch it to buttons
         g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.fillRect(0, 0, DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
         pauseMenuOverlayPolygon.draw(g);
 
@@ -693,7 +687,7 @@ public class GameState extends State {
     private void drawDeathOverlay(Graphics2D g) {
         // semi-transparent overlay again
         g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.fillRect(0, 0, DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
         deathOverlayPolygon.draw(g);
         deathOverlayYouDied.draw(g);
@@ -718,7 +712,7 @@ public class GameState extends State {
      */
     private void drawLevelFinishedOverlay(Graphics2D g) {
         g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.fillRect(0, 0, DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
         levelFinishedOverlayPolygon.draw(g);
         for (TextBox box:levelFinishedTexts.values()) {

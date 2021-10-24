@@ -352,7 +352,7 @@ o TEXT-88:   WordUtils should treat an empty delimiter array as no delimiters. T
 o TEXT-93:   Update RandomStringGenerator to accept a list of valid characters. Thanks to Amey Jadiye.
 o TEXT-92:   Update commons-lang dependency to version 3.6.
 o TEXT-83:   Document that commons-csv should be used in preference to CsvTranslators. Thanks to Amey Jadiye.
-o TEXT-67:   NumericEntityUnescaper.options - fix TODO.
+o TEXT-67:   NumericEntityUnescaper.options - fix TO DO.
 o TEXT-84:   RandomStringGenerator claims to be immutable, but isn't.
 
 =============================================================================

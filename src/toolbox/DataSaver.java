@@ -78,21 +78,20 @@ public class DataSaver {
             rootElement.appendChild(levelData);
 
             // reading the number of files currently in the level's folder, hence reading the number of levels
-            File directory = new File("levels");
-            int fileCount = Objects.requireNonNull(directory.list()).length;
+            File directory = new File(System.getProperty("user.home") + "/SimonSays_JAR/levels");
+            int fileCount = -1;
+            if (directory.exists()) {
+                if (directory.isDirectory()) {
+                    fileCount = Objects.requireNonNull(directory.list()).length;
+                } else {
+                    System.err.println("The specified location is not a directory!");
+                    System.exit(0);
+                }
+            } else {
+                System.err.println("The specified directory doesn't exist!");
+                System.exit(0);
+            }
 
-//            for (int i = 1; i < DataLoader.getLevelTimes().size() + 1; i++) {
-//                if (DataLoader.getLevelTimes().get("level_" + i) > timeInMS && i == levelIndex) {
-//                    levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
-//                }
-//                else {
-//                    levelData.setAttribute("level_" + i, String.valueOf(DataLoader.getLevelTimes().get("level_" + i)));
-//                }
-//            }
-//
-//            for (int i = DataLoader.getLevelTimes().size() + 1; i < fileCount + 1; i++) {
-//                levelData.setAttribute("level_" + i, String.valueOf(timeInMS));
-//            }
 
             if (fileCount > DataLoader.getLevelTimes().size()) {
                 for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {
@@ -114,7 +113,7 @@ public class DataSaver {
             // ---------------------------------------------------------------------------------------------------------
 
             // writing the data in an XML file
-            FileOutputStream fileOutputStream = new FileOutputStream("data/player.xml");
+            FileOutputStream fileOutputStream = new FileOutputStream(System.getProperty("user.home") + "/SimonSays_JAR/player.xml");
 
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();

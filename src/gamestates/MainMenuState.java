@@ -9,6 +9,8 @@ import toolbox.BasicGUIConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Objects;
 

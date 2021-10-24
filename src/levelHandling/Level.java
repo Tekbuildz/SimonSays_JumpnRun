@@ -54,8 +54,7 @@ public class Level {
         }
         level = Integer.parseInt(levelName);
         // loading the level and its details
-        levelLoader = new LevelLoader("levels/" + levelName + ".litidata");
-        //levelLoader = new LevelLoader("levels/1.litidata");
+        levelLoader = new LevelLoader(System.getProperty("user.home") + "/SimonSays_JAR/levels/" + levelName + ".litidata");
         levelCubes = levelLoader.getLevelCubes();
         collisionBoxes = levelLoader.getCollisionBoxes();
         coins = levelLoader.getCoins();
