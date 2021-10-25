@@ -1,7 +1,6 @@
 package entities;
 
-import SpriteSheet.ResourceMaster;
-import player.Player;
+import Resources.ResourceMaster;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;

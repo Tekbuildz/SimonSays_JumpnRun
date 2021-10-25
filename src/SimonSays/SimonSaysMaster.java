@@ -6,7 +6,7 @@ import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
 import player.Player;
 import player.PlayerInputs;
-import toolbox.BasicGUIConstants;
+import toolbox.BasicConstants;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -58,11 +58,11 @@ public class SimonSaysMaster {
     private final ArrayList<Integer> playerInputs = new ArrayList<>();
 
     // ------------------------------------------------------------------------- GUI VARIABLES
-    private final TriangularRectangle bgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3 - (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() / 6 - (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() + (int) (BasicGUIConstants.rsf * 50), DisplayManager.getHEIGHT() / 3 * 2  + (int) (BasicGUIConstants.rsf * 100), DisplayManager.getHEIGHT() / 10, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 15);
-    private final TriangularRectangle fgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 12, BasicGUIConstants.BUTTON_TEXT_COLOR, Color.BLACK, 15);
+    private final TriangularRectangle bgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3 - (int) (BasicConstants.RSF * 50), DisplayManager.getHEIGHT() / 6 - (int) (BasicConstants.RSF * 50), DisplayManager.getHEIGHT() + (int) (BasicConstants.RSF * 50), DisplayManager.getHEIGHT() / 3 * 2  + (int) (BasicConstants.RSF * 100), DisplayManager.getHEIGHT() / 10, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, Color.BLACK, 15);
+    private final TriangularRectangle fgTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 3, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 3 * 2, DisplayManager.getHEIGHT() / 12, BasicConstants.BUTTON_TEXT_COLOR, Color.BLACK, 15);
     private final TriangularRectangle centerTR = new TriangularRectangle(DisplayManager.getWIDTH() / 2 - DisplayManager.getHEIGHT() / 12, DisplayManager.getHEIGHT() / 12 * 5, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 6, DisplayManager.getHEIGHT() / 48, Color.GRAY, Color.BLACK, 8);
 
-    private final int centerLineWidthHalf = (int) (15 * BasicGUIConstants.rsf);
+    private final int centerLineWidthHalf = (int) (15 * BasicConstants.RSF);
     private final OutlinedPolygon[] ops = new OutlinedPolygon[] {
             new OutlinedPolygon(
                     new int[] {DisplayManager.getWIDTH() / 2 + centerLineWidthHalf, DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 - DisplayManager.getHEIGHT() / 12, DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3, DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3, DisplayManager.getWIDTH() / 2 + centerLineWidthHalf},
@@ -87,9 +87,9 @@ public class SimonSaysMaster {
     };
 
     public final CheckBox[] checkBoxes = new CheckBox[] {
-            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 4, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
-            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 2 - DisplayManager.getHEIGHT() / 16, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
-            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicGUIConstants.rsf * 120), DisplayManager.getHEIGHT() / 2 + DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, 15)
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicConstants.RSF * 120), DisplayManager.getHEIGHT() / 4, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicConstants.RSF * 120), DisplayManager.getHEIGHT() / 2 - DisplayManager.getHEIGHT() / 16, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, 15),
+            new CheckBox(DisplayManager.getWIDTH() / 2 + DisplayManager.getHEIGHT() / 3 + (int) (BasicConstants.RSF * 120), DisplayManager.getHEIGHT() / 2 + DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, DisplayManager.getHEIGHT() / 8, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, 15)
     };
 
     /**
@@ -270,7 +270,7 @@ public class SimonSaysMaster {
         for (SimonSays simonSays:simonSays) {
             if (simonSays.isColliding() && !simonSays.isCompleted()) {
                 // darken background
-                g.setColor(BasicGUIConstants.TRANSPARENT_DARKENING_COLOR);
+                g.setColor(BasicConstants.TRANSPARENT_DARKENING_COLOR);
                 g.fillRect(0, 0, DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
                 if (isPlaying) {

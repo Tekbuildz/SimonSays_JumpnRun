@@ -1,6 +1,5 @@
-package toolbox;
+package dataProcessing;
 
-import Loader.DataLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import player.Player;
@@ -18,6 +17,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Objects;
+
+import static toolbox.BasicConstants.DEFAULT_PATH;
 
 /**
  *
@@ -78,7 +79,7 @@ public class DataSaver {
             rootElement.appendChild(levelData);
 
             // reading the number of files currently in the level's folder, hence reading the number of levels
-            File directory = new File(System.getProperty("user.home") + "/SimonSays_JAR/levels");
+            File directory = new File(DEFAULT_PATH + "levels");
             int fileCount = -1;
             if (directory.exists()) {
                 if (directory.isDirectory()) {

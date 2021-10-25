@@ -1,4 +1,4 @@
-package Loader;
+package dataProcessing;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -9,9 +9,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import static toolbox.BasicConstants.DEFAULT_PATH;
 
 /**
  *
@@ -44,7 +45,7 @@ public class DataLoader {
 
         FileInputStream fileInputStream;
         try {
-            fileInputStream = new FileInputStream(System.getProperty("user.home") + "/SimonSays_JAR/player.xml");
+            fileInputStream = new FileInputStream(DEFAULT_PATH + "player.xml");
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             XMLEventReader eventReader = inputFactory.createXMLEventReader(fileInputStream);
 

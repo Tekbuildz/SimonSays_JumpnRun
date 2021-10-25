@@ -4,6 +4,7 @@ import gamestates.StateMaster;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  *
@@ -40,6 +41,7 @@ public class Renderer extends JPanel{
         Graphics2D graphics2D = (Graphics2D) graphics.create();
 
         graphics2D.clearRect(0, 0, WIDTH, HEIGHT);
+        //graphics2D.setTransform(new AffineTransform());
 
         if (StateMaster.getState() != null) {
             StateMaster.getState().render(graphics2D);

@@ -1,16 +1,14 @@
 package gamestates;
 
-import SpriteSheet.ResourceMaster;
+import Resources.ResourceMaster;
 import display.DisplayManager;
 import guis.TextBox;
 import guis.buttons.Button;
 import guis.buttons.ButtonTriangularRectangle;
-import toolbox.BasicGUIConstants;
+import toolbox.BasicConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -27,7 +25,7 @@ import java.util.Objects;
  */
 public class MainMenuState extends State {
 
-    private final TextBox title = new TextBox(0, (int) (250 * BasicGUIConstants.rsf), DisplayManager.getWIDTH(), BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
+    private final TextBox title = new TextBox(0, (int) (250 * BasicConstants.RSF), DisplayManager.getWIDTH(), BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
     private final HashMap<String, Button> buttons = new HashMap<>();
 
     /**
@@ -36,9 +34,9 @@ public class MainMenuState extends State {
      * creates all buttons and adds them to an ArrayList for easier handling
      */
     public MainMenuState() {
-        int buttonWidth = (int) (250 * BasicGUIConstants.rsf);
-        int buttonHeight = (int) (60 * BasicGUIConstants.rsf);
-        int buttonCutoffSize = (int) (10 * BasicGUIConstants.rsf);
+        int buttonWidth = (int) (250 * BasicConstants.RSF);
+        int buttonHeight = (int) (60 * BasicConstants.RSF);
+        int buttonCutoffSize = (int) (10 * BasicConstants.RSF);
         buttons.put("playButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 11, buttonWidth, buttonHeight, buttonCutoffSize, "Play"));
         buttons.put("statisticsButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 5, buttonWidth, buttonHeight, buttonCutoffSize, "Statistics"));
         buttons.put("howToPlayButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 + buttonHeight / 4, buttonWidth, buttonHeight, buttonCutoffSize, "How To Play"));
@@ -47,11 +45,11 @@ public class MainMenuState extends State {
         for (Button button:buttons.values()) {
             // rearranging colors to make them fit more the background, since without an outline or background polygon,
             // the default fillColor seems nearly black
-            button.setTextFont(BasicGUIConstants.DEFAULT_BUTTON_FONT);
-            button.setTextColor(BasicGUIConstants.BUTTON_TEXT_COLOR);
-            button.setFillColor(BasicGUIConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
-            button.setHoverColor(BasicGUIConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
-            button.setPressedColor(BasicGUIConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
+            button.setTextFont(BasicConstants.DEFAULT_BUTTON_FONT);
+            button.setTextColor(BasicConstants.BUTTON_TEXT_COLOR);
+            button.setFillColor(BasicConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
+            button.setHoverColor(BasicConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
+            button.setPressedColor(BasicConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
         }
     }
 

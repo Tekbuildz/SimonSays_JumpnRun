@@ -13,9 +13,10 @@ import java.awt.*;
  * @version 0.4
  * @since 2.4
  */
-public class BasicGUIConstants {
+public class BasicConstants {
 
-    public static final double rsf = DisplayManager.getWIDTH() / 1920f;
+    public static final double RSF = DisplayManager.getWIDTH() / 1920f;
+    public static final String DEFAULT_PATH = System.getProperty("user.home") + "/SimonSays_JAR/";
 
     // ------------ OTHER COLORS ------------
     public static final Color GUI_OVERLAY_DEFAULT_COLOR = new Color(34, 52, 92);
@@ -30,7 +31,7 @@ public class BasicGUIConstants {
     public static final Color BUTTON_TEXT_COLOR = new Color(12, 244, 243);
 
     // ------------ FONTS ------------
-    public static final Font DEFAULT_BUTTON_FONT = new Font("Calibri", Font.PLAIN, (int) (30 * rsf));
-    public static final Font TITLE_FONT = new Font("Calibri", Font.BOLD, (int) (50 * rsf));
-    public static final Font DEFAULT_TEXT_FONT = new Font("Calibri", Font.BOLD, (int) (30 * rsf));
+    public static final Font DEFAULT_BUTTON_FONT = new Font("Calibri", Font.PLAIN, (int) (30 * RSF));
+    public static final Font TITLE_FONT = new Font("Calibri", Font.BOLD, (int) (50 * RSF));
+    public static final Font DEFAULT_TEXT_FONT = new Font("Calibri", Font.BOLD, (int) (30 * RSF));
 }

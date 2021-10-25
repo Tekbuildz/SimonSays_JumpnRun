@@ -1,12 +1,12 @@
 package gamestates;
 
-import SpriteSheet.ResourceMaster;
+import Resources.ResourceMaster;
 import display.DisplayManager;
 import guis.TextBox;
 import guis.buttons.ButtonTriangularRectangle;
 import guis.outlines.OutlinedPolygon;
 import player.PlayerInputs;
-import toolbox.BasicGUIConstants;
+import toolbox.BasicConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
@@ -29,7 +29,7 @@ public class HowToPlayMenuState extends State{
     private final int xDisplacement = DisplayManager.getWIDTH() / 16 * 3;
     private final int initialYDisplacement = DisplayManager.getHEIGHT() / 12;
     private final int textWidth = DisplayManager.getWIDTH() / 16 * 11;
-    private final int sectionYSpace = (int) (70 * BasicGUIConstants.rsf);
+    private final int sectionYSpace = (int) (70 * BasicConstants.RSF);
 
     private final ArrayList<TextBox> htpTexts = new ArrayList<>();
 
@@ -37,29 +37,29 @@ public class HowToPlayMenuState extends State{
             new int[] {DisplayManager.getWIDTH() / 8, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8},
             new int[] {-100, -100, DisplayManager.getHEIGHT() + 100, DisplayManager.getHEIGHT() + 100},
             4,
-            BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR,
+            BasicConstants.GUI_OVERLAY_DEFAULT_COLOR,
             Color.BLACK,
             5
     );
-    private final ButtonTriangularRectangle backButton = new ButtonTriangularRectangle(-20, -20, DisplayManager.getWIDTH() / 8 + 40, (int) (100 * BasicGUIConstants.rsf), 0, "<-");
+    private final ButtonTriangularRectangle backButton = new ButtonTriangularRectangle(-20, -20, DisplayManager.getWIDTH() / 8 + 40, (int) (100 * BasicConstants.RSF), 0, "<-");
 
     // title
     private final TextBox header = new TextBox(
             xDisplacement,
             initialYDisplacement,
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            new Font("Calibri", Font.BOLD, (int) (70 * BasicGUIConstants.rsf)),
+            BasicConstants.BUTTON_TEXT_COLOR,
+            new Font("Calibri", Font.BOLD, (int) (70 * BasicConstants.RSF)),
             "How To Play - A Quick Guide", 0,
             UIConstraints.UI_CENTER_BOUND_CONSTRAINT
     );
     // part 1: controls
     private final TextBox controlsTitle = new TextBox(
             xDisplacement,
-            header.getOriginalYPos() + header.getTextHeight() + (int) (30 * BasicGUIConstants.rsf), // adding some more space between the main title and the first paragraph
+            header.getOriginalYPos() + header.getTextHeight() + (int) (30 * BasicConstants.RSF), // adding some more space between the main title and the first paragraph
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "1. Controls", 0,
             UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -67,8 +67,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             controlsTitle.getOriginalYPos() + controlsTitle.getTextHeight(),
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "The player can be moved around the level using the A and D key or the left and right arrow keys. To jump, a tap of the space bar is required.",
             5, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -78,8 +78,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             controlsText.getOriginalYPos() + controlsText.getTextHeight() + sectionYSpace,
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "2. Collectables", 0,
             UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -87,8 +87,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             collectablesTitle.getOriginalYPos() + collectablesTitle.getTextHeight(),
             DisplayManager.getWIDTH() / 16 * 8,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "One of the objectives of the game is to collect every item in the level. Such items can either be coins of different values, 5, 10 or 20, represented by their appearance by bronze, silver and gold respectively. There is also another type of item in form of either a Screw, an LED or a PCB. ",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -98,8 +98,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             collectablesText.getOriginalYPos() + collectablesText.getTextHeight() + sectionYSpace,
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "3. Simon Says",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -107,8 +107,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             ssTitle.getOriginalYPos() + ssTitle.getTextHeight(),
             DisplayManager.getWIDTH() / 16 * 7,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "A Simon Says is a memory game occurring throughout each level, where the player has to remember a given sequence and re-enter it in the same order as it was given. To access one, simply navigate the players hitbox over a Simon Says block in the level and cancel any movement. The User Interface [to the right] should automatically open. Then, the first sequence is given and the player needs to replicate it by pressing the buttons which lit up previously in the same order. Should the player fail, the UI is closed and all further Simon Says blocks are no longer accessible.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -116,8 +116,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             ssText.getOriginalYPos() + ssText.getTextHeight(),
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "But if the player succeeds, a box to the right of the play-field is marked with a green tick and the next sequence begins. The UI closes as soon as the second sequence is finished and this one needs to be entered at the second Simon Says block. There, after entering the second sequence correctly, a third one is displayed and the UI is closed. The third and last one has to be entered in the last block. Be aware though, that each sequence can only be played once, therefore missing a sequence will require you to restart the level in case you are aiming for a perfect run.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -127,8 +127,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             ssText2.getOriginalYPos() + ssText2.getTextHeight() + sectionYSpace,
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "4. Hostile MOBs",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -136,8 +136,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             enemiesTitle.getOriginalYPos() + enemiesTitle.getTextHeight(),
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "Currently, there are two different hostile mobs in the game: a Snail and a Wolf. They have different properties such as speed, health and damage done when intersecting with a player. A snail has a lower speed, lower health and lower damage output than the wolf. In order for the player to deal damage to a mob, he has to be falling onto an enemy. This also allows for a hit towards the mob even if the player only hits the side of the hitbox of the mob and not the top. But walking into the enemy will deal damage to the player. Be aware though, that if two enemies are behind each other, the player will only deal damage to one but take damage from the other one.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -147,8 +147,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             enemiesText.getOriginalYPos() + enemiesText.getTextHeight() + sectionYSpace,
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "5. Personal Records",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -156,8 +156,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             pbTitle.getOriginalYPos() + pbTitle.getTextHeight(),
             textWidth,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.DEFAULT_TEXT_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.DEFAULT_TEXT_FONT,
             "The game saves personal bests of each level which are displayed on the level selection screen beneath the corresponding level. The ones which were not completed yet are marked as so. One thing to note is that the time is only saved if all the objectives of the level were fulfilled. This means that all the coins and items need to be collected, all the mobs have to be killed and all the Simon Says have to be solved correctly.",
             0, UIConstraints.UI_LEFT_BOUND_CONSTRAINT
     );
@@ -167,8 +167,8 @@ public class HowToPlayMenuState extends State{
             xDisplacement,
             pbText.getOriginalYPos() + pbText.getTextHeight() + sectionYSpace,
             DisplayManager.getWIDTH() / 16 * 10,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
-            BasicGUIConstants.TITLE_FONT,
+            BasicConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.TITLE_FONT,
             "Good Luck and Have Fun!",
             0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT
     );
@@ -195,10 +195,10 @@ public class HowToPlayMenuState extends State{
         htpTexts.add(GLHF);
 
         backButton.setTextFont(new Font("Calibri", Font.PLAIN, 50));
-        backButton.setTextColor(BasicGUIConstants.BUTTON_TEXT_COLOR);
-        backButton.setFillColor(BasicGUIConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
-        backButton.setHoverColor(BasicGUIConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
-        backButton.setPressedColor(BasicGUIConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
+        backButton.setTextColor(BasicConstants.BUTTON_TEXT_COLOR);
+        backButton.setFillColor(BasicConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
+        backButton.setHoverColor(BasicConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
+        backButton.setPressedColor(BasicConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
     }
 
     /**

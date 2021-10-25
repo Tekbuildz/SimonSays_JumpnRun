@@ -1,7 +1,7 @@
 package gamestates;
 
-import Loader.DataLoader;
-import SpriteSheet.ResourceMaster;
+import dataProcessing.DataLoader;
+import Resources.ResourceMaster;
 import display.DisplayManager;
 import guis.TextBox;
 import guis.buttons.ButtonTriangularRectangle;
@@ -9,7 +9,7 @@ import guis.outlines.OutlinedPolygon;
 import guis.outlines.TriangularRectangle;
 import levelHandling.Level;
 import player.PlayerInputs;
-import toolbox.BasicGUIConstants;
+import toolbox.BasicConstants;
 import toolbox.UIConstraints;
 
 import java.awt.*;
@@ -34,35 +34,35 @@ public class LevelSelectionMenuState extends State{
     private final HashMap<String, ButtonTriangularRectangle> levelButtons = new HashMap<>();
     private final HashMap<String, TriangularRectangle> levelPBsBackground = new HashMap<>();
     private final HashMap<String, TextBox> levelPBs = new HashMap<>();
-    private final int buttonSize = (int) (250 * BasicGUIConstants.rsf);
+    private final int buttonSize = (int) (250 * BasicConstants.RSF);
     private final ButtonTriangularRectangle returnButton;
     private final OutlinedPolygon titleOutlineBackground = new OutlinedPolygon(
             new int[] {
                     DisplayManager.getWIDTH() / 4,
                     DisplayManager.getWIDTH() / 4 * 3,
                     DisplayManager.getWIDTH() / 4 * 3,
-                    DisplayManager.getWIDTH() / 4 * 3 - (int) (50 * BasicGUIConstants.rsf),
-                    DisplayManager.getWIDTH() / 4 + (int) (50 * BasicGUIConstants.rsf),
+                    DisplayManager.getWIDTH() / 4 * 3 - (int) (50 * BasicConstants.RSF),
+                    DisplayManager.getWIDTH() / 4 + (int) (50 * BasicConstants.RSF),
                     DisplayManager.getWIDTH() / 4
             },
             new int[] {
                     0,
                     0,
-                    (int) (75 * BasicGUIConstants.rsf),
-                    (int) (125 * BasicGUIConstants.rsf),
-                    (int) (125 * BasicGUIConstants.rsf),
-                    (int) (75 * BasicGUIConstants.rsf)
+                    (int) (75 * BasicConstants.RSF),
+                    (int) (125 * BasicConstants.RSF),
+                    (int) (125 * BasicConstants.RSF),
+                    (int) (75 * BasicConstants.RSF)
             },
             6,
-            BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR,
+            BasicConstants.GUI_OVERLAY_DEFAULT_COLOR,
             Color.BLACK,
             10
     );
     private final TextBox title = new TextBox(
             DisplayManager.getWIDTH() / 4,
-            (int) (90 * BasicGUIConstants.rsf),
+            (int) (90 * BasicConstants.RSF),
             DisplayManager.getWIDTH() / 2,
-            BasicGUIConstants.BUTTON_TEXT_COLOR,
+            BasicConstants.BUTTON_TEXT_COLOR,
             new Font("Calibri", Font.PLAIN, 80),
             "Select a level:",
             0,
@@ -84,27 +84,27 @@ public class LevelSelectionMenuState extends State{
 
         for (ButtonTriangularRectangle button:levelButtons.values()) {
             button.setTextFont(new Font("Calibri", Font.PLAIN, 120));
-            button.setTextColor(BasicGUIConstants.BUTTON_TEXT_COLOR);
-            button.setFillColor(BasicGUIConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
-            button.setHoverColor(BasicGUIConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
-            button.setPressedColor(BasicGUIConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
+            button.setTextColor(BasicConstants.BUTTON_TEXT_COLOR);
+            button.setFillColor(BasicConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
+            button.setHoverColor(BasicConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
+            button.setPressedColor(BasicConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
         }
 
-        returnButton = new ButtonTriangularRectangle(-(int) (20 * BasicGUIConstants.rsf), -(int) (20 * BasicGUIConstants.rsf), (int) (300 * BasicGUIConstants.rsf), (int) (100 * BasicGUIConstants.rsf), (int) (20 * BasicGUIConstants.rsf), "<-");
+        returnButton = new ButtonTriangularRectangle(-(int) (20 * BasicConstants.RSF), -(int) (20 * BasicConstants.RSF), (int) (300 * BasicConstants.RSF), (int) (100 * BasicConstants.RSF), (int) (20 * BasicConstants.RSF), "<-");
         returnButton.setTextFont(new Font("Calibri", Font.BOLD, 70));
-        returnButton.setTextColor(BasicGUIConstants.BUTTON_TEXT_COLOR);
-        returnButton.setPressedColor(BasicGUIConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
-        returnButton.setHoverColor(BasicGUIConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
-        returnButton.setFillColor(BasicGUIConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
+        returnButton.setTextColor(BasicConstants.BUTTON_TEXT_COLOR);
+        returnButton.setPressedColor(BasicConstants.BUTTON_PRESSED_COLOR.brighter().brighter().brighter());
+        returnButton.setHoverColor(BasicConstants.BUTTON_HOVER_COLOR.brighter().brighter().brighter());
+        returnButton.setFillColor(BasicConstants.BUTTON_FILL_COLOR.brighter().brighter().brighter());
 
 
-        levelPBsBackground.put("level_1", new TriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR));
-        levelPBsBackground.put("level_2", new TriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR));
-        levelPBsBackground.put("level_3", new TriangularRectangle(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicGUIConstants.GUI_OVERLAY_DEFAULT_COLOR));
+        levelPBsBackground.put("level_1", new TriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR));
+        levelPBsBackground.put("level_2", new TriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR));
+        levelPBsBackground.put("level_3", new TriangularRectangle(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 4, buttonSize, buttonSize / 3, buttonSize / 20, BasicConstants.GUI_OVERLAY_DEFAULT_COLOR));
 
-        levelPBs.put("level_1", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
-        levelPBs.put("level_2", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
-        levelPBs.put("level_3", new TextBox(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicGUIConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
+        levelPBs.put("level_1", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
+        levelPBs.put("level_2", new TextBox(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
+        levelPBs.put("level_3", new TextBox(DisplayManager.getWIDTH() / 2 + buttonSize, DisplayManager.getHEIGHT() / 2 + buttonSize / 2 - 7, buttonSize, BasicConstants.BUTTON_TEXT_COLOR, new Font("Calibri", Font.PLAIN, 35), "0:00.000", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT));
 
         // showing all the best times under the levels which were already fully completed once
         for (int i = 0; i < DataLoader.getLevelTimes().size(); i++) {

@@ -1,7 +1,7 @@
 package player;
 
 import Loader.LevelLoader;
-import SpriteSheet.ResourceMaster;
+import Resources.ResourceMaster;
 import entities.Coin;
 import entities.Item;
 import gameLoop.Main;

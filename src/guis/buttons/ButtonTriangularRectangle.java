@@ -1,7 +1,7 @@
 package guis.buttons;
 
 import player.PlayerInputs;
-import toolbox.BasicGUIConstants;
+import toolbox.BasicConstants;
 
 import java.awt.*;
 
@@ -58,10 +58,10 @@ public class ButtonTriangularRectangle extends Button {
         this.height = height;
         this.text = text;
 
-        fillColor = BasicGUIConstants.BUTTON_FILL_COLOR;
-        hoverColor = BasicGUIConstants.BUTTON_HOVER_COLOR;
-        pressedColor = BasicGUIConstants.BUTTON_PRESSED_COLOR;
-        textColor = BasicGUIConstants.BUTTON_TEXT_COLOR;
+        fillColor = BasicConstants.BUTTON_FILL_COLOR;
+        hoverColor = BasicConstants.BUTTON_HOVER_COLOR;
+        pressedColor = BasicConstants.BUTTON_PRESSED_COLOR;
+        textColor = BasicConstants.BUTTON_TEXT_COLOR;
 
         triangularRectangle = new Polygon(
                 new int[] {

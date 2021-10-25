@@ -1,6 +1,6 @@
 package entities.mob;
 
-import SpriteSheet.ResourceMaster;
+import Resources.ResourceMaster;
 import gameLoop.Main;
 import toolbox.ImageProcessing;
 

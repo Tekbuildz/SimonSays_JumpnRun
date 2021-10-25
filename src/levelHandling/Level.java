@@ -12,6 +12,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import static toolbox.BasicConstants.DEFAULT_PATH;
+
 /**
  *
  * the Level class contains all the information about a single level, such as
@@ -54,7 +56,7 @@ public class Level {
         }
         level = Integer.parseInt(levelName);
         // loading the level and its details
-        levelLoader = new LevelLoader(System.getProperty("user.home") + "/SimonSays_JAR/levels/" + levelName + ".litidata");
+        levelLoader = new LevelLoader(DEFAULT_PATH + "levels/" + levelName + ".litidata");
         levelCubes = levelLoader.getLevelCubes();
         collisionBoxes = levelLoader.getCollisionBoxes();
         coins = levelLoader.getCoins();

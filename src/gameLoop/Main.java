@@ -1,14 +1,16 @@
 package gameLoop;
 
-import Loader.DataLoader;
-import Loader.ImageLoader;
-import SpriteSheet.ResourceMaster;
-import SpriteSheet.SpriteSheet;
+import dataProcessing.DataLoader;
+import Resources.ResourceMaster;
+import Resources.SpriteSheet;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import player.PlayerInputs;
+import toolbox.ImageProcessing;
+
+import static toolbox.BasicConstants.DEFAULT_PATH;
 
 /**
  *
@@ -66,31 +68,31 @@ public class Main implements Runnable{
      * loads all sprite sheets and images required for the game to a map
      */
     public static void loadAllResources() {
-        ResourceMaster.addImageToMap("title_screen_background", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/titleScreenBackground.png"));
-        ResourceMaster.addImageToMap("all_items", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/allitems.png"));
-        ResourceMaster.addImageToMap("ss_ui", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/SS_UI.png"));
+        ResourceMaster.addImageToMap("title_screen_background", ImageProcessing.loadImage(DEFAULT_PATH + "images/titleScreenBackground.png"));
+        ResourceMaster.addImageToMap("all_items", ImageProcessing.loadImage(DEFAULT_PATH + "images/allitems.png"));
+        ResourceMaster.addImageToMap("ss_ui", ImageProcessing.loadImage(DEFAULT_PATH + "images/SS_UI.png"));
 
         // ------------------------------------------------------------------------------------------------------------- IMAGES FOR GAMESTATE
-        ResourceMaster.addImageToMap("player_jump", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/player_jump.png"));
-        ResourceMaster.addImageToMap("player_idle", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/player_idle.png"));
-        ResourceMaster.addImageToMap("led", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/item_led.png"));
-        ResourceMaster.addImageToMap("pcb", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/item_pcb.png"));
-        ResourceMaster.addImageToMap("screw", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/item_screw.png"));
-        ResourceMaster.addImageToMap("simon_says", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/simon_says.png"));
-        ResourceMaster.addImageToMap("game_background", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/game_background.png"));
-        ResourceMaster.addImageToMap("mushroom_idle_up", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/mushroom_idle_up.png"));
-        ResourceMaster.addImageToMap("mushroom_idle_down", ImageLoader.loadImage(System.getProperty("user.home") + "/SimonSays_JAR/images/mushroom_idle_down.png"));
+        ResourceMaster.addImageToMap("player_jump", ImageProcessing.loadImage(DEFAULT_PATH + "images/player_jump.png"));
+        ResourceMaster.addImageToMap("player_idle", ImageProcessing.loadImage(DEFAULT_PATH + "images/player_idle.png"));
+        ResourceMaster.addImageToMap("led", ImageProcessing.loadImage(DEFAULT_PATH + "images/item_led.png"));
+        ResourceMaster.addImageToMap("pcb", ImageProcessing.loadImage(DEFAULT_PATH + "images/item_pcb.png"));
+        ResourceMaster.addImageToMap("screw", ImageProcessing.loadImage(DEFAULT_PATH + "images/item_screw.png"));
+        ResourceMaster.addImageToMap("simon_says", ImageProcessing.loadImage(DEFAULT_PATH + "images/simon_says.png"));
+        ResourceMaster.addImageToMap("game_background", ImageProcessing.loadImage(DEFAULT_PATH + "images/game_background.png"));
+        ResourceMaster.addImageToMap("mushroom_idle_up", ImageProcessing.loadImage(DEFAULT_PATH + "images/mushroom_idle_up.png"));
+        ResourceMaster.addImageToMap("mushroom_idle_down", ImageProcessing.loadImage(DEFAULT_PATH + "images/mushroom_idle_down.png"));
 
-        ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/coin_5_spritesheet.png", 40, 40));
-        ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/coin_10_spritesheet.png", 40, 40));
-        ResourceMaster.addSpriteSheetToMap("coin_20", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/coin_20_spritesheet.png", 40, 40));
-        ResourceMaster.addSpriteSheetToMap("player_die", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/player_die_spritesheet.png", 40, 60));
-        ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/player_walk_spritesheet.png", 40, 60));
-        ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/snail_walk_spritesheet.png", 60, 25));
-        ResourceMaster.addSpriteSheetToMap("wolf_walk", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/wolf_walk_spritesheet.png", 80, 44));
-        ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/blocktiles.png", 40, 40));
-        ResourceMaster.addSpriteSheetToMap("mushroom_squish", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/mushroom_squish_spritesheet.png", 40, 40));
-        ResourceMaster.addSpriteSheetToMap("mushroom_desquish", new SpriteSheet(System.getProperty("user.home") + "/SimonSays_JAR/spritesheets/mushroom_desquish_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("coin_5", new SpriteSheet(DEFAULT_PATH + "spritesheets/coin_5_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("coin_10", new SpriteSheet(DEFAULT_PATH + "spritesheets/coin_10_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("coin_20", new SpriteSheet(DEFAULT_PATH + "spritesheets/coin_20_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("player_die", new SpriteSheet(DEFAULT_PATH + "spritesheets/player_die_spritesheet.png", 40, 60));
+        ResourceMaster.addSpriteSheetToMap("player_walk", new SpriteSheet(DEFAULT_PATH + "spritesheets/player_walk_spritesheet.png", 40, 60));
+        ResourceMaster.addSpriteSheetToMap("snail_walk", new SpriteSheet(DEFAULT_PATH + "spritesheets/snail_walk_spritesheet.png", 60, 25));
+        ResourceMaster.addSpriteSheetToMap("wolf_walk", new SpriteSheet(DEFAULT_PATH + "spritesheets/wolf_walk_spritesheet.png", 80, 44));
+        ResourceMaster.addSpriteSheetToMap("dirt_gras", new SpriteSheet(DEFAULT_PATH + "spritesheets/blocktiles.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("mushroom_squish", new SpriteSheet(DEFAULT_PATH + "spritesheets/mushroom_squish_spritesheet.png", 40, 40));
+        ResourceMaster.addSpriteSheetToMap("mushroom_desquish", new SpriteSheet(DEFAULT_PATH + "spritesheets/mushroom_desquish_spritesheet.png", 40, 40));
         // -------------------------------------------------------------------------------------------------------------
     }
 

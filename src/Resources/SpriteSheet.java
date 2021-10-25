@@ -1,7 +1,7 @@
-package SpriteSheet;
+package Resources;
 
-import Loader.ImageLoader;
 import Loader.SpriteSheetLoader;
+import toolbox.ImageProcessing;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ public class SpriteSheet {
     /**
      *
      * basic constructor of the sprite sheet
-     * loads the sprite sheet using the ImageLoader.loadImage() function and
+     * loads the sprite sheet using the ImageProcessing.loadImage() function and
      * passing it the fileName
      * <p>
      * getting the sprite sheet size using the
@@ -38,7 +38,7 @@ public class SpriteSheet {
      */
     public SpriteSheet(String fileName, int spriteWidth, int spriteHeight) {
         // loading the sprite sheet as a buffered image
-        BufferedImage spriteSheet = ImageLoader.loadImage(fileName);
+        BufferedImage spriteSheet = ImageProcessing.loadImage(fileName);
         // getting the number of sprites horizontally and vertically contained in the sprite sheet
         int[] spriteSheetSize = SpriteSheetLoader.getSpriteSheetSize(spriteSheet, spriteWidth, spriteHeight);
         // getting the individual sprites as an array
