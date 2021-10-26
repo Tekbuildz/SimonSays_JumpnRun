@@ -30,7 +30,7 @@ public class ImageProcessing {
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File(pathName));
-            //image = toBufferedImage(image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_SMOOTH));
+            image = toBufferedImage(image.getScaledInstance((int) (image.getWidth(null) * BasicConstants.RSF), (int) (image.getHeight(null) * BasicConstants.RSF), Image.SCALE_SMOOTH));
         } catch (IOException e) {
             System.err.println("The image with the name: " + pathName + "could not be loaded with error message: " + e);
         }

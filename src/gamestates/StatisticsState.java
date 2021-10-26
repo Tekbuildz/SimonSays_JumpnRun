@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 /**
  *
- * the StatisticsMenuState class handles all the objects required to display
+ * the StatisticsState class handles all the objects required to display
  * the statistics to the screen
  * <p>
  * extends to the State class, hence overrides the update and render function
@@ -23,7 +23,7 @@ import java.util.HashMap;
  * @version 0.6
  * @since 3.2
  */
-public class StatisticsMenuState extends State{
+public class StatisticsState extends State{
 
     private final OutlinedPolygon backgroundPoly = new OutlinedPolygon(
             new int[] {DisplayManager.getWIDTH() / 8, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8 * 7, DisplayManager.getWIDTH() / 8},
@@ -43,10 +43,10 @@ public class StatisticsMenuState extends State{
 
     /**
      *
-     * basic constructor of the StatisticsMenuState
+     * basic constructor of the StatisticsState
      * reads all statistics values and adds them to TextBoxes
      */
-    public StatisticsMenuState() {
+    public StatisticsState() {
         stats.put("money", DataLoader.getCoins());
         stats.put("items", DataLoader.getItems());
         stats.put("snail_kill", DataLoader.getEntityKills().get("snail"));

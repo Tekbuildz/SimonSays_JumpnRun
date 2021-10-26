@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * the HowToPlayMenuState handles all the objects which are displayed when
+ * the HowToPlayState handles all the objects which are displayed when
  * viewing the How To Play page in the game
  * <p>
  * extends to the State class, hence overrides the update and render function
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @version 0.7
  * @since 3.6
  */
-public class HowToPlayMenuState extends State{
+public class HowToPlayState extends State{
 
     private int totalYShift = 0;
     private final int xDisplacement = DisplayManager.getWIDTH() / 16 * 3;
@@ -175,11 +175,11 @@ public class HowToPlayMenuState extends State{
 
     /**
      *
-     * basic constructor of the HowToPlayMenuState
+     * basic constructor of the HowToPlayState
      * adds all the texts to an ArrayList for easier handling of the yShift
      * adds all the color and font settings to the Return-Button
      */
-    public HowToPlayMenuState() {
+    public HowToPlayState() {
         htpTexts.add(header);
         htpTexts.add(controlsTitle);
         htpTexts.add(controlsText);

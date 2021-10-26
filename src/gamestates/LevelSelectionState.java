@@ -19,7 +19,7 @@ import java.util.Objects;
 
 /**
  *
- * the LevelSelectionMenuState handles all the objects which are displayed when
+ * the LevelSelectionState handles all the objects which are displayed when
  * entering the level selection screen
  * <p>
  * extends to the State class, hence overrides the update and render function
@@ -28,7 +28,7 @@ import java.util.Objects;
  * @version 0.8
  * @since 2.6
  */
-public class LevelSelectionMenuState extends State{
+public class LevelSelectionState extends State{
 
     // 3 is hardcoded, since only using 3 levels for now
     private final HashMap<String, ButtonTriangularRectangle> levelButtons = new HashMap<>();
@@ -71,11 +71,11 @@ public class LevelSelectionMenuState extends State{
 
     /**
      *
-     * basic constructor of the LevelSelectionMenuState
+     * basic constructor of the LevelSelectionState
      * loads personal bests for each level to show them under the level button
      * adds other UI related objects to lists for simplified handling
      */
-    public LevelSelectionMenuState() {
+    public LevelSelectionState() {
         DataLoader.loadPlayerData("player");
 
         levelButtons.put("level_1", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "1"));

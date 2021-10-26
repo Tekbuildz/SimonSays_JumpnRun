@@ -25,7 +25,7 @@ import java.util.Objects;
  */
 public class MainMenuState extends State {
 
-    private final TextBox title = new TextBox(0, (int) (250 * BasicConstants.RSF), DisplayManager.getWIDTH(), BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, 120), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
+    private final TextBox title = new TextBox(0, DisplayManager.getHEIGHT() / 4, DisplayManager.getWIDTH(), BasicConstants.GUI_OVERLAY_DEFAULT_COLOR, new Font("Calibri", Font.PLAIN, (int) (120*BasicConstants.ARSF)), "Simon Says: Jump!", 0, UIConstraints.UI_CENTER_BOUND_CONSTRAINT);
     private final HashMap<String, Button> buttons = new HashMap<>();
 
     /**
@@ -34,9 +34,9 @@ public class MainMenuState extends State {
      * creates all buttons and adds them to an ArrayList for easier handling
      */
     public MainMenuState() {
-        int buttonWidth = (int) (250 * BasicConstants.RSF);
-        int buttonHeight = (int) (60 * BasicConstants.RSF);
-        int buttonCutoffSize = (int) (10 * BasicConstants.RSF);
+        int buttonWidth = (int) (250 * BasicConstants.ARSF);
+        int buttonHeight = (int) (60 * BasicConstants.ARSF);
+        int buttonCutoffSize = (int) (10 * BasicConstants.ARSF);
         buttons.put("playButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 11, buttonWidth, buttonHeight, buttonCutoffSize, "Play"));
         buttons.put("statisticsButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 - buttonHeight / 4 * 5, buttonWidth, buttonHeight, buttonCutoffSize, "Statistics"));
         buttons.put("howToPlayButton", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonWidth / 2, DisplayManager.getHEIGHT() / 2 + buttonHeight / 4, buttonWidth, buttonHeight, buttonCutoffSize, "How To Play"));
@@ -61,15 +61,15 @@ public class MainMenuState extends State {
             if (button.isButtonWasReleased()) {
                 switch (Objects.requireNonNull(toolbox.HashMap.getKey(buttons, button))) {
                     case "playButton":
-                        StateMaster.setState(new LevelSelectionMenuState());
+                        StateMaster.setState(new LevelSelectionState());
                         break;
 
                     case "howToPlayButton":
-                        StateMaster.setState(new HowToPlayMenuState());
+                        StateMaster.setState(new HowToPlayState());
                         break;
 
                     case "statisticsButton":
-                        StateMaster.setState(new StatisticsMenuState());
+                        StateMaster.setState(new StatisticsState());
                         break;
 
                     case "quitButton":

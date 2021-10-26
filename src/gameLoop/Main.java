@@ -8,6 +8,7 @@ import display.Renderer;
 import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import player.PlayerInputs;
+import toolbox.BasicConstants;
 import toolbox.ImageProcessing;
 
 import static toolbox.BasicConstants.DEFAULT_PATH;

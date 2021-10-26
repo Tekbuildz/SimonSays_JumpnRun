@@ -192,7 +192,7 @@ public class GameState extends State {
 
                         case "exitGameButton":
                             resetLevel();
-                            StateMaster.setState(new LevelSelectionMenuState());
+                            StateMaster.setState(new LevelSelectionState());
                             break;
                     }
                 }
@@ -232,7 +232,7 @@ public class GameState extends State {
                             }
                             DataLoader.loadPlayerData("player");
                             resetLevel();
-                            StateMaster.setState(new LevelSelectionMenuState());
+                            StateMaster.setState(new LevelSelectionState());
                             break;
                     }
                 }

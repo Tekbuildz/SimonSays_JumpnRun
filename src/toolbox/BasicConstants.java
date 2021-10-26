@@ -15,7 +15,12 @@ import java.awt.*;
  */
 public class BasicConstants {
 
-    public static final double RSF = DisplayManager.getWIDTH() / 1920f;
+    public static final double RSF = DisplayManager.getWIDTH() / 1920f; // resolution stretch factor
+    public static final double ARSF = Toolkit.getDefaultToolkit().getScreenResolution() / 96f; // aspect ratio stretch factor
+
+    public static final int SCALED_WINDOW_WIDTH = (int) ((int) (DisplayManager.getWIDTH() / ARSF)*RSF);
+    public static final int SCALED_WINDOW_HEIGHT = (int) ((int) (DisplayManager.getHEIGHT() / ARSF)*RSF);
+
     public static final String DEFAULT_PATH = System.getProperty("user.home") + "/SimonSays_JAR/";
 
     // ------------ OTHER COLORS ------------

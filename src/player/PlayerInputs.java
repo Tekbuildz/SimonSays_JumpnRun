@@ -1,5 +1,7 @@
 package player;
 
+import toolbox.BasicConstants;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -166,7 +168,7 @@ public class PlayerInputs implements KeyListener, MouseListener, MouseWheelListe
      * @param p - setting the variable mousePos to the Point p
      */
     private static void setMousePos(Point p) {
-        mousePos.setLocation(p);
+        mousePos.setLocation(p.x* BasicConstants.ARSF, p.y*BasicConstants.ARSF);
     }
 
     /**
