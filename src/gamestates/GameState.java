@@ -1,6 +1,7 @@
 package gamestates;
 
 import dataProcessing.DataLoader;
+import dataProcessing.LevelSaver;
 import entities.Coin;
 import SimonSays.SimonSays;
 import entities.Item;
@@ -65,6 +66,20 @@ public class GameState extends State {
 
     private final int overlayButtonsWidth = (int) (180 * BasicConstants.RSF);
     private final int overlayButtonsHeight = (int) (50 * BasicConstants.RSF);
+
+    // ----------------- PLAYER STATS -----------------
+    private int deaths;
+    private final int totalSimonSays = 3;
+    private int simonSaysCompleted;
+    private int totalCoins;
+    private int coinsCollected;
+    private int totalItems;
+    private int itemsCollected;
+    private int totalEnemies;
+    private int enemiesKilled;
+
+    private int totalMoney;
+    private int moneyCollected;
 
     // ----------------- TIMER -------------------
     private long timeWithPauses;
@@ -225,12 +240,20 @@ public class GameState extends State {
                             resetLevel();
                             break;
                         case "continueButton":
-                            if (saveTimeForLevel) {
-                                DataSaver.saveData(level.level, totalTime, player);
-                            } else {
-                                DataSaver.saveData(level.level, 0, player);
-                            }
-                            DataLoader.loadPlayerData("player");
+
+                                /*
+                                scaling factors of the faults:
+                                faults: 15
+                                simon says faults: 15
+                                coin faults: 1 (value is neglected)
+                                item faults: 10
+                                mobs: 5
+                                 */
+
+                            int totalFaults = deaths * 15 + (totalSimonSays - simonSaysCompleted) * 15 + (totalCoins - coinsCollected) + (totalItems - itemsCollected) * 10 + (totalEnemies - enemiesKilled) * 5;
+                            LevelSaver.init(BasicConstants.DEFAULT_PATH + "leveldata/" + level.level + ".xml", totalTime, deaths, totalSimonSays - simonSaysCompleted, totalCoins - coinsCollected, totalItems - itemsCollected, totalEnemies - enemiesKilled, totalFaults);
+
+                            DataLoader.loadPlayerData();
                             resetLevel();
                             StateMaster.setState(new LevelSelectionState());
                             break;
@@ -286,56 +309,8 @@ public class GameState extends State {
             movementLeftBoundThreshold = player.getX() >= (float) (DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2) && player.getX() < (float) (level.getLevelCubes().get(0).size() * player.getCubeSize() - DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2);
             movementRightBoundThreshold = player.getX() >= (float) (level.getLevelCubes().get(0).size() * player.getCubeSize() - DisplayManager.getWIDTH() / 2 + player.getCubeSize() / 2);
             // checking if the player finished the level
-            if (level.getFinish().intersects(player.getPlayerRect())) {
-                gameInterrupted = true;
-                drawLevelFinishedOverlay = true;
-
-                int totalCoinsInLevel = 0;
-                int totalCoinsCollected = 0;
-                int totalMoneyEarned = 0;
-                int totalMoneyAvailable = 0;
-                int totalEnemiesKilled = 0;
-                int totalEnemiesInLevel = 0;
-                for (ArrayList<Coin> list:level.getCoins()) {
-                    totalCoinsInLevel += list.size();
-                    for (Coin coin:list) {
-                        totalMoneyAvailable += coin.getValue();
-                        if (coin.isWasCollected()) {
-                            totalCoinsCollected++;
-                            totalMoneyEarned += coin.getValue();
-                        }
-                    }
-                }
-
-                for (Mob mob:level.getMobs()) {
-                    if (!mob.hasCollisions()) {
-                        totalEnemiesKilled++;
-                    }
-                    totalEnemiesInLevel++;
-                }
-
-                int ssCorrect = 0;
-                for (CheckBox cb:level.getSimonSaysMaster().checkBoxes) {
-                    if (cb.getState() == CheckBox.TICKED) {
-                        ssCorrect++;
-                    }
-                }
-
-                levelFinishedValues.get("coinsCollected").setText(totalCoinsCollected + " / " + totalCoinsInLevel);
-                levelFinishedValues.get("moneyEarned").setText(totalMoneyEarned + " / " + totalMoneyAvailable);
-                levelFinishedValues.get("itemsCollected").setText(player.getNumberOfItemsCollected() + " / " + level.getItems().size());
-                levelFinishedValues.get("simonSaysCorrect").setText(ssCorrect + " / " + level.getSimonSaysMaster().checkBoxes.length);
-                levelFinishedValues.get("enemiesKilled").setText(totalEnemiesKilled + " / " + totalEnemiesInLevel);
-                if (seconds < 10) {
-                    levelFinishedValues.get("timeTaken").setText(minutes + ":0" + seconds + "." + mSeconds);
-                } else {
-                    levelFinishedValues.get("timeTaken").setText(minutes + ":" + seconds + "." + mSeconds);
-                }
-
-                // only if all the items etc. were collected, the time for the level is saved
-                if (totalCoinsCollected == totalCoinsInLevel && player.getNumberOfItemsCollected() == level.getItems().size() && ssCorrect == level.getSimonSaysMaster().checkBoxes.length && totalEnemiesKilled == totalEnemiesInLevel) {
-                    saveTimeForLevel = true;
-                }
+            if (level.getFinish().intersects(player.getPlayerRect()) && !drawLevelFinishedOverlay) {
+                levelFinishedCalculations();
             }
 
             // player attributes
@@ -772,5 +747,63 @@ public class GameState extends State {
         timeWithPauses = System.currentTimeMillis();
 
         level.getSimonSaysMaster().resetSimonSays();
+    }
+
+    private void levelFinishedCalculations() {
+        gameInterrupted = true;
+        drawLevelFinishedOverlay = true;
+
+
+        // ----------------------- RESETTING STATS -----------------------
+        deaths = 0; // TODO: will be removed and replaced when checkpoints and lives are added
+        simonSaysCompleted = 0;
+        totalCoins = 0;
+        coinsCollected = 0;
+        totalMoney = 0;
+        moneyCollected = 0;
+        totalItems = level.getItems().size();
+        itemsCollected = 0;
+        totalEnemies = 0;
+        enemiesKilled = 0;
+
+        for (ArrayList<Coin> list:level.getCoins()) {
+            totalCoins += list.size();
+            for (Coin coin:list) {
+                totalMoney += coin.getValue();
+                if (coin.isWasCollected()) {
+                    coinsCollected++;
+                    moneyCollected += coin.getValue();
+                }
+            }
+        }
+
+        for (Mob mob:level.getMobs()) {
+            if (!mob.hasCollisions()) {
+                enemiesKilled++;
+            }
+            totalEnemies++;
+        }
+
+        for (CheckBox cb:level.getSimonSaysMaster().checkBoxes) {
+            if (cb.getState() == CheckBox.TICKED) {
+                simonSaysCompleted++;
+            }
+        }
+
+        levelFinishedValues.get("coinsCollected").setText(coinsCollected + " / " + totalCoins);
+        levelFinishedValues.get("moneyEarned").setText(moneyCollected + " / " + totalMoney);
+        levelFinishedValues.get("itemsCollected").setText(player.getNumberOfItemsCollected() + " / " + totalItems);
+        levelFinishedValues.get("simonSaysCorrect").setText(simonSaysCompleted + " / " + totalSimonSays);
+        levelFinishedValues.get("enemiesKilled").setText(enemiesKilled + " / " + totalEnemies);
+        if (seconds < 10) {
+            levelFinishedValues.get("timeTaken").setText(minutes + ":0" + seconds + "." + mSeconds);
+        } else {
+            levelFinishedValues.get("timeTaken").setText(minutes + ":" + seconds + "." + mSeconds);
+        }
+
+        // only if all the items etc. were collected, the time for the level is saved
+//        if (coinsCollected == totalCoins && player.getNumberOfItemsCollected() == totalItems && simonSaysCompleted == totalSimonSays && enemiesKilled == totalEnemies) {
+//            saveTimeForLevel = true;
+//        }
     }
 }

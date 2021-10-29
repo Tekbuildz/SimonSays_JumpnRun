@@ -1,6 +1,6 @@
 package levelHandling;
 
-import Loader.LevelLoader;
+import dataProcessing.LevelLoader;
 import SimonSays.SimonSaysMaster;
 import entities.Coin;
 import entities.Item;

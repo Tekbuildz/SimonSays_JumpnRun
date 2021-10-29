@@ -3,6 +3,7 @@ package dataProcessing;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import player.Player;
+import toolbox.BasicConstants;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -114,7 +115,7 @@ public class DataSaver {
             // ---------------------------------------------------------------------------------------------------------
 
             // writing the data in an XML file
-            FileOutputStream fileOutputStream = new FileOutputStream(System.getProperty("user.home") + "/SimonSays_JAR/player.xml");
+            FileOutputStream fileOutputStream = new FileOutputStream(BasicConstants.DEFAULT_PATH + "player.xml");
 
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();

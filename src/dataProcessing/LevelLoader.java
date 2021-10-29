@@ -1,4 +1,4 @@
-package Loader;
+package dataProcessing;
 
 import entities.Coin;
 import SimonSays.SimonSays;
@@ -76,10 +76,10 @@ public class LevelLoader {
             // looping through all the xml events (<> || </>)
             while (xmlEventReader.hasNext()) {
                 XMLEvent event = xmlEventReader.nextEvent();
-                // checking if the event is a start element (<> and not </>)
+                // checking if the event is a init element (<> and not </>)
                 if (event.isStartElement()) {
                     StartElement startElement = event.asStartElement();
-                    // if it is a start element, checking for the name between <>
+                    // if it is a init element, checking for the name between <>
                     switch (startElement.getName().getLocalPart()) {
                         case "object":
                             Attribute objectType = startElement.getAttributeByName(new QName("type"));

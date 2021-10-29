@@ -76,7 +76,7 @@ public class LevelSelectionState extends State{
      * adds other UI related objects to lists for simplified handling
      */
     public LevelSelectionState() {
-        DataLoader.loadPlayerData("player");
+        DataLoader.loadPlayerData();
 
         levelButtons.put("level_1", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize * 2, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "1"));
         levelButtons.put("level_2", new ButtonTriangularRectangle(DisplayManager.getWIDTH() / 2 - buttonSize / 2, DisplayManager.getHEIGHT() / 2 - buttonSize, buttonSize, buttonSize, buttonSize / 10, "2"));

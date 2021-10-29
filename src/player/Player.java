@@ -1,6 +1,6 @@
 package player;
 
-import Loader.LevelLoader;
+import dataProcessing.LevelLoader;
 import Resources.ResourceMaster;
 import entities.Coin;
 import entities.Item;
@@ -27,6 +27,7 @@ public class Player {
 
     // player statistics
     private int coins;
+    private final int backupCoins;
     private int numberOfItemsCollected;
     private final HashMap<String, Integer> entityKills;
 
@@ -34,9 +35,6 @@ public class Player {
     private final LevelLoader levelLoader;
 
     private long systemTimeOfDamage;
-    // constants
-    private final float gravityAccel = 0.1f;
-    private final int playerDamageCooldownMS = 750;
     private boolean isVulnerable;
     public double xSpeed = 0;
     public double ySpeed = 0;
@@ -50,8 +48,6 @@ public class Player {
     // if the health reaches 0, a life is removed from the players total number of lives
     private int health;
     private int lives;
-
-    private final int backupCoins;
 
     private static Image currentPlayerImage;
 
@@ -95,6 +91,8 @@ public class Player {
      * which case the vertical momentum/speed has to be canceled
      */
     public void applyGravity() {
+        // constants
+        float gravityAccel = 0.1f;
         ySpeed += gravityAccel;
         if (ySpeed >= 6) {
             ySpeed = 6;
@@ -242,6 +240,7 @@ public class Player {
         if (!isDeathAnimPlaying) {
             playerRect.x += xSpeed;
             playerRect.y += ySpeed;
+            int playerDamageCooldownMS = 750;
             isVulnerable = (System.currentTimeMillis() - systemTimeOfDamage) > playerDamageCooldownMS;
         }
         else {
@@ -303,6 +302,7 @@ public class Player {
      * @param health - increases the health of the current life by the value of the parameter
      */
     public void removeHealth(int health) {
+        // TODO: remove lives and add health again when died
         if (isVulnerable) {
             this.health -= health;
             systemTimeOfDamage = System.currentTimeMillis();

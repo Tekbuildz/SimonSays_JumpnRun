@@ -37,9 +37,8 @@ public class DataLoader {
      * by searching through the file with the STAX parser and
      * checking each StartElement
      *
-     * @param fileName - the name of the XML file to be read from
      */
-    public static void loadPlayerData(String fileName)  {
+    public static void loadPlayerData()  {
         entityKills = new HashMap<>();
         levelTimes = new HashMap<>();
 

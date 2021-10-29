@@ -3,12 +3,13 @@ package gameLoop;
 import dataProcessing.DataLoader;
 import Resources.ResourceMaster;
 import Resources.SpriteSheet;
+import dataProcessing.FileChecker;
+import dataProcessing.LevelDataLoader;
 import display.DisplayManager;
 import display.Renderer;
 import gamestates.MainMenuState;
 import gamestates.StateMaster;
 import player.PlayerInputs;
-import toolbox.BasicConstants;
 import toolbox.ImageProcessing;
 
 import static toolbox.BasicConstants.DEFAULT_PATH;
@@ -51,7 +52,9 @@ public class Main implements Runnable{
      */
     private void setup() {
         loadAllResources();
-        DataLoader.loadPlayerData("player");
+        FileChecker.start();
+//        DataLoader.loadPlayerData();
+        LevelDataLoader.loadAllLevelData();
 
         renderer = new Renderer(DisplayManager.getWIDTH(), DisplayManager.getHEIGHT());
 
